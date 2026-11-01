@@ -1282,8 +1282,8 @@
             <!-- Alphabet Strip (Keybr letters progression bar) -->
             <div class="alphabet-strip">
                 <div class="alphabet-header">
-                    <span>Remington GAIL Progression (<span id="total-keys-header">65</span> Keys)</span>
-                    <span id="progression-summary">Level 1 / 65</span>
+                    <span>Remington GAIL Progression (<span id="total-keys-header">70</span> Keys)</span>
+                    <span id="progression-summary">Level 1 / 70</span>
                 </div>
                 <div class="alphabet-keys" id="alphabet-container"></div>
             </div>
@@ -1339,7 +1339,7 @@
                 </div>
                 <div class="stat-card">
                     <span class="s-label">Keys Unlocked</span>
-                    <div class="s-value"><span id="metric-unlocked">1</span><span class="s-unit">/ <span id="metric-total-keys">65</span></span></div>
+                    <div class="s-value"><span id="metric-unlocked">1</span><span class="s-unit">/ <span id="metric-total-keys">70</span></span></div>
                 </div>
                 <div class="stat-card">
                     <span class="s-label">Total Keystrokes</span>
@@ -1397,7 +1397,7 @@
                     </div>
                     <div class="stat-card">
                         <span class="s-label">Keys Mastered</span>
-                        <div class="s-value" id="prof-mastered-count">0 / 65</div>
+                        <div class="s-value" id="prof-mastered-count">0 / 70</div>
                     </div>
                 </div>
 
@@ -1616,6 +1616,13 @@
             { k: '9',  h: '९',  sh: '९',  d: 'Digit 9 (Nau)',    finger: 'Right Ring'   },
             { k: '0',  h: '०',  sh: '०',  d: 'Digit 0 (Shunya)', finger: 'Right Pinky'  },
 
+            // Number Row (Hindi Word Glyphs)
+            { k: '_',  h: 'ऋ',  sh: 'ऋ',  d: 'Ri vowel (Shift + -)', finger: 'Right Pinky', conjunct: true },
+            { k: '#',  h: 'रु', sh: 'रु', d: 'Ru (Shift + 3)', finger: 'Left Middle', conjunct: true },
+            { k: '%',  h: 'ः',  sh: 'ः',  d: 'Visarga (Shift + 5)', finger: 'Left Index', conjunct: true },
+            { k: '^',  h: '‘',  sh: '‘',  d: 'Opening quote (Shift + 6)', finger: 'Right Index', conjunct: true },
+            { k: '*',  h: '’',  sh: '’',  d: 'Closing quote (Shift + 8)', finger: 'Right Middle', conjunct: true },
+
             // Alt-Code Conjuncts & Special Glyphs (Speed-Gated Exam Levels)
             { k: 'क्त', h: 'क्त', sh: 'क्त', d: 'Kta conjunct',   finger: 'Alt + 0204', conjunct: true, alt: '0204' },
             { k: 'द्द', h: 'द्द', sh: 'द्द', d: 'Dda conjunct',   finger: 'Alt + 0205', conjunct: true, alt: '0205' },
@@ -1646,15 +1653,15 @@
                 { k: '`',  h: 'ृ',  sh: '्',  code: 'Backquote' },
                 { k: '1',  h: '1',  sh: '!',  code: 'Digit1' },
                 { k: '2',  h: '2',  sh: '@',  code: 'Digit2' },
-                { k: '3',  h: '3',  sh: '#',  code: 'Digit3' },
+                { k: '3',  h: '3',  sh: 'रु', code: 'Digit3' },
                 { k: '4',  h: '4',  sh: '$',  code: 'Digit4' },
-                { k: '5',  h: '5',  sh: '%',  code: 'Digit5' },
-                { k: '6',  h: '6',  sh: '^',  code: 'Digit6' },
+                { k: '5',  h: '5',  sh: 'ः',  code: 'Digit5' },
+                { k: '6',  h: '6',  sh: '‘',  code: 'Digit6' },
                 { k: '7',  h: '7',  sh: '&',  code: 'Digit7' },
-                { k: '8',  h: '8',  sh: '*',  code: 'Digit8' },
+                { k: '8',  h: '8',  sh: '’',  code: 'Digit8' },
                 { k: '9',  h: '9',  sh: '(',  code: 'Digit9' },
-                { k: '0',  h: '0',  sh: ')',  code: 'Digit0' },
-                { k: '-',  h: '-',  sh: '_',  code: 'Minus' },
+                { k: '0',  h: '0',  sh: 'द्ध', code: 'Digit0' },
+                { k: '-',  h: '-',  sh: 'ऋ',  code: 'Minus' },
                 { k: '=',  h: 'त्र', sh: '़',  code: 'Equal' }
             ],
             // Row 2: Top Alpha
@@ -1760,6 +1767,10 @@
             'अब', 'असर', 'अमर', 'अगर', 'अमन', 'इस', 'इन', 'इनाम', 'इशारा', 'उस', 'उन', 'उजाला',
             'एक', 'ऐसे', 'एका', 'एकता', 'रण', 'बाण', 'गुण', 'किरण', 'कारण', 'धन', 'धर्म', 'धारा',
             'क्रम', 'श्रम', 'ग्रह', 'व्रत', 'खत', 'खास', 'खुश', 'सुख', 'कृपा', 'मृग', 'गृह',
+            // Number Row Glyphs words (ऋ, रु, ः)
+            'ऋषि', 'ऋण', 'ऋतु', 'ऋचा',
+            'रुपया', 'गुरु', 'रुक', 'रुचि', 'रुकना', 'रुई', 'रुलाना',
+            'प्रातः', 'अतः', 'दुःख', 'पुनः', 'प्रायः', 'मूलतः', 'अंततः',
             // Extended words for Alt conjuncts & glyphs
             'भक्त', 'रक्त', 'युक्त', 'मुक्त',
             'शुद्ध', 'बुद्धि', 'युद्ध',
@@ -2010,6 +2021,10 @@
             // 4.2 Catch all rakar combos with no Alt byte (प्र->iz, ग्रह->xzg, व्रत->ozr, द्र->nz)
             s = s.replace(/्र/g, 'z');
 
+            // 4.3 Number-row Ru and Roo (Shift+3 and Shift+;)
+            s = s.replace(/\u0930\u0941/g, '#');
+            s = s.replace(/\u0930\u0942/g, ':');
+
             // 5. Half consonants followed by standing stem (9 consonants that are half-form + k)
             s = s.replace(/ख/g, '[k');
             s = s.replace(/क्ष/g, '{k');
@@ -2055,6 +2070,8 @@
                 'ा': 'k', 'ी': 'h', 'ु': 'q', 'ू': 'w', 'े': 's', 'ै': 'S', 'ो': 'ks', 'ौ': 'kS',
                 'ं': 'a', 'ः': '%', 'ृ': '`', '्': '~', '़': '+',
                 '।': 'A',
+                '‘': '^', '’': '*',
+                '\u2018': '^', '\u2019': '*',
                 '१': '1', '२': '2', '३': '3', '४': '4', '५': '5', '६': '6', '७': '7', '८': '8', '९': '9', '०': '0'
             };
 
@@ -2119,7 +2136,13 @@
             "=": { hi: 'त्र', name: 'Tra', detail: 'Right Pinky', key: '=', shift: false },
             "K": { hi: 'ज्ञ', name: 'Gya', detail: 'Shift + K', key: 'k', shift: true },
             "J": { hi: 'श्र', name: 'Shra', detail: 'Shift + J', key: 'j', shift: true },
-            // Number Row Hints (Feature A)
+            // Number Row Hints (Feature A & Full Glyphs)
+            "_": { hi: 'ऋ', name: 'Ri vowel', detail: 'Shift + -', key: '-', shift: true },
+            "#": { hi: 'रु', name: 'Ru', detail: 'Shift + 3', key: '3', shift: true },
+            "%": { hi: 'ः', name: 'Visarga', detail: 'Shift + 5', key: '5', shift: true },
+            "^": { hi: '‘', name: 'Opening single quote', detail: 'Shift + 6', key: '6', shift: true },
+            "*": { hi: '’', name: 'Closing single quote', detail: 'Shift + 8', key: '8', shift: true },
+            ":": { hi: 'रू', name: 'Roo', detail: 'Shift + ;', key: ';', shift: true },
             "1": { hi: '१', name: 'Digit 1', detail: 'Left Pinky', key: '1', shift: false },
             "2": { hi: '२', name: 'Digit 2', detail: 'Left Ring', key: '2', shift: false },
             "3": { hi: '३', name: 'Digit 3', detail: 'Left Middle', key: '3', shift: false },
@@ -2518,9 +2541,9 @@
             if (!currentItem) return;
 
             el.leadChar.textContent = currentItem.h;
-            el.leadKey.textContent = currentItem.conjunct ? `Alt Code: ${currentItem.alt}` : `Key: ${currentItem.k.toUpperCase()}`;
+            el.leadKey.textContent = currentItem.alt ? `Alt Code: ${currentItem.alt}` : (currentItem.conjunct ? `Key: ${currentItem.h}` : `Key: ${currentItem.k.toUpperCase()}`);
             el.leadFinger.style.display = showFingerHint ? 'block' : 'none';
-            el.leadFinger.textContent = currentItem.conjunct ? `👉 ${currentItem.finger}` : `👉 ${currentItem.finger} finger`;
+            el.leadFinger.textContent = currentItem.alt ? `👉 ${currentItem.finger}` : `👉 ${currentItem.finger} finger`;
             el.leadGoalSpeed.textContent = `${targetSpeedGoal} WPM`;
 
             const { confidence, curSpeed, consistency, samplesCount } = calculateConfidence();
@@ -2564,7 +2587,7 @@
                     badge.classList.add('locked');
                 }
 
-                badge.innerHTML = `<span class="ak-char">${item.h}</span><span class="ak-key">${item.conjunct ? item.alt : item.k.toUpperCase()}</span>`;
+                badge.innerHTML = `<span class="ak-char">${item.h}</span><span class="ak-key">${item.alt ? item.alt : (item.conjunct ? item.h : item.k.toUpperCase())}</span>`;
 
                 badge.addEventListener('click', () => {
                     if (idx <= unlockedIndex) {
@@ -2605,7 +2628,7 @@
             KEY_PROGRESSION.forEach((item, idx) => {
                 const opt = document.createElement('option');
                 opt.value = idx;
-                opt.textContent = `L${idx + 1}: ${item.h} (${item.conjunct ? ('Alt+' + item.alt) : item.k.toUpperCase()}) — ${item.d}`;
+                opt.textContent = `L${idx + 1}: ${item.h} (${item.alt ? ('Alt+' + item.alt) : (item.conjunct ? item.h : item.k.toUpperCase())}) — ${item.d}`;
                 if (idx === unlockedIndex) opt.selected = true;
                 el.jumpSelect.appendChild(opt);
             });
@@ -2628,7 +2651,7 @@
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td style="font-family:'Noto Sans Devanagari'; font-size:1.15rem; font-weight:700; color:var(--text);">${item.h}</td>
-                    <td><span class="key-chip">${item.conjunct ? ('Alt+' + item.alt) : item.k.toUpperCase()}</span></td>
+                    <td><span class="key-chip">${item.alt ? ('Alt+' + item.alt) : (item.conjunct ? item.h : item.k.toUpperCase())}</span></td>
                     <td style="color:var(--text-dim); font-size:0.78rem;">${item.finger}</td>
                     <td style="font-weight:700; color:var(--correct);">${s.hits}</td>
                     <td style="color:var(--error);">${s.errors}</td>
@@ -2684,7 +2707,7 @@
         const MATRA_KEYS = new Set(['k', 'f', 's', 'a', 'h', 'q', 'w', '`']);
         const VOWEL_KEYS = new Set(['v', 'b', 'm', ',']);
 
-        function generateSyllableWord(consonants, matras, activeItem) {
+        function generateSyllableWord(consonants, matras, activeItem, unlockedKeySet, unlockedBytes) {
             const templates = [
                 ['C', 'V', 'C'],
                 ['C', 'V', 'C', 'V'],
@@ -2694,6 +2717,7 @@
             ];
             const tmpl = templates[Math.floor(Math.random() * templates.length)];
             let word = '';
+            let lastConsonant = '';
 
             tmpl.forEach(type => {
                 if (type === 'C') {
@@ -2715,12 +2739,22 @@
                         c = validCons.length > 0 ? validCons[Math.floor(Math.random() * validCons.length)].h : 'क';
                     }
                     word += c;
+                    lastConsonant = c;
                 } else if (type === 'V') {
                     if (matras.length > 0) {
-                        const m = (Math.random() < 0.6 && MATRA_KEYS.has(activeItem.k))
-                            ? activeItem.h
-                            : matras[Math.floor(Math.random() * matras.length)].h;
-                        word += m;
+                        let availableMatras = matras;
+                        if (lastConsonant === 'र') {
+                            const hasRu = unlockedKeySet && (unlockedKeySet.has('#') || (unlockedBytes && unlockedBytes.has('#')));
+                            const hasRoo = unlockedKeySet && (unlockedKeySet.has(':') || (unlockedBytes && unlockedBytes.has(':')));
+                            if (!hasRu) availableMatras = availableMatras.filter(x => x.k !== 'q');
+                            if (!hasRoo) availableMatras = availableMatras.filter(x => x.k !== 'w');
+                        }
+                        if (availableMatras.length > 0) {
+                            const m = (Math.random() < 0.6 && MATRA_KEYS.has(activeItem.k) && availableMatras.some(x => x.k === activeItem.k))
+                                ? activeItem.h
+                                : availableMatras[Math.floor(Math.random() * availableMatras.length)].h;
+                            word += m;
+                        }
                     }
                 }
             });
@@ -2783,6 +2817,39 @@
                 return words.join(' ');
             }
 
+            // Number Row Quotes (Shift+6 '‘', Shift+8 '’')
+            if (activeItem.k === '^') {
+                for (let w = 0; w < wordCount; w++) {
+                    let chosen = '';
+                    if (Math.random() < 0.6 && eligibleRealWords.length > 0) {
+                        const base = eligibleRealWords[Math.floor(Math.random() * eligibleRealWords.length)];
+                        chosen = '‘' + base;
+                    } else if (eligibleRealWords.length > 0) {
+                        chosen = eligibleRealWords[Math.floor(Math.random() * eligibleRealWords.length)];
+                    } else {
+                        chosen = '‘क';
+                    }
+                    words.push(chosen);
+                }
+                return words.join(' ');
+            }
+
+            if (activeItem.k === '*') {
+                for (let w = 0; w < wordCount; w++) {
+                    let chosen = '';
+                    if (Math.random() < 0.6 && eligibleRealWords.length > 0) {
+                        const base = eligibleRealWords[Math.floor(Math.random() * eligibleRealWords.length)];
+                        chosen = '‘' + base + '’';
+                    } else if (eligibleRealWords.length > 0) {
+                        chosen = eligibleRealWords[Math.floor(Math.random() * eligibleRealWords.length)];
+                    } else {
+                        chosen = '‘क’';
+                    }
+                    words.push(chosen);
+                }
+                return words.join(' ');
+            }
+
             // FEATURE B: Alt-code conjuncts and glyphs
             if (activeItem.conjunct) {
                 const wordsWithActive = eligibleRealWords.filter(wd => wd.includes(activeItem.h));
@@ -2826,7 +2893,7 @@
                     }
                 } else {
                     if (consonants.length > 0) {
-                        chosen = generateSyllableWord(consonants, matras, activeItem);
+                        chosen = generateSyllableWord(consonants, matras, activeItem, unlockedKeySet, unlockedBytes);
                     } else {
                         chosen = activeItem.h + activeItem.h;
                     }
