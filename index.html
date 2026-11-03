@@ -1287,8 +1287,21 @@
             .target-card { padding: 6px 14px; }
             .confidence-hint { display: none; }
         }
-    </style>
-</head>
+    
+        .insight-panel{display:grid;gap:7px;padding:10px 14px;border:1px solid var(--border);border-radius:10px;background:var(--surface-card);font-size:.78rem;color:var(--text-dim)}
+        .insight-row{display:flex;gap:16px;align-items:center;flex-wrap:wrap}.insight-row strong{color:var(--text)}.delta-up{color:var(--correct)}.delta-down{color:var(--error)}
+        .goal-track{height:5px;max-width:350px;flex:1;min-width:80px;background:var(--border);border-radius:5px;overflow:hidden}.goal-fill{height:100%;background:var(--accent)}
+        .history-bars{display:flex;align-items:end;gap:3px;height:24px}.history-bars i{display:block;width:12px;background:var(--accent);border-radius:2px 2px 0 0}
+        :root[data-lesson-style="bold"] .text-stream-container{font-weight:800}
+        :root[data-lesson-style="spaced"] .text-stream-container{letter-spacing:.06em;line-height:2}
+        :root[data-lesson-style="large"] .text-stream-container{font-size:2.9rem}
+        :root[data-key-font="serif"] .k-key .hi-main,:root[data-key-font="serif"] .k-key .hi-shift,:root[data-key-font="serif"] .ak-char{font-family:'Noto Serif Devanagari',serif}
+        :root[data-key-font="system"] .k-key .hi-main,:root[data-key-font="system"] .k-key .hi-shift,:root[data-key-font="system"] .ak-char{font-family:system-ui,sans-serif}
+        :root[data-theme="sunshine"]{--bg:#ffd633;--surface:#ffe780;--surface-hover:#ffeb99;--surface-card:#ffdd51;--border:#b49b35;--border-subtle:#d4b942;--text:#302800;--text-dim:#5c4c0b;--text-faint:#78651a;--accent:#604a00;--accent-soft:#e9bf25;--correct:#246622;--error:#a82620;--key-bg:#ffe780;--key-border:#b49b35;--key-bottom:#a58d2c;--key-unlocked:#dbe785;--key-unlocked-border:#7b9531;--chip-bg:#ffe780;--chip-border:#604a00}
+        :root[data-theme="forest"]{--bg:#10231c;--surface:#19362a;--surface-card:#142d23;--surface-hover:#254637;--border:#365f48;--text:#ecf5e8;--text-dim:#b3c9b5;--text-faint:#809e85;--accent:#b9dd86;--correct:#86d9a6;--key-bg:#173327;--key-border:#365f48;--chip-bg:#254637;--chip-border:#b9dd86}
+        @media(max-height:800px){.insight-panel{gap:4px;padding:7px 12px}.target-card{padding:10px 16px}.stats-strip{display:none}.typing-canvas{min-height:100px}.text-stream-container{max-height:110px}}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;700&display=swap" rel="stylesheet"></head>
 <body>
 
     <!-- ═══════════════════════════════════════════════════════════
@@ -1370,6 +1383,13 @@
                     </div>
                 </div>
             </div>
+
+<div class="insight-panel" aria-label="Practice metrics">
+ <div class="insight-row"><strong>Metrics:</strong><span>Speed: <strong id="ins-speed">0 wpm</strong> <span id="ins-speed-delta"></span></span><span>Accuracy: <strong id="ins-accuracy">100%</strong> <span id="ins-accuracy-delta"></span></span><span>Score: <strong id="ins-score">0</strong> <span id="ins-score-delta"></span></span><span>Overall: <strong id="ins-overall">0%</strong></span></div>
+ <div class="insight-row"><span>Last key speed: <strong id="ins-last">Need samples</strong></span><span>Top key speed: <strong id="ins-top">Need samples</strong></span><span>Learning rate: <strong id="ins-rate">Uncertain</strong></span></div>
+ <div class="insight-row"><span id="ins-streak">No accuracy streaks.</span><span>Daily goal: <strong id="ins-goal">0% / 30 minutes</strong></span><div class="goal-track"><div class="goal-fill" id="ins-goal-fill"></div></div></div>
+ <div class="insight-row"><span>Recent lessons:</span><div class="history-bars" id="ins-history" aria-label="Recent lesson speeds"></div><span id="ins-summary">Finish a lesson to start your history.</span></div>
+</div>
 
             <!-- Alphabet Strip (Keybr letters progression bar) -->
             <div class="alphabet-strip">
@@ -1566,16 +1586,19 @@
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <div>
                             <strong style="font-size: 0.9rem;">Color Theme</strong>
-                            <p style="font-size: 0.78rem; color: var(--text-dim);">Choose from Keybr Dark, Midnight Navy, Amber, or Light.</p>
+                            <p style="font-size: 0.78rem; color: var(--text-dim);">Choose a calm dark palette, paper, forest or sunshine yellow.</p>
                         </div>
                         <select class="ctrl-select" id="theme-select">
                             <option value="dark">Keybr Dark (Default)</option>
                             <option value="navy">Midnight Navy</option>
                             <option value="amber">Warm Amber</option>
-                            <option value="light">Paper Light</option>
+                            <option value="light">Paper Light</option><option value="sunshine">Sunshine Yellow</option><option value="forest">Forest Green</option>
                         </select>
                     </div>
 
+<div><strong>Lesson font style</strong><p style="font-size:.78rem;color:var(--text-dim)">Keeps the Remington KrutiDev font so Hindi glyphs stay correct.</p><select class="ctrl-select" id="lesson-style-select"><option value="classic">Classic KrutiDev</option><option value="bold">Bold KrutiDev</option><option value="spaced">Spacious KrutiDev</option><option value="large">Large KrutiDev</option></select></div>
+<div><strong>Keyboard Hindi font</strong> <select class="ctrl-select" id="key-font-select"><option value="sans">Noto Sans</option><option value="serif">Noto Serif</option><option value="system">System Hindi</option></select></div>
+<div><strong>Daily practice goal</strong> <select class="ctrl-select" id="daily-goal-select"><option value="10">10 minutes</option><option value="15">15 minutes</option><option value="30">30 minutes</option><option value="45">45 minutes</option><option value="60">60 minutes</option></select><p style="font-size:.78rem;color:var(--text-dim)">Counts active typing time, excluding long pauses.</p></div>
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <div>
                             <strong style="font-size: 0.9rem;">Target Speed to Advance Key</strong>
@@ -1915,6 +1938,9 @@
         let soundEnabled = true;
         let showFingerHint = true;
         let currentTheme = 'dark';
+        let lessonHistory = [], keyLearning = {}, dailyPractice = {day:'', seconds:0};
+        let accuracyStreak = 0, dailyGoalMinutes = 30, lessonStyle = 'classic', keyFont = 'sans';
+        let lessonKeyTimes = {}, lessonActiveSeconds = 0, activityAt = null;
         let audioCtx = null;
         let altCodeBuffer = '';
         let altCodeActive = false;
@@ -2033,7 +2059,7 @@
                     targetSpeedGoal,
                     totalTypedCount,
                     totalErrorsCount,
-                    keyStats,
+                    keyStats, lessonHistory, keyLearning, dailyPractice, accuracyStreak, dailyGoalMinutes, lessonStyle, keyFont,
                     theme: currentTheme,
                     soundEnabled,
                     showFingerHint
@@ -2065,6 +2091,14 @@
                         }
                     }
                 }
+                lessonHistory = Array.isArray(data.lessonHistory) ? data.lessonHistory.slice(-30) : [];
+                keyLearning = data.keyLearning || {};
+                dailyPractice = data.dailyPractice || {day:'', seconds:0};
+                accuracyStreak = data.accuracyStreak || 0;
+                dailyGoalMinutes = [10,15,30,45,60].includes(data.dailyGoalMinutes) ? data.dailyGoalMinutes : 30;
+                lessonStyle = ['classic','bold','spaced','large'].includes(data.lessonStyle) ? data.lessonStyle : 'classic';
+                keyFont = ['sans','serif','system'].includes(data.keyFont) ? data.keyFont : 'sans';
+                applyDisplayPreferences();
                 if (data.theme) {
                     currentTheme = data.theme;
                     document.documentElement.setAttribute('data-theme', currentTheme);
@@ -2746,6 +2780,7 @@
                     if (lvl > 0) badge.classList.add('heat-' + lvl);
                     if (idx === unlockedIndex) badge.classList.add('current');
                     const hs = keyStats[item.k];
+                    if(hs?.ttt)badge.title += `\nSpeed goal: ${Math.round((12000/targetSpeedGoal)/hs.ttt*100)}%`;
                     if (hs && (hs.tttSamples || 0) >= 6 && typeof hs.ttt === 'number' && hs.ttt > 0) {
                         badge.title += `\nSpeed: ~${Math.max(1, Math.round(12000 / hs.ttt))} WPM`;
                         if (idx < unlockedIndex && hs.ttt > (12000 / targetSpeedGoal) / 0.8) {
@@ -2775,6 +2810,59 @@
             el.progressionSummary.textContent = `Key ${unlockedIndex + 1} of ${KEY_PROGRESSION.length} Unlocked`;
         }
 
+        function applyDisplayPreferences() {
+            document.documentElement.dataset.lessonStyle = lessonStyle;
+            document.documentElement.dataset.keyFont = keyFont;
+            document.getElementById('lesson-style-select').value = lessonStyle;
+            document.getElementById('key-font-select').value = keyFont;
+            document.getElementById('daily-goal-select').value = dailyGoalMinutes;
+        }
+        function recordCompletedLesson() {
+            const elapsed = sessionStartTime ? Math.max(1, (Date.now()-sessionStartTime)/1000) : 1;
+            const acc = sessionCorrect / Math.max(1, sessionCorrect+sessionErrors) * 100;
+            const wpm = sessionCorrect / 5 / (elapsed/60);
+            lessonHistory.push({wpm, acc, chars:sessionCorrect, ts:Date.now()});
+            lessonHistory = lessonHistory.slice(-30);
+            accuracyStreak = acc >= 95 ? accuracyStreak+1 : 0;
+            Object.entries(lessonKeyTimes).forEach(([key,times])=>{
+                if(times.length<3)return;
+                const speed=12000/(times.reduce((a,b)=>a+b,0)/times.length);
+                const data=keyLearning[key] || {speeds:[],best:0};
+                data.speeds=data.speeds.concat(speed).slice(-12); data.best=Math.max(data.best,speed);
+                keyLearning[key]=data;
+            });
+        }
+        function learningTrend(speeds) {
+            if(!speeds || speeds.length<3)return null;
+            const n=speeds.length, mean=speeds.reduce((a,b)=>a+b,0)/n, mid=(n-1)/2;
+            let num=0,den=0,total=0,residual=0;
+            speeds.forEach((y,x)=>{num+=(x-mid)*(y-mean);den+=(x-mid)**2;});
+            const slope=num/den;
+            speeds.forEach((y,x)=>{total+=(y-mean)**2;residual+=(y-(mean+slope*(x-mid)))**2;});
+            return total>0 && 1-residual/total>=0.5 ? slope : null;
+        }
+        function updateInsights() {
+            const put=(id,text)=>document.getElementById(id).textContent=text;
+            const last=lessonHistory.at(-1), prev=lessonHistory.at(-2);
+            const elapsed=sessionStartTime ? (Date.now()-sessionStartTime)/60000 : 0;
+            const speed=elapsed>0 ? sessionCorrect/5/elapsed : (last?.wpm || 0);
+            const acc=sessionCorrect+sessionErrors ? sessionCorrect/(sessionCorrect+sessionErrors)*100 : (last?.acc ?? 100);
+            put('ins-speed',speed.toFixed(1)+' wpm');put('ins-accuracy',acc.toFixed(2)+'%');put('ins-score',totalTypedCount.toLocaleString());
+            const delta=(id,value,suffix)=>{const node=document.getElementById(id);node.textContent=value==null?'':`(${value>=0?'+':''}${(id==='ins-score-delta'?value.toFixed(0):value.toFixed(1))}${suffix})`;node.className=value>=0?'delta-up':'delta-down';};
+            delta('ins-speed-delta',last&&prev?last.wpm-prev.wpm:null,' wpm');
+            delta('ins-accuracy-delta',last&&prev?last.acc-prev.acc:null,'%');delta('ins-score-delta',last?last.chars:null,'');
+            put('ins-overall',Math.round((unlockedIndex+1)/KEY_PROGRESSION.length*100)+'% ('+(unlockedIndex+1)+'/'+KEY_PROGRESSION.length+')');
+            const item=KEY_PROGRESSION[unlockedIndex], data=keyLearning[item.k], samples=data?.speeds || [];
+            const fmt=v=>v.toFixed(1)+' wpm ('+Math.round(v/targetSpeedGoal*100)+'%)';
+            put('ins-last',samples.length?fmt(samples.at(-1)):'Need samples');put('ins-top',data?.best?fmt(data.best):'Need samples');
+            const rate=learningTrend(samples);put('ins-rate',rate==null?'Uncertain':(rate>=0?'+':'')+rate.toFixed(1)+' wpm/lesson '+(rate>0?'↗':'↘'));
+            put('ins-streak',accuracyStreak?accuracyStreak+' lessons with 95%+ accuracy':'No accuracy streaks.');
+            const day=new Date().toLocaleDateString('en-CA');const seconds=dailyPractice.day===day?dailyPractice.seconds:0;
+            const percent=Math.floor(seconds/(dailyGoalMinutes*60)*100);put('ins-goal',percent+'% / '+dailyGoalMinutes+' minutes');document.getElementById('ins-goal-fill').style.width=Math.min(100,percent)+'%';
+            const bars=document.getElementById('ins-history');bars.replaceChildren();lessonHistory.slice(-12).forEach(result=>{const bar=document.createElement('i');bar.style.height=Math.max(3,Math.min(24,result.wpm/targetSpeedGoal*16))+'px';bar.title=result.wpm.toFixed(1)+' wpm, '+result.acc.toFixed(1)+'% accuracy';bars.appendChild(bar);});
+            put('ins-summary',last?'Last lesson: '+last.wpm.toFixed(1)+' wpm · '+last.acc.toFixed(1)+'% accuracy':'Finish a lesson to start your history.');
+        }
+
         function updateLiveStats() {
             const totalSession = sessionCorrect + sessionErrors;
             const acc = totalSession > 0 ? Math.round((sessionCorrect / totalSession) * 100) : 100;
@@ -2791,6 +2879,7 @@
             }
 
             el.metricScore.textContent = totalTypedCount;
+            updateInsights();
         }
 
         function populateJumpSelect() {
@@ -3027,6 +3116,7 @@
                 // Complete once, and introduce any queued key only afterward.
                 if (!lessonCompleted) {
                     lessonCompleted = true;
+                    recordCompletedLesson();
                     const item = KEY_PROGRESSION[unlockedIndex];
                     const ks = keyStats[item.k];
                     ks.targetLessons = (ks.targetLessons || 0) + 1;
@@ -3057,6 +3147,7 @@
             nextLessonTimer = null;
             lessonCompleted = false;
             pendingUnlockIndex = null;
+            lessonKeyTimes = {}; lessonActiveSeconds = 0; activityAt = null;
             currentLessonText = generateLessonText();
             targetKrutiText = unicodeToKrutiDev(currentLessonText);
             cursorIndex = 0;
@@ -3080,6 +3171,10 @@
 
             const expected = targetKrutiText.charAt(cursorIndex);
             const now = Date.now();
+            const day = new Date(now).toLocaleDateString('en-CA');
+            if(dailyPractice.day!==day)dailyPractice={day,seconds:0};
+            if(activityAt!==null && now-activityAt<=5000)dailyPractice.seconds+=(now-activityAt)/1000;
+            activityAt=now;
             if (!sessionStartTime) sessionStartTime = now;
 
             totalTypedCount++;
@@ -3165,6 +3260,7 @@
             let latencyMs = lastKeystrokeTime ? (now - lastKeystrokeTime) : 400;
             latencyMs = Math.max(80, Math.min(3000, latencyMs));
             lastKeystrokeTime = now;
+            (lessonKeyTimes[keyString] || (lessonKeyTimes[keyString]=[])).push(latencyMs);
             const instantWpm = Math.min(100, Math.max(5, Math.round(12000 / latencyMs)));
 
             // Per-key speed EMA feeding the keybr-style confidence heat map
@@ -3443,6 +3539,10 @@
             });
         }
 
+        document.getElementById('lesson-style-select').addEventListener('change',e=>{lessonStyle=e.target.value;applyDisplayPreferences();saveStorage();});
+        document.getElementById('key-font-select').addEventListener('change',e=>{keyFont=e.target.value;applyDisplayPreferences();saveStorage();});
+        document.getElementById('daily-goal-select').addEventListener('change',e=>{dailyGoalMinutes=Number(e.target.value);saveStorage();updateInsights();});
+
         // Reset Modal Handlers
         function openResetModal() {
             el.confirmModal.classList.add('open');
@@ -3464,6 +3564,7 @@
             totalErrorsCount = 0;
             targetKeyBuffer = [];
             keyStats = {};
+            lessonHistory = []; keyLearning = {}; dailyPractice = {day:'',seconds:0}; accuracyStreak=0;
             altCodeBuffer = '';
             altCodeActive = false;
             initKeyStats();
