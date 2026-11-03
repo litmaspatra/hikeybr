@@ -1291,7 +1291,7 @@
         .insight-panel{display:grid;gap:7px;padding:10px 14px;border:1px solid var(--border);border-radius:10px;background:var(--surface-card);font-size:.78rem;color:var(--text-dim)}
         .insight-row{display:flex;gap:16px;align-items:center;flex-wrap:wrap}.insight-row strong{color:var(--text)}.delta-up{color:var(--correct)}.delta-down{color:var(--error)}
         .goal-track{height:5px;max-width:350px;flex:1;min-width:80px;background:var(--border);border-radius:5px;overflow:hidden}.goal-fill{height:100%;background:var(--accent)}
-        .history-bars{display:flex;align-items:end;gap:3px;height:24px}.history-bars i{display:block;width:12px;background:var(--accent);border-radius:2px 2px 0 0}
+        .stats-strip{display:none!important}.history-bars{display:flex;align-items:end;gap:3px;height:24px}.history-bars i{display:block;width:12px;background:var(--accent);border-radius:2px 2px 0 0}
         :root[data-lesson-style="bold"] .text-stream-container{font-weight:800}
         :root[data-lesson-style="spaced"] .text-stream-container{letter-spacing:.06em;line-height:2}
         :root[data-lesson-style="large"] .text-stream-container{font-size:2.9rem}
@@ -1385,8 +1385,8 @@
             </div>
 
 <div class="insight-panel" aria-label="Practice metrics">
- <div class="insight-row"><strong>Metrics:</strong><span>Speed: <strong id="ins-speed">0 wpm</strong> <span id="ins-speed-delta"></span></span><span>Accuracy: <strong id="ins-accuracy">100%</strong> <span id="ins-accuracy-delta"></span></span><span title="Lesson score balances input rate, distinct input units, length and errors; not exam marks">Lesson score: <strong id="ins-score">0</strong> <span id="ins-score-delta"></span></span><span>Hindi words/min: <strong id="ins-words">0</strong></span><span>Overall: <strong id="ins-overall">0%</strong></span></div>
- <div class="insight-row"><span>Last key speed: <strong id="ins-last">Need samples</strong></span><span>Top key speed: <strong id="ins-top">Need samples</strong></span><span>Learning rate: <strong id="ins-rate">Uncertain</strong></span></div>
+ <div class="insight-row"><strong>Metrics:</strong><span title="Accepted input strokes / 5 / total elapsed minutes, including errors and pauses. Restricted-key practice is not a full-keyboard speed test.">Lesson speed: <strong id="ins-speed">0 wpm</strong> <span id="ins-speed-delta"></span></span><span>Accuracy: <strong id="ins-accuracy">100%</strong> <span id="ins-accuracy-delta"></span></span><span title="Lesson score balances input rate, distinct input units, length and errors; not exam marks">Lesson score: <strong id="ins-score">0</strong> <span id="ins-score-delta"></span></span><span style="display:none">Hindi words/min: <strong id="ins-words">0</strong></span><span>Overall: <strong id="ins-overall">0%</strong></span></div>
+ <details><summary>Per-key diagnostics (not overall WPM)</summary><div class="insight-row"><span>Current key last: <strong id="ins-last">Need samples</strong></span><span>Current key best: <strong id="ins-top">Need samples</strong></span><span>Current key trend: <strong id="ins-rate">Uncertain</strong></span></div><p>These are equivalent speeds for one key, not your typing speed. Easy-key lessons cannot estimate full-keyboard speed.</p></details>
  <div class="insight-row"><span id="ins-streak">No accuracy streaks.</span><span>Daily goal: <strong id="ins-goal">0% / 30 minutes</strong></span><div class="goal-track"><div class="goal-fill" id="ins-goal-fill"></div></div></div>
  <div class="insight-row"><span>Recent lessons:</span><div class="history-bars" id="ins-history" aria-label="Recent lesson speeds"></div><span id="ins-summary">Finish a lesson to start your history.</span></div>
 </div>
@@ -1417,7 +1417,7 @@
                     </div>
                     <div class="target-metrics">
                         <div class="metric-chip">Goal: <strong id="lead-goal-speed">25 WPM</strong></div>
-                        <div class="metric-chip">Key Speed: <strong id="lead-cur-speed">0 WPM</strong></div>
+                        <div class="metric-chip" style="display:none">Key Speed: <strong id="lead-cur-speed">0 WPM</strong></div>
                         <div class="metric-chip">Speed Maintained: <strong id="lead-consistency">0%</strong></div>
                     </div>
                 </div>
@@ -1428,7 +1428,7 @@
                     <span class="progress-stat" id="progress-stat-pct">0%</span>
                 </div>
                 <div class="confidence-hint">
-                    <span>⚡ Build 40 target samples across at least 2 lessons. Reach the filtered speed goal; new keys appear after the lesson.</span>
+                    <span>⚡ 40 target samples, 2+ lessons, 95%+ accuracy and speed goal. First four starter keys must also be calibrated.</span>
                     <span id="lead-samples-status">Hits logged: 0 / 40</span>
                 </div>
             </div>
@@ -2688,18 +2688,22 @@
             };
         }
 
-        // Bank a sustained 12-hit average, not a lucky fast EMA dip.
-        // Forty target samples plus two finished lessons slow progression fairly.
+        // Bank lesson-smoothed speed only from 95%+ accuracy lessons.
+        // Forty target samples, all calibrated starters, and two lessons are required.
         function currentUnlockState() {
             const item = KEY_PROGRESSION[unlockedIndex];
             if (!item) return { pct: 0, ready: false, samples: 0 };
             const ks = keyStats[item.k] || {};
             const samples = ks.targetSamples || 0;
             const targetMs=12000/targetSpeedGoal;
-            const bank=ks.modelBest?targetMs/ks.modelBest:0;
+            const bank=ks.accurateBest?targetMs/ks.accurateBest:0;
             const live=ks.modelTtt?targetMs/ks.modelTtt:0;
             const pct=Math.min(100,Math.round(Math.min(samples/40,Math.max(live,bank))*100));
-            return {pct,ready:bank>=1&&samples>=40,samples,minimum:40};
+            const recentAccuracy=(ks.recentLessonAccuracy||0)>=95;
+            const starterReady=KEY_PROGRESSION.slice(0,INITIAL_UNLOCKED_COUNT).every(x=>{
+                const stats=keyStats[x.k];return (stats.modelSamples||0)>=12&&(stats.lastAccuracy||0)>=95&&stats.modelTtt<=targetMs;
+            });
+            return {pct,ready:bank>=1&&samples>=40&&recentAccuracy&&starterReady,samples,minimum:40};
         }
 
         function updateMasteryCard() {
@@ -2732,7 +2736,7 @@
             if (document.getElementById('total-keys-header')) document.getElementById('total-keys-header').textContent = KEY_PROGRESSION.length;
             el.jumpSelect.value = unlockedIndex;
             const weak = reviewKey();
-            if (weak && !lessonCompleted) el.leadSamplesStatus.textContent += ` - extra review: ${weak.h}`;
+            if (weak && !lessonCompleted) el.leadSamplesStatus.textContent += ` - practice focus: ${weak.h}`;
 
             // Keep the per-key confidence heat map live as stats change
             updateAlphabetStrip();
@@ -2746,6 +2750,10 @@
         // chooses the weakest already-unlocked key after enough observations.
         function reviewKey() {
             const targetMs = 12000 / targetSpeedGoal;
+            const starter=KEY_PROGRESSION.slice(0,Math.min(INITIAL_UNLOCKED_COUNT,unlockedIndex+1)).find(item=>{
+                const stats=keyStats[item.k];return (stats.modelSamples||0)<12||(stats.lastAccuracy||0)<95||!stats.modelTtt||stats.modelTtt>targetMs;
+            });
+            if(starter&&starter.k!==KEY_PROGRESSION[unlockedIndex].k)return starter;
             return KEY_PROGRESSION.slice(0, unlockedIndex).filter(item => {
                 const stats = keyStats[item.k];
                 return stats && (stats.tttSamples || 0) >= 12 && stats.ttt > targetMs / 0.8;
@@ -2758,7 +2766,7 @@
             if (!s || typeof s.ttt !== 'number' || !s.ttt || (s.tttSamples || 0) < 6) return 0;
             const targetMs = 12000 / targetSpeedGoal; // WPM -> ms per char (5 chars per word)
             const conf = targetMs / s.ttt;
-            if (conf >= 1) return 3;
+            if (conf >= 1 && (s.lastAccuracy || 0)>=95) return 3;
             if (conf >= 0.8) return 2;
             return 1;
         }
@@ -2776,6 +2784,7 @@
                     if (lvl > 0) badge.classList.add('heat-' + lvl);
                     if (idx === unlockedIndex) badge.classList.add('current');
                     const hs = keyStats[item.k];
+                    if(idx<INITIAL_UNLOCKED_COUNT)badge.title += '\nStarter key: available from the first lesson, not automatically mastered';
                     if(hs?.ttt)badge.title += `\nSpeed goal: ${Math.round((12000/targetSpeedGoal)/hs.ttt*100)}%`;
                     if (hs && (hs.tttSamples || 0) >= 6 && typeof hs.ttt === 'number' && hs.ttt > 0) {
                         badge.title += `\nSpeed: ~${Math.max(1, Math.round(12000 / hs.ttt))} WPM`;
@@ -2824,7 +2833,7 @@
            Keep the user's 40-hit / two-lesson / end-of-lesson progression guard. */
         function commitKeyMeasurements() {
             KEY_PROGRESSION.slice(0,unlockedIndex+1).forEach(item=>{
-                const sequence=unicodeToKrutiDev(item.h), times=[];
+                const sequence=(!item.conjunct&&!item.alt&&item.k.length===1)?item.k:unicodeToKrutiDev(item.h), times=[];
                 for(let end=sequence.length-1;end<measurementEvents.length;end++){
                     const group=measurementEvents.slice(end-sequence.length+1,end+1);
                     if(group.map(e=>e.key).join('')===sequence && group.every(e=>e.ms>0&&!e.typo)){
@@ -2835,6 +2844,12 @@
                 const stats=keyStats[item.k], mean=times.reduce((a,b)=>a+b,0)/times.length;
                 stats.modelTtt=stats.modelTtt ? .1*mean+.9*stats.modelTtt : mean;
                 stats.modelBest=Math.min(stats.modelBest||Infinity,stats.modelTtt);
+                const lessonAccuracy=sessionCorrect/Math.max(1,sessionCorrect+sessionErrors)*100;
+                stats.lastAccuracy=lessonAccuracy;
+                if(item.k===KEY_PROGRESSION[unlockedIndex].k){
+                    stats.recentLessonAccuracy=lessonAccuracy;
+                    if(lessonAccuracy>=95)stats.accurateBest=Math.min(stats.accurateBest||Infinity,stats.modelTtt);
+                }
                 stats.modelSamples=(stats.modelSamples||0)+times.length;
                 if(item.k===KEY_PROGRESSION[unlockedIndex].k&&(item.conjunct||item.alt))stats.targetSamples=(stats.targetSamples||0)+times.length;
                 stats.ttt=stats.modelTtt;stats.tttSamples=stats.modelSamples;
@@ -2900,7 +2915,7 @@
             const day=new Date().toLocaleDateString('en-CA');const seconds=dailyPractice.day===day?dailyPractice.seconds:0;
             const percent=Math.floor(seconds/(dailyGoalMinutes*60)*100);put('ins-goal',percent+'% / '+dailyGoalMinutes+' minutes');document.getElementById('ins-goal-fill').style.width=Math.min(100,percent)+'%';
             const bars=document.getElementById('ins-history');bars.replaceChildren();lessonHistory.slice(-12).forEach(result=>{const bar=document.createElement('i');bar.style.height=Math.max(3,Math.min(24,result.wpm/targetSpeedGoal*16))+'px';bar.title=result.wpm.toFixed(1)+' wpm, '+result.acc.toFixed(1)+'% accuracy';bars.appendChild(bar);});
-            put('ins-summary',last?'Last lesson: '+last.wpm.toFixed(1)+' wpm · '+last.acc.toFixed(1)+'% accuracy':'Finish a lesson to start your history.');
+            put('ins-summary',last?'Last lesson accuracy: '+last.acc.toFixed(1)+'% · restricted-key practice':'Restricted-key practice, not a full-keyboard speed estimate.');
         }
 
         function updateLiveStats() {
@@ -3036,7 +3051,7 @@
 
             // Real-word-first lessons. Repeat familiar words rather than inventing
             // syllables. Reserve enough target strokes to avoid starving progression.
-            const targetSequence = unicodeToKrutiDev(activeItem.h);
+            const targetSequence = (!activeItem.conjunct&&!activeItem.alt&&activeItem.k.length===1)?activeItem.k:unicodeToKrutiDev(activeItem.h);
             const targetHits = word => {
                 const seq = unicodeToKrutiDev(word);
                 if (!targetSequence) return 0;
@@ -3045,9 +3060,9 @@
             const realPool = [...new Set(eligibleRealWords)];
             const focusedPool = realPool.filter(word => targetHits(word) > 0);
             const weak = reviewKey();
-            const reviewSequence = weak ? unicodeToKrutiDev(weak.h) : '';
+            const reviewSequence = weak ? ((!weak.conjunct&&!weak.alt&&weak.k.length===1)?weak.k:unicodeToKrutiDev(weak.h)) : '';
             const reviewPool = weak ? realPool.filter(word => unicodeToKrutiDev(word).includes(reviewSequence)) : [];
-            const reviewQuota = reviewPool.length ? Math.floor(wordCount * 0.32) : 0;
+            const reviewQuota = reviewPool.length ? Math.min(Math.floor(wordCount * 0.32),wordCount-10) : 0;
             let reviewWords = 0;
             const minTargetHits = 10;
             let loggedTargets = 0;
@@ -3179,7 +3194,7 @@
                     const state = currentUnlockState();
                     if (state.ready) pendingUnlockIndex = unlockedIndex;
                     const cleared = pendingUnlockIndex === unlockedIndex &&
-                        ks.targetLessons >= 2 && unlockedIndex < KEY_PROGRESSION.length - 1;
+                        ks.targetLessons >= 2 && sessionCorrect/Math.max(1,sessionCorrect+sessionErrors)>=.95 && unlockedIndex < KEY_PROGRESSION.length - 1;
                     if (cleared) {
                         unlockedIndex++;
                         pendingUnlockIndex = null;
