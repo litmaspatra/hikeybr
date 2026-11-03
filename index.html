@@ -1385,7 +1385,7 @@
             </div>
 
 <div class="insight-panel" aria-label="Practice metrics">
- <div class="insight-row"><strong>Metrics:</strong><span>Speed: <strong id="ins-speed">0 wpm</strong> <span id="ins-speed-delta"></span></span><span>Accuracy: <strong id="ins-accuracy">100%</strong> <span id="ins-accuracy-delta"></span></span><span>Score: <strong id="ins-score">0</strong> <span id="ins-score-delta"></span></span><span>Overall: <strong id="ins-overall">0%</strong></span></div>
+ <div class="insight-row"><strong>Metrics:</strong><span>Speed: <strong id="ins-speed">0 wpm</strong> <span id="ins-speed-delta"></span></span><span>Accuracy: <strong id="ins-accuracy">100%</strong> <span id="ins-accuracy-delta"></span></span><span title="Lesson score balances input rate, distinct input units, length and errors; not exam marks">Lesson score: <strong id="ins-score">0</strong> <span id="ins-score-delta"></span></span><span>Hindi words/min: <strong id="ins-words">0</strong></span><span>Overall: <strong id="ins-overall">0%</strong></span></div>
  <div class="insight-row"><span>Last key speed: <strong id="ins-last">Need samples</strong></span><span>Top key speed: <strong id="ins-top">Need samples</strong></span><span>Learning rate: <strong id="ins-rate">Uncertain</strong></span></div>
  <div class="insight-row"><span id="ins-streak">No accuracy streaks.</span><span>Daily goal: <strong id="ins-goal">0% / 30 minutes</strong></span><div class="goal-track"><div class="goal-fill" id="ins-goal-fill"></div></div></div>
  <div class="insight-row"><span>Recent lessons:</span><div class="history-bars" id="ins-history" aria-label="Recent lesson speeds"></div><span id="ins-summary">Finish a lesson to start your history.</span></div>
@@ -1428,7 +1428,7 @@
                     <span class="progress-stat" id="progress-stat-pct">0%</span>
                 </div>
                 <div class="confidence-hint">
-                    <span>⚡ Build 40 target hits across at least 2 completed lessons. Sustain your goal speed; new keys appear after the lesson.</span>
+                    <span>⚡ Build 40 target samples across at least 2 lessons. Reach the filtered speed goal; new keys appear after the lesson.</span>
                     <span id="lead-samples-status">Hits logged: 0 / 40</span>
                 </div>
             </div>
@@ -1596,6 +1596,8 @@
                         </select>
                     </div>
 
+<div><strong>Hindi lesson font</strong> <select class="ctrl-select" id="display-font-select"><option value="krutidev">KrutiDev 010 (embedded)</option><option value="devlys040">DevLys 040 (local, compatibility preview)</option><option value="noto">Noto Sans Devanagari (Unicode)</option><option value="serif">Noto Serif Devanagari (Unicode)</option><option value="mangal">Mangal (installed font required)</option></select><p id="font-status" style="font-size:.78rem;color:var(--text-dim)">All fonts use the same Remington input. Unicode is display-only, not Inscript.</p></div>
+<div style="font-size:.78rem;color:var(--text-dim)"><strong>How measurements work</strong><p>Practice WPM = accepted Remington input units ÷ 5 ÷ minutes, including spaces. An Alt-code glyph is one input unit; modifier/numpad digits are not separate text units. Hindi words/minute counts completed space-separated words. Accuracy counts every wrong attempt equally, including matras and conjuncts. No guessed exam marks. Per-key results use clean intervals, grouped per finished lesson and smoothed at 0.1. Pauses remain in lesson speed but intervals over 12 seconds are excluded from key calibration.</p></div>
 <div><strong>Lesson font style</strong><p style="font-size:.78rem;color:var(--text-dim)">Keeps the Remington KrutiDev font so Hindi glyphs stay correct.</p><select class="ctrl-select" id="lesson-style-select"><option value="classic">Classic KrutiDev</option><option value="bold">Bold KrutiDev</option><option value="spaced">Spacious KrutiDev</option><option value="large">Large KrutiDev</option></select></div>
 <div><strong>Keyboard Hindi font</strong> <select class="ctrl-select" id="key-font-select"><option value="sans">Noto Sans</option><option value="serif">Noto Serif</option><option value="system">System Hindi</option></select></div>
 <div><strong>Daily practice goal</strong> <select class="ctrl-select" id="daily-goal-select"><option value="10">10 minutes</option><option value="15">15 minutes</option><option value="30">30 minutes</option><option value="45">45 minutes</option><option value="60">60 minutes</option></select><p style="font-size:.78rem;color:var(--text-dim)">Counts active typing time, excluding long pauses.</p></div>
@@ -1941,6 +1943,8 @@
         let lessonHistory = [], keyLearning = {}, dailyPractice = {day:'', seconds:0};
         let accuracyStreak = 0, dailyGoalMinutes = 30, lessonStyle = 'classic', keyFont = 'sans';
         let lessonKeyTimes = {}, lessonActiveSeconds = 0, activityAt = null;
+        let previousAttemptWrong=false, measurementEvents = [], displayFont = 'krutidev', altEntryStartedAt = null;
+        const FONT_REGISTRY = {krutidev:{label:'KrutiDev 010',encoding:'krutidev',family:'KrutiDev010'},devlys040:{label:'DevLys 040 (installed)',encoding:'krutidev-compatible',family:'DevLys 040'},noto:{label:'Noto Sans Hindi',encoding:'unicode',family:'Noto Sans Devanagari'},serif:{label:'Noto Serif Hindi',encoding:'unicode',family:'Noto Serif Devanagari'},mangal:{label:'Mangal (installed)',encoding:'unicode',family:'Mangal'}};
         let audioCtx = null;
         let altCodeBuffer = '';
         let altCodeActive = false;
@@ -2059,7 +2063,7 @@
                     targetSpeedGoal,
                     totalTypedCount,
                     totalErrorsCount,
-                    keyStats, lessonHistory, keyLearning, dailyPractice, accuracyStreak, dailyGoalMinutes, lessonStyle, keyFont,
+                    keyStats, lessonHistory, keyLearning, dailyPractice, accuracyStreak, dailyGoalMinutes, lessonStyle, keyFont, displayFont, measurementVersion:2,
                     theme: currentTheme,
                     soundEnabled,
                     showFingerHint
@@ -2098,6 +2102,8 @@
                 dailyGoalMinutes = [10,15,30,45,60].includes(data.dailyGoalMinutes) ? data.dailyGoalMinutes : 30;
                 lessonStyle = ['classic','bold','spaced','large'].includes(data.lessonStyle) ? data.lessonStyle : 'classic';
                 keyFont = ['sans','serif','system'].includes(data.keyFont) ? data.keyFont : 'sans';
+                displayFont = FONT_REGISTRY[data.displayFont] ? data.displayFont : 'krutidev';
+                if(['devlys040','mangal'].includes(displayFont)){const requested=displayFont;displayFont='krutidev';setTimeout(()=>selectDisplayFont(requested),0);}
                 applyDisplayPreferences();
                 if (data.theme) {
                     currentTheme = data.theme;
@@ -2687,23 +2693,13 @@
         function currentUnlockState() {
             const item = KEY_PROGRESSION[unlockedIndex];
             if (!item) return { pct: 0, ready: false, samples: 0 };
-            if (item.k.length !== 1 || item.conjunct || item.alt) {
-                const c = calculateConfidence();
-                return { pct: c.confidence, ready: c.confidence >= 100 && c.samplesCount >= 10, samples: c.samplesCount, minimum: 10 };
-            }
             const ks = keyStats[item.k] || {};
             const samples = ks.targetSamples || 0;
-            const recent = ks.targetRecent || [];
-            const targetMs = 12000 / targetSpeedGoal;
-            if (samples >= 40 && recent.length >= 12) {
-                const avg = recent.reduce((sum, ms) => sum + ms, 0) / recent.length;
-                const steady = recent.filter(ms => ms <= targetMs * 1.3).length >= 9;
-                if (steady) ks.sustainedBestTtt = Math.min(ks.sustainedBestTtt || Infinity, avg);
-            }
-            const bank = ks.sustainedBestTtt ? targetMs / ks.sustainedBestTtt : 0;
-            const live = ks.targetTtt ? targetMs / ks.targetTtt : 0;
-            const pct = Math.min(100, Math.round(Math.min(samples / 40, Math.max(live, bank)) * 100));
-            return { pct, ready: bank >= 1 && samples >= 40, samples, minimum: 40 };
+            const targetMs=12000/targetSpeedGoal;
+            const bank=ks.modelBest?targetMs/ks.modelBest:0;
+            const live=ks.modelTtt?targetMs/ks.modelTtt:0;
+            const pct=Math.min(100,Math.round(Math.min(samples/40,Math.max(live,bank))*100));
+            return {pct,ready:bank>=1&&samples>=40,samples,minimum:40};
         }
 
         function updateMasteryCard() {
@@ -2811,35 +2807,76 @@
         }
 
         function applyDisplayPreferences() {
+            document.getElementById('display-font-select').value = displayFont;
             document.documentElement.dataset.lessonStyle = lessonStyle;
             document.documentElement.dataset.keyFont = keyFont;
             document.getElementById('lesson-style-select').value = lessonStyle;
             document.getElementById('key-font-select').value = keyFont;
             document.getElementById('daily-goal-select').value = dailyGoalMinutes;
         }
-        function recordCompletedLesson() {
-            const elapsed = sessionStartTime ? Math.max(1, (Date.now()-sessionStartTime)/1000) : 1;
-            const acc = sessionCorrect / Math.max(1, sessionCorrect+sessionErrors) * 100;
-            const wpm = sessionCorrect / 5 / (elapsed/60);
-            lessonHistory.push({wpm, acc, chars:sessionCorrect, ts:Date.now()});
-            lessonHistory = lessonHistory.slice(-30);
-            accuracyStreak = acc >= 95 ? accuracyStreak+1 : 0;
-            Object.entries(lessonKeyTimes).forEach(([key,times])=>{
-                if(times.length<3)return;
-                const speed=12000/(times.reduce((a,b)=>a+b,0)/times.length);
-                const data=keyLearning[key] || {speeds:[],best:0};
-                data.speeds=data.speeds.concat(speed).slice(-12); data.best=Math.max(data.best,speed);
-                keyLearning[key]=data;
+        /* Measurement model v2, independently implemented after studying keybr.
+           Input units are Remington text actions, NOT Unicode UTF-16 length or
+           visual graphemes. ि may precede its base in the input stream; क्र via
+           Alt is one action. Display encoding/font NEVER changes measurement.
+           First trigger has no fabricated 400ms sample. Correct key timing is
+           measured from the preceding attempt, errors are recorded separately.
+           Lesson averages are smoothed alpha=.1; best filtered mean is banked.
+           Keep the user's 40-hit / two-lesson / end-of-lesson progression guard. */
+        function commitKeyMeasurements() {
+            KEY_PROGRESSION.slice(0,unlockedIndex+1).forEach(item=>{
+                const sequence=unicodeToKrutiDev(item.h), times=[];
+                for(let end=sequence.length-1;end<measurementEvents.length;end++){
+                    const group=measurementEvents.slice(end-sequence.length+1,end+1);
+                    if(group.map(e=>e.key).join('')===sequence && group.every(e=>e.ms>0&&!e.typo)){
+                        times.push(group.reduce((sum,e)=>sum+e.ms,0));
+                    }
+                }
+                if(!times.length)return;
+                const stats=keyStats[item.k], mean=times.reduce((a,b)=>a+b,0)/times.length;
+                stats.modelTtt=stats.modelTtt ? .1*mean+.9*stats.modelTtt : mean;
+                stats.modelBest=Math.min(stats.modelBest||Infinity,stats.modelTtt);
+                stats.modelSamples=(stats.modelSamples||0)+times.length;
+                if(item.k===KEY_PROGRESSION[unlockedIndex].k&&(item.conjunct||item.alt))stats.targetSamples=(stats.targetSamples||0)+times.length;
+                stats.ttt=stats.modelTtt;stats.tttSamples=stats.modelSamples;
+                const history=keyLearning[item.k]||{speeds:[],best:0,times:[],timestamps:[]};
+                history.times=(history.times||[]).concat(stats.modelTtt).slice(-30);
+                history.timestamps=(history.timestamps||[]).concat(Date.now()).slice(-30);
+                let start=0;
+                for(let i=history.times.length-1;i>0;i--){
+                    if(history.timestamps[i]-history.timestamps[i-1]>3600000 || (history.times[i]>history.times[i-1]&&history.times.length-i+1>=5)){start=i;break;}
+                }
+                history.speeds=history.times.slice(start).map(ms=>12000/ms);
+                history.best=12000/stats.modelBest;keyLearning[item.k]=history;
             });
         }
+        function recordCompletedLesson() {
+            commitKeyMeasurements();
+            const elapsed=sessionStartTime?Math.max(.001,(Date.now()-sessionStartTime)/60000):0;
+            const acc=sessionCorrect/Math.max(1,sessionCorrect+sessionErrors)*100;
+            const cpm=elapsed>0?sessionCorrect/elapsed:0;
+            const complexity=new Set(measurementEvents.map(e=>e.key)).size;
+            const score=complexity?cpm*complexity/(sessionErrors+1)*(sessionCorrect/50):0;
+            const words=currentLessonText.trim().split(/\s+/).length;
+            lessonHistory.push({wpm:cpm/5,acc,chars:sessionCorrect,score,wordsPerMinute:elapsed?words/elapsed:0,ts:Date.now(),model:2});
+            lessonHistory=lessonHistory.slice(-30);accuracyStreak=acc>=95?accuracyStreak+1:0;
+        }
+        // Fit recent lesson speeds independently: degree 1/2/3 at 3/11/21
+        // samples, R² >= .5, derivative at latest lesson; otherwise Uncertain.
         function learningTrend(speeds) {
-            if(!speeds || speeds.length<3)return null;
-            const n=speeds.length, mean=speeds.reduce((a,b)=>a+b,0)/n, mid=(n-1)/2;
-            let num=0,den=0,total=0,residual=0;
-            speeds.forEach((y,x)=>{num+=(x-mid)*(y-mean);den+=(x-mid)**2;});
-            const slope=num/den;
-            speeds.forEach((y,x)=>{total+=(y-mean)**2;residual+=(y-(mean+slope*(x-mid)))**2;});
-            return total>0 && 1-residual/total>=0.5 ? slope : null;
+            if(!speeds||speeds.length<3)return null;
+            const y=speeds.slice(-30),n=y.length,d=n>20?3:n>10?2:1;
+            const x=y.map((_,i)=>i/(n-1));
+            const matrix=Array.from({length:d+1},(_,r)=>Array.from({length:d+2},(_,c)=>c<=d?x.reduce((sum,t)=>sum+t**(r+c),0):x.reduce((sum,t,i)=>sum+y[i]*t**r,0)));
+            for(let c=0;c<=d;c++){
+                let pivot=c;for(let r=c+1;r<=d;r++)if(Math.abs(matrix[r][c])>Math.abs(matrix[pivot][c]))pivot=r;
+                [matrix[c],matrix[pivot]]=[matrix[pivot],matrix[c]];
+                const div=matrix[c][c];if(Math.abs(div)<1e-12)return null;
+                for(let k=c;k<=d+1;k++)matrix[c][k]/=div;
+                for(let r=0;r<=d;r++)if(r!==c){const factor=matrix[r][c];for(let k=c;k<=d+1;k++)matrix[r][k]-=factor*matrix[c][k];}
+            }
+            const coef=matrix.map(row=>row[d+1]),mean=y.reduce((a,b)=>a+b,0)/n;
+            const total=y.reduce((sum,v)=>sum+(v-mean)**2,0),res=y.reduce((sum,v,i)=>sum+(v-coef.reduce((acc,c,k)=>acc+c*x[i]**k,0))**2,0);
+            return total>1e-9&&1-res/total>=.5?coef.reduce((sum,c,k)=>sum+k*c,0)/(n-1):null;
         }
         function updateInsights() {
             const put=(id,text)=>document.getElementById(id).textContent=text;
@@ -2847,10 +2884,13 @@
             const elapsed=sessionStartTime ? (Date.now()-sessionStartTime)/60000 : 0;
             const speed=elapsed>0 ? sessionCorrect/5/elapsed : (last?.wpm || 0);
             const acc=sessionCorrect+sessionErrors ? sessionCorrect/(sessionCorrect+sessionErrors)*100 : (last?.acc ?? 100);
-            put('ins-speed',speed.toFixed(1)+' wpm');put('ins-accuracy',acc.toFixed(2)+'%');put('ins-score',totalTypedCount.toLocaleString());
+            put('ins-speed',speed.toFixed(1)+' wpm');put('ins-accuracy',acc.toFixed(2)+'%');put('ins-score',Math.round(last?.score||0).toLocaleString());
+            const acceptedPrefix=targetKrutiText.slice(0,cursorIndex);
+            const wordCount=(acceptedPrefix.match(/ /g)||[]).length+(lessonCompleted?1:0);
+            put('ins-words',elapsed>0?(wordCount/elapsed).toFixed(1):(last?.wordsPerMinute||0).toFixed(1));
             const delta=(id,value,suffix)=>{const node=document.getElementById(id);node.textContent=value==null?'':`(${value>=0?'+':''}${(id==='ins-score-delta'?value.toFixed(0):value.toFixed(1))}${suffix})`;node.className=value>=0?'delta-up':'delta-down';};
             delta('ins-speed-delta',last&&prev?last.wpm-prev.wpm:null,' wpm');
-            delta('ins-accuracy-delta',last&&prev?last.acc-prev.acc:null,'%');delta('ins-score-delta',last?last.chars:null,'');
+            delta('ins-accuracy-delta',last&&prev?last.acc-prev.acc:null,'%');delta('ins-score-delta',last&&prev&&last.score!=null&&prev.score!=null?last.score-prev.score:null,'');
             put('ins-overall',Math.round((unlockedIndex+1)/KEY_PROGRESSION.length*100)+'% ('+(unlockedIndex+1)+'/'+KEY_PROGRESSION.length+')');
             const item=KEY_PROGRESSION[unlockedIndex], data=keyLearning[item.k], samples=data?.speeds || [];
             const fmt=v=>v.toFixed(1)+' wpm ('+Math.round(v/targetSpeedGoal*100)+'%)';
@@ -3049,6 +3089,20 @@
 
         // 9. DISPLAY & CURSOR UPDATER (KRUTIDEV 010 ENGINE)
         // ─────────────────────────────────────────────────────────────
+        function renderLessonFont() {
+            const font=FONT_REGISTRY[displayFont]||FONT_REGISTRY.krutidev;
+            el.textStreamContainer.style.fontFamily=`'${font.family}', 'Noto Sans Devanagari', sans-serif`;
+            if(font.encoding!=='unicode')return;
+            const words=currentLessonText.split(' ');let offset=0,index=words.length;
+            for(let i=0;i<words.length;i++){const end=offset+unicodeToKrutiDev(words[i]).length;if(cursorIndex<=end){index=i;break;}offset=end+1;}
+            el.textCorrect.textContent=words.slice(0,index).join(' ')+(index>0?' ':'');
+            el.textCurrent.textContent=index<words.length?words[index]:'';
+            el.textCurrent.className='text-current';
+            el.textRemaining.textContent=index<words.length?' '+words.slice(index+1).join(' '):'';
+            // Whole-word focus is deliberate: splitting ि or a conjunct across
+            // colored spans can break Indic shaping. Raw Remington cursor remains exact.
+        }
+
         function updateDisplay() {
             if (!targetKrutiText) {
                 targetKrutiText = unicodeToKrutiDev(currentLessonText || generateLessonText());
@@ -3074,6 +3128,8 @@
                 el.textCurrent.className = 'text-current';
                 el.textRemaining.textContent = '';
             }
+
+            renderLessonFont();
 
             // Keep cursor smoothly scrolled in view
             if (el.textCurrent && el.textCurrent.textContent) {
@@ -3147,7 +3203,7 @@
             nextLessonTimer = null;
             lessonCompleted = false;
             pendingUnlockIndex = null;
-            lessonKeyTimes = {}; lessonActiveSeconds = 0; activityAt = null;
+            lessonKeyTimes = {}; measurementEvents=[]; previousAttemptWrong=false; lessonActiveSeconds = 0; activityAt = null;
             currentLessonText = generateLessonText();
             targetKrutiText = unicodeToKrutiDev(currentLessonText);
             cursorIndex = 0;
@@ -3187,12 +3243,16 @@
             }
 
             const activeItem = KEY_PROGRESSION[unlockedIndex];
+            const interval=lastKeystrokeTime===null?0:now-lastKeystrokeTime;
+            lastKeystrokeTime=now;
+            const validInterval=interval>=40&&interval<=12000?interval:0;
 
             // ─────────────────────────────────────────────────────────
             // STRICT ERROR BLOCKING:
             // If pressed key does NOT match expected, DO NOT ADVANCE!
             // ─────────────────────────────────────────────────────────
             if (keyString !== expected) {
+                previousAttemptWrong=true;
                 sound.error();
                 sessionErrors++;
                 totalErrorsCount++;
@@ -3200,6 +3260,7 @@
                 const errorStats = keyStats[expected] || keyStats[expected.toLowerCase()];
                 if (errorStats) errorStats.errors++;
 
+                saveStorage();
                 // Penalize sliding confidence buffer for active learning key or conjunct
                 if (activeItem.conjunct) {
                     const seq = unicodeToKrutiDev(activeItem.h);
@@ -3257,23 +3318,15 @@
             if (hitStats) hitStats.hits++;
 
             // Latency measurement for instantaneous speed
-            let latencyMs = lastKeystrokeTime ? (now - lastKeystrokeTime) : 400;
-            latencyMs = Math.max(80, Math.min(3000, latencyMs));
-            lastKeystrokeTime = now;
-            (lessonKeyTimes[keyString] || (lessonKeyTimes[keyString]=[])).push(latencyMs);
-            const instantWpm = Math.min(100, Math.max(5, Math.round(12000 / latencyMs)));
-
-            // Per-key speed EMA feeding the keybr-style confidence heat map
-            const heatKs = keyStats[keyString] || keyStats[keyString.toLowerCase()];
-            if (heatKs) {
-                if (typeof heatKs.ttt !== 'number') { heatKs.ttt = 0; heatKs.tttSamples = 0; }
-                heatKs.ttt = (heatKs.tttSamples || 0) === 0 ? latencyMs : (0.2 * latencyMs + 0.8 * heatKs.ttt);
-                heatKs.tttSamples = (heatKs.tttSamples || 0) + 1;
-            }
+            const latencyMs=validInterval;
+            if(latencyMs>0)(lessonKeyTimes[keyString]||(lessonKeyTimes[keyString]=[])).push(latencyMs);
+            measurementEvents.push({key:keyString,ms:latencyMs,typo:previousAttemptWrong});
+            previousAttemptWrong=false;
+            const instantWpm=latencyMs>0?12000/latencyMs:0;
 
             // Only exact target-key hits feed unlock timing. Review keys still
             // populate their own heat map, never this key's unlock evidence.
-            if (!activeItem.conjunct && !activeItem.alt && keyString === activeItem.k) {
+            if (latencyMs>0 && !activeItem.conjunct && !activeItem.alt && keyString === activeItem.k) {
                 const targetStats = keyStats[activeItem.k];
                 targetStats.targetTtt = (targetStats.targetSamples || 0) === 0
                     ? latencyMs : 0.2 * latencyMs + 0.8 * targetStats.targetTtt;
@@ -3283,18 +3336,6 @@
 
             cursorIndex++;
             rawKeys.push(keyString);
-            const typedPrefix = targetKrutiText.slice(0, cursorIndex);
-            KEY_PROGRESSION.slice(0, unlockedIndex + 1).filter(item => item.conjunct || item.alt).forEach(item => {
-                const sequence = unicodeToKrutiDev(item.h);
-                if (sequence && typedPrefix.endsWith(sequence) && item.k !== keyString) {
-                    const stats = keyStats[item.k];
-                    stats.hits++;
-                    stats.ttt = stats.tttSamples ? 0.2 * latencyMs + 0.8 * stats.ttt : latencyMs;
-                    stats.tttSamples = (stats.tttSamples || 0) + 1;
-                }
-            });
-
-
             // Hit crediting for active learning key or conjunct
             if (activeItem.conjunct) {
                 const seq = unicodeToKrutiDev(activeItem.h);
@@ -3347,6 +3388,7 @@
             // Alt + Numpad entry
             if (e.altKey && NUMPAD_DIGIT_MAP[e.code]) {
                 e.preventDefault();
+                if(!altCodeActive)altEntryStartedAt=Date.now();
                 altCodeActive = true;
                 altCodeBuffer += NUMPAD_DIGIT_MAP[e.code];
                 return;
@@ -3367,8 +3409,13 @@
 
             // Backspace handling
             if (e.key === 'Backspace') {
+                if(lessonCompleted)return;
                 if (cursorIndex > 0) {
                     cursorIndex--;
+                    const removed=measurementEvents.pop();
+                    const active=KEY_PROGRESSION[unlockedIndex];
+                    if(removed?.key===active.k&&removed.ms>0&&!active.conjunct&&!active.alt)keyStats[active.k].targetSamples=Math.max(0,(keyStats[active.k].targetSamples||0)-1);
+                    sessionCorrect=Math.max(0,sessionCorrect-1);
                     if (rawKeys.length > 0) rawKeys.pop();
                     sound.click();
                     updateDisplay();
@@ -3398,8 +3445,11 @@
         window.addEventListener('keyup', (e) => {
             if (e.key === 'Alt' && altCodeActive) {
                 const code = altCodeBuffer;
+                // Alt+numpad is one committed text action, not 4/5 fast synthetic keys.
+                // Its duration includes the whole entry and preceding recognition time.
                 altCodeBuffer = '';
                 altCodeActive = false;
+                altEntryStartedAt=null;
 
                 const char = KRUTIDEV_ALT_CODES[code];
                 if (char) {
@@ -3538,6 +3588,23 @@
                 }
             });
         }
+
+        async function selectDisplayFont(requested) {
+            const font=FONT_REGISTRY[requested];
+            if(['devlys040','mangal'].includes(requested)){
+                try{
+                    const face=new FontFace(font.family,`local("${font.family}")`);
+                    await face.load();document.fonts.add(face);
+                }catch(error){
+                    document.getElementById('font-status').textContent=font.label+' is not installed. No font file is bundled; choose a web font or install a licensed copy.';
+                    document.getElementById('display-font-select').value=displayFont;return false;
+                }
+            }
+            displayFont=requested;saveStorage();updateDisplay();
+            document.getElementById('font-status').textContent=font.label+' · '+font.encoding+' display · Remington input unchanged'+(requested==='devlys040'?' · Local font not bundled; check your font version against the lesson preview.':'');
+            return true;
+        }
+        document.getElementById('display-font-select').addEventListener('change',e=>selectDisplayFont(e.target.value));
 
         document.getElementById('lesson-style-select').addEventListener('change',e=>{lessonStyle=e.target.value;applyDisplayPreferences();saveStorage();});
         document.getElementById('key-font-select').addEventListener('change',e=>{keyFont=e.target.value;applyDisplayPreferences();saveStorage();});
