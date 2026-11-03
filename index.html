@@ -1619,10 +1619,10 @@
 
                     <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 16px;">
                         <div>
-                            <strong style="font-size: 0.9rem; color: var(--error);">Reset All Data</strong>
-                            <p style="font-size: 0.78rem; color: var(--text-dim);">Clear your unlocked progression and start from Level 1.</p>
+                            <strong style="font-size: 0.9rem; color: var(--error);">Reset Progress</strong>
+                            <p style="font-size: 0.78rem; color: var(--text-dim);">Clear progress and typing stats. Keep your theme, sound and practice preferences.</p>
                         </div>
-                        <button class="btn-modal danger" id="reset-settings-btn">Reset All</button>
+                        <button class="btn-modal danger" id="reset-settings-btn">Reset Progress</button>
                     </div>
                 </div>
             </div>
@@ -1636,10 +1636,10 @@
     <div class="modal-overlay" id="confirm-modal">
         <div class="modal-dialog">
             <h3>Reset Progress?</h3>
-            <p>This will erase all your unlocked keys, keystroke stats, and typing speed records. You will start again from Level 1 (क).</p>
+            <p>This will erase your unlocked progress, keystroke stats and typing speed records. Start fresh with the first four keys (क, ा, ि, र). Your theme, sound and practice preferences stay unchanged.</p>
             <div class="modal-actions">
                 <button class="btn-modal cancel" id="modal-cancel-btn">Cancel</button>
-                <button class="btn-modal danger" id="modal-confirm-btn">Yes, Reset Everything</button>
+                <button class="btn-modal danger" id="modal-confirm-btn">Yes, Reset Progress</button>
             </div>
         </div>
     </div>
@@ -3521,15 +3521,19 @@
         });
 
         el.modalConfirmBtn.addEventListener('click', () => {
-            localStorage.removeItem('hikeybr_store_v3');
+            // Clear only learning data; immediately save the retained preferences.
             unlockedIndex = INITIAL_UNLOCKED_COUNT - 1;
             totalTypedCount = 0;
             totalErrorsCount = 0;
             targetKeyBuffer = [];
+            keyStats = {};
+            altCodeBuffer = '';
+            altCodeActive = false;
             initKeyStats();
             populateJumpSelect();
             regenerateLesson();
             updateProfileTable();
+            saveStorage();
             closeResetModal();
             setTimeout(() => el.hiddenInput.focus(), 60);
         });
