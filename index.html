@@ -1199,6 +1199,94 @@
             background: var(--surface);
             margin-top: auto;
         }
+
+        /* Keybr-style per-key confidence heat map:
+           yellow = not yet good, yellow-green = improving, green = learnt */
+        .k-key.heat-1 { background: rgba(250, 204, 21, 0.20); border-color: #eab308; }
+        .k-key.heat-2 { background: rgba(163, 230, 53, 0.24); border-color: #84cc16; }
+        .k-key.heat-3 { background: rgba(74, 222, 128, 0.32); border-color: #22c55e; }
+
+        .ak-badge.heat-1 { background: rgba(250, 204, 21, 0.20); border-color: #eab308; color: var(--text); }
+        .ak-badge.heat-2 { background: rgba(163, 230, 53, 0.24); border-color: #84cc16; color: var(--text); }
+        .ak-badge.heat-3 { background: rgba(74, 222, 128, 0.32); border-color: #22c55e; color: var(--text); }
+
+        .heat-legend {
+            display: flex;
+            gap: 14px;
+            margin-top: 8px;
+            font-size: 0.68rem;
+            color: var(--text-dim);
+            align-items: center;
+        }
+        .heat-legend span { display: inline-flex; align-items: center; gap: 5px; }
+        .heat-dot { width: 10px; height: 10px; border-radius: 3px; display: inline-block; border: 1px solid; }
+        .heat-dot.hd-1 { background: rgba(250, 204, 21, 0.20); border-color: #eab308; }
+        .heat-dot.hd-2 { background: rgba(163, 230, 53, 0.24); border-color: #84cc16; }
+        .heat-dot.hd-3 { background: rgba(74, 222, 128, 0.32); border-color: #22c55e; }
+
+        /* ═══════════════════════════════════════════════════════════
+           COMPACT SINGLE-SCREEN LAYOUT
+           Everything (progression, target card, stats, text, keyboard)
+           fits one viewport without scrolling, keybr.com-style.
+           ═══════════════════════════════════════════════════════════ */
+        header { height: 48px; padding: 0 16px; }
+        .brand-icon { width: 28px; height: 28px; font-size: 1.05rem; border-radius: 7px; }
+        .brand-title { font-size: 1.1rem; }
+
+        main { padding: 10px 20px 12px; gap: 8px; }
+        .panel.active { gap: 8px; }
+
+        .workspace-bar { padding: 6px 12px; gap: 8px; border-radius: 10px; }
+        .quick-controls { gap: 12px; }
+        .ctrl-item { font-size: 0.74rem; }
+        .ctrl-select { padding: 3px 8px; font-size: 0.74rem; }
+
+        .alphabet-strip { padding: 6px 12px; gap: 4px; border-radius: 10px; }
+        .alphabet-header { font-size: 0.66rem; }
+        .alphabet-keys { gap: 3px; padding-bottom: 0; }
+        .ak-badge { min-width: 27px; height: 31px; font-size: 0.8rem; border-radius: 5px; }
+        .ak-badge .ak-key { font-size: 0.5rem; }
+        .heat-legend { margin-top: 2px; font-size: 0.62rem; }
+
+        .target-card { padding: 8px 16px; gap: 6px; border-radius: 12px; }
+        .target-char-pill { padding: 3px 12px; }
+        .target-char-pill .t-char { font-size: 1.15rem; }
+        .target-metrics { gap: 12px; font-size: 0.74rem; }
+        .metric-chip strong { font-size: 0.85rem; }
+        .progress-track-wrapper { gap: 10px; }
+        .progress-track { height: 7px; }
+        .confidence-hint { font-size: 0.64rem; }
+
+        .stats-strip { gap: 8px; }
+        .stat-card { padding: 6px 12px; gap: 2px; border-radius: 8px; }
+        .stat-card .s-label { font-size: 0.6rem; }
+        .stat-card .s-value { font-size: 1.15rem; }
+        .stat-card .s-unit { font-size: 0.65rem; }
+
+        .typing-canvas { min-height: 84px; padding: 12px 20px; border-radius: 12px; }
+        .canvas-hint { top: 6px; right: 10px; font-size: 0.6rem; }
+        .text-stream-container { font-size: clamp(1.3rem, 2.4vw, 1.7rem); line-height: 1.6; max-height: 112px; }
+
+        .live-hint-strip { min-height: 22px; font-size: 0.78rem; margin-top: 0; margin-bottom: 0; }
+
+        .keyboard-frame { padding: 8px 14px; gap: 4px; border-radius: 12px; }
+        .k-row { gap: 4px; }
+        .k-key { height: 38px; min-width: 36px; border-radius: 6px; border-bottom-width: 2px; }
+        .k-key .hi-main { font-size: 0.88rem; margin-top: 3px; }
+        .k-key .hi-shift { font-size: 0.56rem; top: 2px; left: 4px; }
+        .k-key .en-sub { font-size: 0.5rem; bottom: 2px; right: 4px; }
+
+        footer { padding: 8px 24px; font-size: 0.64rem; }
+
+        /* Taller content still fits shorter laptop screens by trimming more */
+        @media (max-height: 740px) {
+            header { height: 42px; }
+            .typing-canvas { min-height: 70px; }
+            .text-stream-container { max-height: 84px; font-size: clamp(1.15rem, 2.1vw, 1.5rem); }
+            .k-key { height: 34px; min-width: 32px; }
+            .target-card { padding: 6px 14px; }
+            .confidence-hint { display: none; }
+        }
     </style>
 </head>
 <body>
@@ -1264,6 +1352,10 @@
                             <option value="30">30 WPM (High Court Speed)</option>
                             <option value="35">35 WPM (Advanced Typist)</option>
                             <option value="40">40 WPM (Master)</option>
+                            <option value="50">50 WPM (Pro)</option>
+                            <option value="60">60 WPM (Expert)</option>
+                            <option value="80">80 WPM (Champion)</option>
+                            <option value="100">100 WPM (Ultimate)</option>
                         </select>
                     </div>
                     <div class="ctrl-item">
@@ -1283,9 +1375,14 @@
             <div class="alphabet-strip">
                 <div class="alphabet-header">
                     <span>Remington GAIL Progression (<span id="total-keys-header">70</span> Keys)</span>
-                    <span id="progression-summary">Level 1 / 70</span>
+                    <span id="progression-summary">Key 4 of 70 Unlocked</span>
                 </div>
                 <div class="alphabet-keys" id="alphabet-container"></div>
+                <div class="heat-legend">
+                    <span><i class="heat-dot hd-1"></i>Not yet good</span>
+                    <span><i class="heat-dot hd-2"></i>Improving</span>
+                    <span><i class="heat-dot hd-3"></i>Learnt</span>
+                </div>
             </div>
 
             <!-- Keybr Speed-Maintenance & Confidence Card -->
@@ -1339,7 +1436,7 @@
                 </div>
                 <div class="stat-card">
                     <span class="s-label">Keys Unlocked</span>
-                    <div class="s-value"><span id="metric-unlocked">1</span><span class="s-unit">/ <span id="metric-total-keys">70</span></span></div>
+                    <div class="s-value"><span id="metric-unlocked">4</span><span class="s-unit">/ <span id="metric-total-keys">70</span></span></div>
                 </div>
                 <div class="stat-card">
                     <span class="s-label">Total Keystrokes</span>
@@ -1491,6 +1588,10 @@
                             <option value="30">30 WPM (High Court Speed)</option>
                             <option value="35">35 WPM (Advanced)</option>
                             <option value="40">40 WPM (Master)</option>
+                            <option value="50">50 WPM (Pro)</option>
+                            <option value="60">60 WPM (Expert)</option>
+                            <option value="80">80 WPM (Champion)</option>
+                            <option value="100">100 WPM (Ultimate)</option>
                         </select>
                     </div>
 
@@ -1791,8 +1892,9 @@
 
         // 2. STATE MANAGEMENT
         // ─────────────────────────────────────────────────────────────
-        let unlockedIndex = 0;
-        let keyStats = {}; // { key: { hits: 0, errors: 0 } }
+        const INITIAL_UNLOCKED_COUNT = 4;
+        let unlockedIndex = INITIAL_UNLOCKED_COUNT - 1;
+        let keyStats = {}; // { key: { hits: 0, errors: 0, ttt: 0, tttSamples: 0 } }
         let targetKeyBuffer = []; // Rolling sliding window of recent hits on target key
         let targetSpeedGoal = 25; // WPM required to advance
         let currentLessonText = ''; // Continuous string of ~25 words
@@ -1914,7 +2016,7 @@
         // ─────────────────────────────────────────────────────────────
         function initKeyStats() {
             KEY_PROGRESSION.forEach(item => {
-                keyStats[item.k] = { hits: 0, errors: 0 };
+                keyStats[item.k] = { hits: 0, errors: 0, ttt: 0, tttSamples: 0 };
             });
             targetKeyBuffer = [];
         }
@@ -1954,7 +2056,7 @@
                 if (data.keyStats) {
                     for (const k in data.keyStats) {
                         if (Object.prototype.hasOwnProperty.call(keyStats, k)) {
-                            keyStats[k] = data.keyStats[k];
+                            keyStats[k] = Object.assign(keyStats[k] || {}, data.keyStats[k]);
                         }
                     }
                 }
@@ -2474,9 +2576,12 @@
             const unlockedSet = new Set(KEY_PROGRESSION.slice(0, unlockedIndex + 1).map(x => x.k.toLowerCase()));
 
             keyDOMMap.forEach((keyEl, k) => {
-                keyEl.classList.remove('target', 'shift-needed', 'unlocked');
-                if (unlockedSet.has(k.toLowerCase())) {
+                keyEl.classList.remove('target', 'shift-needed', 'unlocked', 'heat-1', 'heat-2', 'heat-3');
+                if (unlockedSet.has(k.toLowerCase()) || unlockedSet.has(k)) {
                     keyEl.classList.add('unlocked');
+                    const progItem = KEY_PROGRESSION.find(x => x.k.toLowerCase() === k.toLowerCase() || x.k === k);
+                    const lvl = keyHeatLevel(progItem);
+                    if (lvl > 0) keyEl.classList.add('heat-' + lvl);
                 }
             });
 
@@ -2571,6 +2676,24 @@
             if (document.getElementById('metric-total-keys')) document.getElementById('metric-total-keys').textContent = KEY_PROGRESSION.length;
             if (document.getElementById('total-keys-header')) document.getElementById('total-keys-header').textContent = KEY_PROGRESSION.length;
             el.jumpSelect.value = unlockedIndex;
+
+            // Keep the per-key confidence heat map live as stats change
+            updateAlphabetStrip();
+        }
+
+        // Keybr-style per-key confidence heat level, from each key's smoothed
+        // time-to-type vs the target speed goal:
+        // 0 = not enough data (neutral), 1 = not yet good (yellow),
+        // 2 = improving (yellow-green), 3 = learnt (green)
+        function keyHeatLevel(item) {
+            if (!item || item.k.length !== 1 || item.conjunct || item.alt) return 0;
+            const s = keyStats[item.k];
+            if (!s || typeof s.ttt !== 'number' || !s.ttt || (s.tttSamples || 0) < 6) return 0;
+            const targetMs = 12000 / targetSpeedGoal; // WPM -> ms per char (5 chars per word)
+            const conf = targetMs / s.ttt;
+            if (conf >= 0.9) return 3;
+            if (conf >= 0.6) return 2;
+            return 1;
         }
 
         function updateAlphabetStrip() {
@@ -2581,10 +2704,14 @@
                 badge.className = 'ak-badge';
                 badge.title = `${item.h} (Key ${item.k.toUpperCase()}) — ${item.d}\nFinger: ${item.finger}`;
 
-                if (idx < unlockedIndex) {
-                    badge.classList.add('mastered');
-                } else if (idx === unlockedIndex) {
-                    badge.classList.add('current');
+                if (idx <= unlockedIndex) {
+                    const lvl = keyHeatLevel(item);
+                    if (lvl > 0) badge.classList.add('heat-' + lvl);
+                    if (idx === unlockedIndex) badge.classList.add('current');
+                    const hs = keyStats[item.k];
+                    if (hs && (hs.tttSamples || 0) >= 6 && typeof hs.ttt === 'number' && hs.ttt > 0) {
+                        badge.title += `\nSpeed: ~${Math.max(1, Math.round(12000 / hs.ttt))} WPM`;
+                    }
                 } else {
                     badge.classList.add('locked');
                 }
@@ -3096,6 +3223,14 @@
             lastKeystrokeTime = now;
             const instantWpm = Math.min(100, Math.max(5, Math.round(12000 / latencyMs)));
 
+            // Per-key speed EMA feeding the keybr-style confidence heat map
+            const heatKs = keyStats[keyString] || keyStats[keyString.toLowerCase()];
+            if (heatKs) {
+                if (typeof heatKs.ttt !== 'number') { heatKs.ttt = 0; heatKs.tttSamples = 0; }
+                heatKs.ttt = (heatKs.tttSamples || 0) === 0 ? latencyMs : (0.2 * latencyMs + 0.8 * heatKs.ttt);
+                heatKs.tttSamples = (heatKs.tttSamples || 0) + 1;
+            }
+
             cursorIndex++;
             rawKeys.push(keyString);
 
@@ -3359,7 +3494,7 @@
 
         el.modalConfirmBtn.addEventListener('click', () => {
             localStorage.removeItem('hikeybr_store_v3');
-            unlockedIndex = 0;
+            unlockedIndex = INITIAL_UNLOCKED_COUNT - 1;
             totalTypedCount = 0;
             totalErrorsCount = 0;
             targetKeyBuffer = [];
