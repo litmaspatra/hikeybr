@@ -2701,6 +2701,8 @@
             if (document.getElementById('metric-total-keys')) document.getElementById('metric-total-keys').textContent = KEY_PROGRESSION.length;
             if (document.getElementById('total-keys-header')) document.getElementById('total-keys-header').textContent = KEY_PROGRESSION.length;
             el.jumpSelect.value = unlockedIndex;
+            const weak = reviewKey();
+            if (weak && !lessonCompleted) el.leadSamplesStatus.textContent += ` - extra review: ${weak.h}`;
 
             // Keep the per-key confidence heat map live as stats change
             updateAlphabetStrip();
@@ -2710,14 +2712,24 @@
         // time-to-type vs the target speed goal:
         // 0 = not enough data (neutral), 1 = not yet good (yellow),
         // 2 = improving (yellow-green), 3 = learnt (green)
+        // Review never changes unlockedIndex. Recent speed, not banked best,
+        // chooses the weakest already-unlocked key after enough observations.
+        function reviewKey() {
+            const targetMs = 12000 / targetSpeedGoal;
+            return KEY_PROGRESSION.slice(0, unlockedIndex).filter(item => {
+                const stats = keyStats[item.k];
+                return stats && (stats.tttSamples || 0) >= 12 && stats.ttt > targetMs / 0.8;
+            }).sort((a, b) => keyStats[b.k].ttt - keyStats[a.k].ttt)[0] || null;
+        }
+
         function keyHeatLevel(item) {
-            if (!item || item.k.length !== 1 || item.conjunct || item.alt) return 0;
+            if (!item) return 0;
             const s = keyStats[item.k];
             if (!s || typeof s.ttt !== 'number' || !s.ttt || (s.tttSamples || 0) < 6) return 0;
             const targetMs = 12000 / targetSpeedGoal; // WPM -> ms per char (5 chars per word)
             const conf = targetMs / s.ttt;
-            if (conf >= 0.9) return 3;
-            if (conf >= 0.6) return 2;
+            if (conf >= 1) return 3;
+            if (conf >= 0.8) return 2;
             return 1;
         }
 
@@ -2736,6 +2748,10 @@
                     const hs = keyStats[item.k];
                     if (hs && (hs.tttSamples || 0) >= 6 && typeof hs.ttt === 'number' && hs.ttt > 0) {
                         badge.title += `\nSpeed: ~${Math.max(1, Math.round(12000 / hs.ttt))} WPM`;
+                        if (idx < unlockedIndex && hs.ttt > (12000 / targetSpeedGoal) / 0.8) {
+                            badge.title += '\nNeeds practice - extra mixed-word review';
+                            badge.style.outline = '1px dashed #eab308';
+                        }
                     }
                 } else {
                     badge.classList.add('locked');
@@ -2899,6 +2915,11 @@
             };
             const realPool = [...new Set(eligibleRealWords)];
             const focusedPool = realPool.filter(word => targetHits(word) > 0);
+            const weak = reviewKey();
+            const reviewSequence = weak ? unicodeToKrutiDev(weak.h) : '';
+            const reviewPool = weak ? realPool.filter(word => unicodeToKrutiDev(word).includes(reviewSequence)) : [];
+            const reviewQuota = reviewPool.length ? Math.floor(wordCount * 0.32) : 0;
+            let reviewWords = 0;
             const minTargetHits = 10;
             let loggedTargets = 0;
             let previous = '';
@@ -2910,7 +2931,10 @@
             for (let w = 0; w < wordCount; w++) {
                 let chosen;
                 const needsTarget = loggedTargets < minTargetHits;
-                if (needsTarget && focusedPool.length) {
+                if (reviewWords < reviewQuota) {
+                    chosen = pick(reviewPool);
+                    reviewWords++;
+                } else if (needsTarget && focusedPool.length) {
                     chosen = pick(focusedPool);
                 } else if (needsTarget) {
                     // No real word can teach this glyph yet (digits, rare Alt codes,
@@ -3078,9 +3102,8 @@
                 sessionErrors++;
                 totalErrorsCount++;
 
-                if (keyStats[keyString.toLowerCase()]) {
-                    keyStats[keyString.toLowerCase()].errors++;
-                }
+                const errorStats = keyStats[expected] || keyStats[expected.toLowerCase()];
+                if (errorStats) errorStats.errors++;
 
                 // Penalize sliding confidence buffer for active learning key or conjunct
                 if (activeItem.conjunct) {
@@ -3135,9 +3158,8 @@
             // ─────────────────────────────────────────────────────────
             sound.click();
             sessionCorrect++;
-            if (keyStats[keyString.toLowerCase()]) {
-                keyStats[keyString.toLowerCase()].hits++;
-            }
+            const hitStats = keyStats[keyString] || keyStats[keyString.toLowerCase()];
+            if (hitStats) hitStats.hits++;
 
             // Latency measurement for instantaneous speed
             let latencyMs = lastKeystrokeTime ? (now - lastKeystrokeTime) : 400;
@@ -3165,6 +3187,17 @@
 
             cursorIndex++;
             rawKeys.push(keyString);
+            const typedPrefix = targetKrutiText.slice(0, cursorIndex);
+            KEY_PROGRESSION.slice(0, unlockedIndex + 1).filter(item => item.conjunct || item.alt).forEach(item => {
+                const sequence = unicodeToKrutiDev(item.h);
+                if (sequence && typedPrefix.endsWith(sequence) && item.k !== keyString) {
+                    const stats = keyStats[item.k];
+                    stats.hits++;
+                    stats.ttt = stats.tttSamples ? 0.2 * latencyMs + 0.8 * stats.ttt : latencyMs;
+                    stats.tttSamples = (stats.tttSamples || 0) + 1;
+                }
+            });
+
 
             // Hit crediting for active learning key or conjunct
             if (activeItem.conjunct) {
