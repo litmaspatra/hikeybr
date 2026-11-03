@@ -1857,25 +1857,27 @@
 
         // Real Hindi words bank used for phonotactic lesson generation
         const HINDI_WORD_BANK = [
-            'कक', 'का', 'काक', 'काका', 'कि', 'किक', 'काकि', 'किका', 'कर', 'कार', 'करा', 'किर', 'कारक',
-            'के', 'करे', 'केरा', 'केक', 'काय', 'याक', 'यार', 'कस', 'रस', 'सर', 'सार', 'सरकार', 'कसार',
-            'कह', 'हर', 'हार', 'कहा', 'सह', 'सहार', 'कंस', 'हंस', 'की', 'सी', 'री', 'ही', 'सारी', 'हरी',
+            'का', 'काका', 'कि', 'कर', 'कार', 'करा', 'कारक', 'किरकिरी',
+            'के', 'करे', 'केक', 'काय', 'याक', 'यार', 'कस', 'रस', 'सर', 'सार', 'सरकार', 'कसार',
+            'कह', 'हर', 'हार', 'कहा', 'सह', 'सहारा', 'कंस', 'हंस', 'की', 'सी', 'री', 'ही', 'सारी', 'हरी',
             'शक', 'शार', 'काश', 'देश', 'कम', 'काम', 'राम', 'शाम', 'मर', 'मारा', 'समान', 'कमर', 'मकान',
             'तर', 'तार', 'रात', 'तारा', 'मत', 'कतार', 'नर', 'नाक', 'नाम', 'शान', 'मन', 'कान', 'नाना',
             'पर', 'पार', 'पाक', 'पानी', 'पवन', 'पारस', 'वर', 'वार', 'वन', 'हवा', 'सेवा', 'कवि',
             'चर', 'चार', 'चाचा', 'चमक', 'सच', 'कल', 'लाल', 'माला', 'साल', 'बाल', 'चाल', 'कमल',
             'जल', 'जाल', 'राज', 'आज', 'जन', 'राजा', 'कुल', 'सुर', 'सुख', 'मुख', 'सुन', 'तुम',
-            'दूर', 'सूर', 'फूल', 'मूल', 'रूप', 'पूजा', 'दन', 'दाम', 'दिन', 'दिल', 'दर्द', 'मदद',
+            'दूर', 'सूर', 'फूल', 'मूल', 'रूप', 'पूजा', 'दाना', 'दाम', 'दिन', 'दिल', 'दर्द', 'मदद',
             'गम', 'गाल', 'गति', 'गगन', 'गंगा', 'नगर', 'बल', 'बात', 'बालक', 'सब', 'खबर', 'बार',
             'अब', 'असर', 'अमर', 'अगर', 'अमन', 'इस', 'इन', 'इनाम', 'इशारा', 'उस', 'उन', 'उजाला',
             'एक', 'ऐसे', 'एका', 'एकता', 'रण', 'बाण', 'गुण', 'किरण', 'कारण', 'धन', 'धर्म', 'धारा',
             'क्रम', 'श्रम', 'ग्रह', 'व्रत', 'खत', 'खास', 'खुश', 'सुख', 'कृपा', 'मृग', 'गृह',
+            // Familiar words; eligibility is calculated from their actual Remington strokes.
+            'किस', 'किसका', 'किसकी', 'किसके', 'कैसे', 'कैसा', 'ऐसी', 'ऐसा', 'यह', 'यहाँ', 'यहाँ', 'वहाँ', 'रह', 'रहा', 'रहे', 'रही', 'रखा', 'रख', 'रेखा', 'लेख', 'लेखन', 'सारा', 'सारे', 'सास', 'ससुर', 'सही', 'हरा', 'कहकर', 'कहे', 'कहना', 'हँस', 'हँसना', 'हमें', 'मैं', 'मेरा', 'मेरी', 'मेरे', 'तुम्हारा', 'समय', 'समाचार', 'समीर', 'मेहनत', 'किसान', 'कहानी', 'कविता', 'कीमत', 'तरीका', 'तितली', 'तीन', 'तीर', 'नया', 'नए', 'नएपन', 'नरम', 'नमक', 'नमन', 'अपना', 'अपने', 'आप', 'पास', 'पैसे', 'पिता', 'पति', 'पपीता', 'पत्ता', 'पता', 'परीक्षा', 'प्रकाश', 'विकास', 'विचार', 'विशेष', 'विश्वास', 'विशाल', 'विद्यालय', 'विवाह', 'चुनाव', 'चल', 'चलना', 'चला', 'चली', 'चाय', 'चीन', 'चना', 'लाल', 'लहर', 'लाना', 'लीला', 'मिल', 'मिला', 'माल', 'मालिक', 'महिला', 'जरा', 'जमानत', 'जीवन', 'जगह', 'जनता', 'जीत', 'जो', 'जाना', 'जलेबी', 'सुबह', 'गुलाब', 'दही', 'दूध', 'दाल', 'दवा', 'दर्द', 'दादी', 'दीदी', 'देखा', 'देकर', 'देश', 'दीपक', 'दुनिया', 'दिन', 'रात', 'बादल', 'बिजली', 'बच्चा', 'बचपन', 'बोल', 'बात', 'भारत', 'भाषा', 'भवन', 'भोजन', 'अभय', 'अभी', 'अगले', 'अगला', 'अलग', 'अवसर', 'इच्छा', 'इलाज', 'इधर', 'उधर', 'उदय', 'उपयोग', 'ऊपर', 'एक', 'अनेक', 'एकजुट', 'ऐनक', 'ओस', 'और', 'कौन', 'कारण', 'कितना', 'क्यों', 'धर्म', 'धीरे', 'धनिया', 'धन्यवाद', 'श्रम', 'श्री', 'मित्र', 'पत्र', 'पात्र', 'यात्रा', 'क्षेत्र', 'क्षमा', 'क्षण', 'लक्ष्य', 'तथ्य', 'सत्य', 'वाक्य', 'योग्य', 'दफ्तर', 'शक्ति', 'भक्ति', 'व्यक्ति', 'व्यक्त', 'मुक्त', 'रक्त', 'शुद्ध', 'युद्ध', 'विद्या', 'द्वार', 'द्वेष', 'द्विपक्षीय', 'कुत्ता', 'पक्का', 'मिट्टी', 'पट्टी', 'छुट्टी', 'गुड्डा', 'खड्डा', 'गट्ठर', 'क्रम', 'चक्र', 'प्रक्रिया', 'फ्रांस', 'फ्रॉक', 'ह्रास', 'ह्रस्व', 'चिह्न', 'प्रह्लाद', 'चाँद', 'हँसी', 'आँख', 'माँ', 'गाँव', 'बाँस', 'ऊन', 'ऊँट', 'ऊँचा', 'ऊषा', 'विज्ञान', 'ज्ञान', 'यज्ञ', 'अङ्ग', 'सोऽहम्',
             // Number Row Glyphs words (ऋ, रु, ः)
             'ऋषि', 'ऋण', 'ऋतु', 'ऋचा',
             'रुपया', 'गुरु', 'रुक', 'रुचि', 'रुकना', 'रुई', 'रुलाना',
             'प्रातः', 'अतः', 'दुःख', 'पुनः', 'प्रायः', 'मूलतः', 'अंततः',
             // Extended words for Alt conjuncts & glyphs
-            'भक्त', 'रक्त', 'युक्त', 'मुक्त',
+            'भक्त', 'रक्त', 'युक्त', 'मुक्त', 'रद्द', 'रद्दी', 'गद्दा', 'भद्दा', 'अभ्यास', 'व्यापार', 'व्यक्ति', 'ज्ञान', 'विज्ञान',
             'शुद्ध', 'बुद्धि', 'युद्ध',
             'विद्या', 'अद्यतन',
             'द्वार', 'द्वेष', 'विद्वान',
@@ -2645,7 +2647,7 @@
 
         // Keybr-parity unlock state: a key clears when its BANKED best smoothed
         // speed reaches the goal (keybr's bestConfidence >= 1), after 10+ timed hits.
-        // Single-char keys use the per-key EMA (keyStats.ttt / bestTtt);
+        // Single-char keys use target-only EMA (targetTtt / bestTargetTtt);
         // conjunct & Alt-code keys keep the rolling-buffer gate.
         function currentUnlockState() {
             const item = KEY_PROGRESSION[unlockedIndex];
@@ -2655,16 +2657,16 @@
                 return { pct: c.confidence, ready: c.confidence >= 100 && c.samplesCount >= 10, samples: c.samplesCount };
             }
             const ks = keyStats[item.k] || {};
-            const samples = ks.tttSamples || 0;
+            const samples = ks.targetSamples || 0;
             let liveConf = 0, bankConf = 0;
-            if (typeof ks.ttt === 'number' && ks.ttt > 0) {
-                liveConf = (12000 / targetSpeedGoal) / ks.ttt;
+            if (typeof ks.targetTtt === 'number' && ks.targetTtt > 0) {
+                liveConf = (12000 / targetSpeedGoal) / ks.targetTtt;
                 // Only bank once the EMA has real evidence; a single lucky
                 // fast hit must not clear the key.
                 if (samples >= 10) {
-                    if (typeof ks.bestTtt !== 'number' || !ks.bestTtt) ks.bestTtt = ks.ttt;
-                    ks.bestTtt = Math.min(ks.bestTtt, ks.ttt);
-                    bankConf = (12000 / targetSpeedGoal) / ks.bestTtt;
+                    if (typeof ks.bestTargetTtt !== 'number' || !ks.bestTargetTtt) ks.bestTargetTtt = ks.targetTtt;
+                    ks.bestTargetTtt = Math.min(ks.bestTargetTtt, ks.targetTtt);
+                    bankConf = (12000 / targetSpeedGoal) / ks.bestTargetTtt;
                 }
             }
             return { pct: Math.min(100, Math.round(Math.max(liveConf, bankConf) * 100)), ready: bankConf >= 1 && samples >= 10, samples };
@@ -2861,64 +2863,6 @@
         // ─────────────────────────────────────────────────────────────
         // 8. 25-WORD PHONOTACTIC HINDI LESSON GENERATOR
         // ─────────────────────────────────────────────────────────────
-        const MATRA_KEYS = new Set(['k', 'f', 's', 'a', 'h', 'q', 'w', '`']);
-        const VOWEL_KEYS = new Set(['v', 'b', 'm', ',']);
-
-        function generateSyllableWord(consonants, matras, activeItem, unlockedKeySet, unlockedBytes) {
-            const templates = [
-                ['C', 'V', 'C'],
-                ['C', 'V', 'C', 'V'],
-                ['C', 'C', 'V'],
-                ['C', 'V', 'C', 'C'],
-                ['C', 'V']
-            ];
-            const tmpl = templates[Math.floor(Math.random() * templates.length)];
-            let word = '';
-            let lastConsonant = '';
-
-            tmpl.forEach(type => {
-                if (type === 'C') {
-                    let c = '';
-                    if (activeItem && activeItem.k === 'z') {
-                        // Bug 1b: Compose rakar properly, pick unlocked single consonant excluding क, फ, ह, य, त, श, र
-                        const zPool = consonants.filter(x => !['क', 'फ', 'ह', 'य', 'त', 'श', 'र'].includes(x.h) && x.h.length === 1 && !x.h.startsWith('्'));
-                        if (zPool.length > 0 && Math.random() < 0.6) {
-                            c = zPool[Math.floor(Math.random() * zPool.length)].h + '्र';
-                        }
-                    } else if (activeItem && !activeItem.conjunct && !/^[0-9]$/.test(activeItem.k) && !MATRA_KEYS.has(activeItem.k) && !VOWEL_KEYS.has(activeItem.k) && !activeItem.h.startsWith('्')) {
-                        if (Math.random() < 0.6) {
-                            c = activeItem.h;
-                        }
-                    }
-
-                    if (!c) {
-                        const validCons = consonants.filter(x => !x.h.startsWith('्'));
-                        c = validCons.length > 0 ? validCons[Math.floor(Math.random() * validCons.length)].h : 'क';
-                    }
-                    word += c;
-                    lastConsonant = c;
-                } else if (type === 'V') {
-                    if (matras.length > 0) {
-                        let availableMatras = matras;
-                        if (lastConsonant === 'र') {
-                            const hasRu = unlockedKeySet && (unlockedKeySet.has('#') || (unlockedBytes && unlockedBytes.has('#')));
-                            const hasRoo = unlockedKeySet && (unlockedKeySet.has(':') || (unlockedBytes && unlockedBytes.has(':')));
-                            if (!hasRu) availableMatras = availableMatras.filter(x => x.k !== 'q');
-                            if (!hasRoo) availableMatras = availableMatras.filter(x => x.k !== 'w');
-                        }
-                        if (availableMatras.length > 0) {
-                            const m = (Math.random() < 0.6 && MATRA_KEYS.has(activeItem.k) && availableMatras.some(x => x.k === activeItem.k))
-                                ? activeItem.h
-                                : availableMatras[Math.floor(Math.random() * availableMatras.length)].h;
-                            word += m;
-                        }
-                    }
-                }
-            });
-
-            return word;
-        }
-
         function generateLessonText() {
             const unlockedItems = KEY_PROGRESSION.slice(0, unlockedIndex + 1);
             const activeItem = KEY_PROGRESSION[unlockedIndex];
@@ -2948,122 +2892,50 @@
                 return true;
             });
 
-            const consonants = unlockedItems.filter(x =>
-                !MATRA_KEYS.has(x.k) &&
-                !VOWEL_KEYS.has(x.k) &&
-                !x.conjunct &&
-                !/^[0-9]$/.test(x.k) &&
-                !x.h.startsWith('्')
-            );
-            const matras = unlockedItems.filter(x => MATRA_KEYS.has(x.k));
-
             const words = [];
 
-            // FEATURE A: Number row drills (Devanagari Digits)
-            if (/^[0-9]$/.test(activeItem.k)) {
-                const unlockedDigits = unlockedItems.filter(x => /^[0-9]$/.test(x.k)).map(x => x.h);
-                for (let w = 0; w < wordCount; w++) {
-                    const groupLen = Math.floor(Math.random() * 4) + 2; // 2 to 5 digits
-                    let group = '';
-                    for (let d = 0; d < groupLen; d++) {
-                        const pick = (Math.random() < 0.5) ? activeItem.h : unlockedDigits[Math.floor(Math.random() * unlockedDigits.length)];
-                        group += pick;
-                    }
-                    words.push(group);
-                }
-                return words.join(' ');
-            }
-
-            // Number Row Quotes (Shift+6 '‘', Shift+8 '’')
-            if (activeItem.k === '^') {
-                for (let w = 0; w < wordCount; w++) {
-                    let chosen = '';
-                    if (Math.random() < 0.6 && eligibleRealWords.length > 0) {
-                        const base = eligibleRealWords[Math.floor(Math.random() * eligibleRealWords.length)];
-                        chosen = '‘' + base;
-                    } else if (eligibleRealWords.length > 0) {
-                        chosen = eligibleRealWords[Math.floor(Math.random() * eligibleRealWords.length)];
-                    } else {
-                        chosen = '‘क';
-                    }
-                    words.push(chosen);
-                }
-                return words.join(' ');
-            }
-
-            if (activeItem.k === '*') {
-                for (let w = 0; w < wordCount; w++) {
-                    let chosen = '';
-                    if (Math.random() < 0.6 && eligibleRealWords.length > 0) {
-                        const base = eligibleRealWords[Math.floor(Math.random() * eligibleRealWords.length)];
-                        chosen = '‘' + base + '’';
-                    } else if (eligibleRealWords.length > 0) {
-                        chosen = eligibleRealWords[Math.floor(Math.random() * eligibleRealWords.length)];
-                    } else {
-                        chosen = '‘क’';
-                    }
-                    words.push(chosen);
-                }
-                return words.join(' ');
-            }
-
-            // FEATURE B: Alt-code conjuncts and glyphs
-            if (activeItem.conjunct) {
-                const wordsWithActive = eligibleRealWords.filter(wd => wd.includes(activeItem.h));
-                for (let w = 0; w < wordCount; w++) {
-                    let chosen = '';
-                    if (Math.random() < 0.6) {
-                        if (wordsWithActive.length > 0) {
-                            chosen = wordsWithActive[Math.floor(Math.random() * wordsWithActive.length)];
-                        } else {
-                            // Repetition drill of the glyph
-                            const rep = Math.floor(Math.random() * 3) + 2;
-                            chosen = activeItem.h.repeat(rep);
-                        }
-                    } else {
-                        if (eligibleRealWords.length > 0) {
-                            chosen = eligibleRealWords[Math.floor(Math.random() * eligibleRealWords.length)];
-                        } else {
-                            chosen = activeItem.h.repeat(2);
-                        }
-                    }
-                    if (!chosen) chosen = activeItem.h.repeat(2);
-                    words.push(chosen);
-                }
-                return words.join(' ');
-            }
-
-            // Base keys
+            // Real-word-first lessons. Repeat familiar words rather than inventing
+            // syllables. Reserve enough target strokes to avoid starving progression.
+            const targetSequence = unicodeToKrutiDev(activeItem.h);
+            const targetHits = word => {
+                const seq = unicodeToKrutiDev(word);
+                if (!targetSequence) return 0;
+                return seq.split(targetSequence).length - 1;
+            };
+            const realPool = [...new Set(eligibleRealWords)];
+            const focusedPool = realPool.filter(word => targetHits(word) > 0);
+            const minTargetHits = 10;
+            let loggedTargets = 0;
+            let previous = '';
+            const pick = pool => {
+                const alternatives = pool.filter(word => word !== previous);
+                const choices = alternatives.length ? alternatives : pool;
+                return choices[Math.floor(Math.random() * choices.length)];
+            };
             for (let w = 0; w < wordCount; w++) {
-                let chosen = '';
-
-                // Level 1: Only 'क' unlocked -> rhythm drills of 'क' (कक, ककक)
-                if (unlockedIndex === 0) {
-                    const rep = Math.floor(Math.random() * 3) + 2;
-                    chosen = activeItem.h.repeat(rep);
-                } else if (eligibleRealWords.length > 3 && Math.random() < 0.45) {
-                    const wordsWithActive = eligibleRealWords.filter(wd => wd.includes(activeItem.h));
-                    if (wordsWithActive.length > 0 && Math.random() < 0.7) {
-                        chosen = wordsWithActive[Math.floor(Math.random() * wordsWithActive.length)];
-                    } else {
-                        chosen = eligibleRealWords[Math.floor(Math.random() * eligibleRealWords.length)];
-                    }
+                let chosen;
+                const needsTarget = loggedTargets < minTargetHits;
+                if (needsTarget && focusedPool.length) {
+                    chosen = pick(focusedPool);
+                } else if (needsTarget) {
+                    // No real word can teach this glyph yet (digits, rare Alt codes,
+                    // or very early levels). Use only the minimum short glyph drill.
+                    const count = Math.min(2, minTargetHits - loggedTargets);
+                    chosen = activeItem.h.repeat(count);
+                } else if (realPool.length) {
+                    chosen = pick(realPool);
                 } else {
-                    if (consonants.length > 0) {
-                        chosen = generateSyllableWord(consonants, matras, activeItem, unlockedKeySet, unlockedBytes);
-                    } else {
-                        chosen = activeItem.h + activeItem.h;
-                    }
-                }
-
-                if (!chosen) {
-                    if (activeItem.k === 'z') chosen = 'प्र';
-                    else if (activeItem.h.startsWith('्')) chosen = 'क';
-                    else chosen = activeItem.h + activeItem.h;
+                    chosen = activeItem.h;
                 }
                 words.push(chosen);
+                loggedTargets += targetHits(chosen);
+                previous = chosen;
             }
-
+            // Mix drills and review words without changing their quotas.
+            for (let i = words.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [words[i], words[j]] = [words[j], words[i]];
+            }
             return words.join(' ');
         }
 
@@ -3210,7 +3082,7 @@
                             targetKeyBuffer.shift();
                         }
                     }
-                } else if (expected.toLowerCase() === activeItem.k.toLowerCase() || keyString.toLowerCase() === activeItem.k.toLowerCase()) {
+                } else if (expected === activeItem.k) {
                     targetKeyBuffer.push({
                         wpm: 5,
                         isCorrect: false,
@@ -3259,6 +3131,15 @@
                 heatKs.tttSamples = (heatKs.tttSamples || 0) + 1;
             }
 
+            // Only exact target-key hits feed unlock timing. Review keys still
+            // populate their own heat map, never this key's unlock evidence.
+            if (!activeItem.conjunct && !activeItem.alt && keyString === activeItem.k) {
+                const targetStats = keyStats[activeItem.k];
+                targetStats.targetTtt = (targetStats.targetSamples || 0) === 0
+                    ? latencyMs : 0.2 * latencyMs + 0.8 * targetStats.targetTtt;
+                targetStats.targetSamples = (targetStats.targetSamples || 0) + 1;
+            }
+
             cursorIndex++;
             rawKeys.push(keyString);
 
@@ -3275,7 +3156,7 @@
                         targetKeyBuffer.shift();
                     }
                 }
-            } else if (keyString.toLowerCase() === activeItem.k.toLowerCase()) {
+            } else if (keyString === activeItem.k) {
                 targetKeyBuffer.push({
                     wpm: instantWpm,
                     isCorrect: true,
