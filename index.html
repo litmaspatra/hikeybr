@@ -1408,8 +1408,8 @@
                     <span class="progress-stat" id="progress-stat-pct">0%</span>
                 </div>
                 <div class="confidence-hint">
-                    <span>⚡ Maintain target speed &amp; accuracy consistently over recent hits to unlock next key.</span>
-                    <span id="lead-samples-status">Hits logged: 0 / 12</span>
+                    <span>⚡ Reach your speed goal on this key (10+ hits) to unlock the next key - one good run banks it.</span>
+                    <span id="lead-samples-status">Hits logged: 0 / 10</span>
                 </div>
             </div>
 
@@ -2643,6 +2643,33 @@
             };
         }
 
+        // Keybr-parity unlock state: a key clears when its BANKED best smoothed
+        // speed reaches the goal (keybr's bestConfidence >= 1), after 10+ timed hits.
+        // Single-char keys use the per-key EMA (keyStats.ttt / bestTtt);
+        // conjunct & Alt-code keys keep the rolling-buffer gate.
+        function currentUnlockState() {
+            const item = KEY_PROGRESSION[unlockedIndex];
+            if (!item) return { pct: 0, ready: false, samples: 0 };
+            if (item.k.length !== 1 || item.conjunct || item.alt) {
+                const c = calculateConfidence();
+                return { pct: c.confidence, ready: c.confidence >= 100 && c.samplesCount >= 10, samples: c.samplesCount };
+            }
+            const ks = keyStats[item.k] || {};
+            const samples = ks.tttSamples || 0;
+            let liveConf = 0, bankConf = 0;
+            if (typeof ks.ttt === 'number' && ks.ttt > 0) {
+                liveConf = (12000 / targetSpeedGoal) / ks.ttt;
+                // Only bank once the EMA has real evidence; a single lucky
+                // fast hit must not clear the key.
+                if (samples >= 10) {
+                    if (typeof ks.bestTtt !== 'number' || !ks.bestTtt) ks.bestTtt = ks.ttt;
+                    ks.bestTtt = Math.min(ks.bestTtt, ks.ttt);
+                    bankConf = (12000 / targetSpeedGoal) / ks.bestTtt;
+                }
+            }
+            return { pct: Math.min(100, Math.round(Math.max(liveConf, bankConf) * 100)), ready: bankConf >= 1 && samples >= 10, samples };
+        }
+
         function updateMasteryCard() {
             const currentItem = KEY_PROGRESSION[unlockedIndex];
             if (!currentItem) return;
@@ -2653,16 +2680,17 @@
             el.leadFinger.textContent = currentItem.alt ? `👉 ${currentItem.finger}` : `👉 ${currentItem.finger} finger`;
             el.leadGoalSpeed.textContent = `${targetSpeedGoal} WPM`;
 
-            const { confidence, curSpeed, consistency, samplesCount } = calculateConfidence();
+            const { curSpeed, consistency } = calculateConfidence();
+            const unlockState = currentUnlockState();
 
             el.leadCurSpeed.textContent = `${curSpeed} WPM`;
             el.leadConsistency.textContent = `${consistency}%`;
-            el.progressFill.style.width = `${confidence}%`;
-            el.progressPct.textContent = `${confidence}%`;
-            el.leadSamplesStatus.textContent = `Hits logged: ${samplesCount} / 12`;
+            el.progressFill.style.width = `${unlockState.pct}%`;
+            el.progressPct.textContent = `${unlockState.pct}%`;
+            el.leadSamplesStatus.textContent = `Hits logged: ${unlockState.samples} / 10`;
 
-            // Auto-advance rule: Speed must be REACHED and CONSISTENTLY MAINTAINED (Confidence = 100%)
-            if (confidence >= 100 && samplesCount >= 10 && unlockedIndex < KEY_PROGRESSION.length - 1) {
+            // Unlock when the banked best smoothed speed reaches the goal (10+ timed hits)
+            if (unlockState.ready && unlockedIndex < KEY_PROGRESSION.length - 1) {
                 unlockedIndex++;
                 targetKeyBuffer = [];
                 populateJumpSelect();
