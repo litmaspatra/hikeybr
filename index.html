@@ -1408,8 +1408,8 @@
                     <span class="progress-stat" id="progress-stat-pct">0%</span>
                 </div>
                 <div class="confidence-hint">
-                    <span>⚡ Reach your speed goal on this key (10+ hits) to unlock the next key - one good run banks it.</span>
-                    <span id="lead-samples-status">Hits logged: 0 / 10</span>
+                    <span>⚡ Build 40 target hits across at least 2 completed lessons. Sustain your goal speed; new keys appear after the lesson.</span>
+                    <span id="lead-samples-status">Hits logged: 0 / 40</span>
                 </div>
             </div>
 
@@ -1458,7 +1458,7 @@
 
             <!-- Live Keystroke Hint Strip -->
             <div class="live-hint-strip" id="live-hint-strip">
-                <span>Next key: Press <kbd class="live-hint-key" id="live-hint-key">D</kbd> for <span id="live-hint-char" style="font-family:'Noto Sans Devanagari'; font-size:1.15rem; color:var(--accent);">क</span></span>
+                <span><span id="live-hint-prefix">Next key: Press </span><kbd class="live-hint-key" id="live-hint-key">D</kbd><span id="live-hint-for"> for </span><span id="live-hint-char" style="font-family:'Noto Sans Devanagari'; font-size:1.15rem; color:var(--accent);">क</span></span>
                 <span id="live-hint-detail" style="font-size:0.75rem; color:var(--text-faint);"></span>
             </div>
 
@@ -1897,6 +1897,9 @@
         const INITIAL_UNLOCKED_COUNT = 4;
         let unlockedIndex = INITIAL_UNLOCKED_COUNT - 1;
         let keyStats = {}; // { key: { hits: 0, errors: 0, ttt: 0, tttSamples: 0 } }
+        let pendingUnlockIndex = null;
+        let lessonCompleted = false;
+        let nextLessonTimer = null;
         let targetKeyBuffer = []; // Rolling sliding window of recent hits on target key
         let targetSpeedGoal = 25; // WPM required to advance
         let currentLessonText = ''; // Continuous string of ~25 words
@@ -2645,31 +2648,28 @@
             };
         }
 
-        // Keybr-parity unlock state: a key clears when its BANKED best smoothed
-        // speed reaches the goal (keybr's bestConfidence >= 1), after 10+ timed hits.
-        // Single-char keys use target-only EMA (targetTtt / bestTargetTtt);
-        // conjunct & Alt-code keys keep the rolling-buffer gate.
+        // Bank a sustained 12-hit average, not a lucky fast EMA dip.
+        // Forty target samples plus two finished lessons slow progression fairly.
         function currentUnlockState() {
             const item = KEY_PROGRESSION[unlockedIndex];
             if (!item) return { pct: 0, ready: false, samples: 0 };
             if (item.k.length !== 1 || item.conjunct || item.alt) {
                 const c = calculateConfidence();
-                return { pct: c.confidence, ready: c.confidence >= 100 && c.samplesCount >= 10, samples: c.samplesCount };
+                return { pct: c.confidence, ready: c.confidence >= 100 && c.samplesCount >= 10, samples: c.samplesCount, minimum: 10 };
             }
             const ks = keyStats[item.k] || {};
             const samples = ks.targetSamples || 0;
-            let liveConf = 0, bankConf = 0;
-            if (typeof ks.targetTtt === 'number' && ks.targetTtt > 0) {
-                liveConf = (12000 / targetSpeedGoal) / ks.targetTtt;
-                // Only bank once the EMA has real evidence; a single lucky
-                // fast hit must not clear the key.
-                if (samples >= 10) {
-                    if (typeof ks.bestTargetTtt !== 'number' || !ks.bestTargetTtt) ks.bestTargetTtt = ks.targetTtt;
-                    ks.bestTargetTtt = Math.min(ks.bestTargetTtt, ks.targetTtt);
-                    bankConf = (12000 / targetSpeedGoal) / ks.bestTargetTtt;
-                }
+            const recent = ks.targetRecent || [];
+            const targetMs = 12000 / targetSpeedGoal;
+            if (samples >= 40 && recent.length >= 12) {
+                const avg = recent.reduce((sum, ms) => sum + ms, 0) / recent.length;
+                const steady = recent.filter(ms => ms <= targetMs * 1.3).length >= 9;
+                if (steady) ks.sustainedBestTtt = Math.min(ks.sustainedBestTtt || Infinity, avg);
             }
-            return { pct: Math.min(100, Math.round(Math.max(liveConf, bankConf) * 100)), ready: bankConf >= 1 && samples >= 10, samples };
+            const bank = ks.sustainedBestTtt ? targetMs / ks.sustainedBestTtt : 0;
+            const live = ks.targetTtt ? targetMs / ks.targetTtt : 0;
+            const pct = Math.min(100, Math.round(Math.min(samples / 40, Math.max(live, bank)) * 100));
+            return { pct, ready: bank >= 1 && samples >= 40, samples, minimum: 40 };
         }
 
         function updateMasteryCard() {
@@ -2689,17 +2689,12 @@
             el.leadConsistency.textContent = `${consistency}%`;
             el.progressFill.style.width = `${unlockState.pct}%`;
             el.progressPct.textContent = `${unlockState.pct}%`;
-            el.leadSamplesStatus.textContent = `Hits logged: ${unlockState.samples} / 10`;
+            el.leadSamplesStatus.textContent = `Target hits: ${unlockState.samples} / ${unlockState.minimum || 40}`;
 
-            // Unlock when the banked best smoothed speed reaches the goal (10+ timed hits)
+            // Queue only. Never replace the lesson while it is being typed.
             if (unlockState.ready && unlockedIndex < KEY_PROGRESSION.length - 1) {
-                unlockedIndex++;
-                targetKeyBuffer = [];
-                populateJumpSelect();
-                saveStorage();
-                sound.unlock();
-                regenerateLesson();
-                return;
+                pendingUnlockIndex = unlockedIndex;
+                el.leadSamplesStatus.textContent += ' - goal reached; finish the lesson';
             }
 
             el.metricUnlocked.textContent = unlockedIndex + 1;
@@ -2954,6 +2949,8 @@
             if (el.textError) el.textError.textContent = '';
 
             // 3. Current character & Remaining text
+            if (document.getElementById('live-hint-prefix')) document.getElementById('live-hint-prefix').textContent = cursorIndex < targetKrutiText.length ? 'Next key: Press ' : '';
+            if (document.getElementById('live-hint-for')) document.getElementById('live-hint-for').textContent = cursorIndex < targetKrutiText.length ? ' for ' : ' ';
             if (cursorIndex < targetKrutiText.length) {
                 const currChar = targetKrutiText.charAt(cursorIndex);
                 el.textCurrent.textContent = currChar;
@@ -2997,20 +2994,45 @@
                     el.altHelperBar.classList.remove('active');
                 }
             } else {
-                el.liveHintKey.textContent = '↵';
+                el.liveHintKey.textContent = '✓';
                 el.liveHintChar.textContent = 'Lesson Complete!';
                 el.liveHintDetail.textContent = '';
                 el.altHelperBar.classList.remove('active');
                 updateKeyboardHighlights(null);
 
-                // 5. Lesson completed
-                sound.unlock();
-                saveStorage();
-                setTimeout(regenerateLesson, 280);
+                // Complete once, and introduce any queued key only afterward.
+                if (!lessonCompleted) {
+                    lessonCompleted = true;
+                    const item = KEY_PROGRESSION[unlockedIndex];
+                    const ks = keyStats[item.k];
+                    ks.targetLessons = (ks.targetLessons || 0) + 1;
+                    const state = currentUnlockState();
+                    if (state.ready) pendingUnlockIndex = unlockedIndex;
+                    const cleared = pendingUnlockIndex === unlockedIndex &&
+                        ks.targetLessons >= 2 && unlockedIndex < KEY_PROGRESSION.length - 1;
+                    if (cleared) {
+                        unlockedIndex++;
+                        pendingUnlockIndex = null;
+                        targetKeyBuffer = [];
+                        populateJumpSelect();
+                        updateAlphabetStrip();
+                        el.metricUnlocked.textContent = unlockedIndex + 1;
+                        el.leadSamplesStatus.textContent = 'Key cleared - next lesson starts shortly';
+                        el.liveHintChar.textContent = `Key cleared: ${item.h}!`;
+                        el.liveHintDetail.textContent = `Next lesson introduces ${KEY_PROGRESSION[unlockedIndex].h}`;
+                    }
+                    sound.unlock();
+                    saveStorage();
+                    nextLessonTimer = setTimeout(regenerateLesson, cleared ? 1500 : 700);
+                }
             }
         }
 
         function regenerateLesson() {
+            clearTimeout(nextLessonTimer);
+            nextLessonTimer = null;
+            lessonCompleted = false;
+            pendingUnlockIndex = null;
             currentLessonText = generateLessonText();
             targetKrutiText = unicodeToKrutiDev(currentLessonText);
             cursorIndex = 0;
@@ -3138,6 +3160,7 @@
                 targetStats.targetTtt = (targetStats.targetSamples || 0) === 0
                     ? latencyMs : 0.2 * latencyMs + 0.8 * targetStats.targetTtt;
                 targetStats.targetSamples = (targetStats.targetSamples || 0) + 1;
+                targetStats.targetRecent = (targetStats.targetRecent || []).concat(latencyMs).slice(-12);
             }
 
             cursorIndex++;
@@ -3170,7 +3193,7 @@
             saveStorage();
             updateDisplay();
             updateLiveStats();
-            updateMasteryCard();
+            if (!lessonCompleted) updateMasteryCard();
         }
 
         // 11. EVENT LISTENERS & LIFECYCLE
