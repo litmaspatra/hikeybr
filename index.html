@@ -1560,6 +1560,8 @@
         // ─────────────────────────────────────────────────────────────
         // 1. COMPLETE REMINGTON GAIL PROGRESSION & MAPPINGS
         // ─────────────────────────────────────────────────────────────
+        const NUMPAD_DIGIT_MAP = { Numpad0:'0', Numpad1:'1', Numpad2:'2', Numpad3:'3', Numpad4:'4', Numpad5:'5', Numpad6:'6', Numpad7:'7', Numpad8:'8', Numpad9:'9' };
+
         const KEY_PROGRESSION = [
             // Home Row
             { k: 'd',  h: 'क',  sh: 'क्', d: 'Ka',             finger: 'Left Middle'   },
@@ -2541,7 +2543,7 @@
             if (!currentItem) return;
 
             el.leadChar.textContent = currentItem.h;
-            el.leadKey.textContent = currentItem.alt ? `Alt Code: ${currentItem.alt}` : (currentItem.conjunct ? `Key: ${currentItem.h}` : `Key: ${currentItem.k.toUpperCase()}`);
+            el.leadKey.textContent = currentItem.alt ? `Alt Code: ${currentItem.alt}` : (currentItem.conjunct ? (currentItem.k === '#' ? 'Key: Shift + 3' : `Key: ${currentItem.h}`) : `Key: ${currentItem.k.toUpperCase()}`);
             el.leadFinger.style.display = showFingerHint ? 'block' : 'none';
             el.leadFinger.textContent = currentItem.alt ? `👉 ${currentItem.finger}` : `👉 ${currentItem.finger} finger`;
             el.leadGoalSpeed.textContent = `${targetSpeedGoal} WPM`;
