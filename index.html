@@ -1325,6 +1325,38 @@
 .ls-grid .ctrl-item{display:flex;flex-direction:column;align-items:stretch;gap:5px}
 .ls-grid .ctrl-select{width:100%}
 .ls-note{margin:8px 2px 0;font-size:.76rem;color:var(--text-dim)}
+
+/* Lessons panel (keybr-style) */
+.lesson-settings>summary{font-weight:700}
+.ls-tabs{display:flex;flex-wrap:wrap;gap:4px;margin-top:10px;border-bottom:1px solid var(--border)}
+.ls-tab{background:none;border:0;border-bottom:2px solid transparent;color:var(--text-dim);padding:8px 14px;cursor:pointer;font:inherit}
+.ls-tab.active{color:var(--text);border-bottom-color:var(--accent);font-weight:700}
+.ls-body{padding:6px 4px 12px;max-width:760px}
+.ls-body h4{margin:16px 0 6px;font-size:.78rem;letter-spacing:.04em;text-transform:uppercase;color:var(--text-dim)}
+.ls-row{display:flex;align-items:center;gap:12px;margin:8px 0;flex-wrap:wrap}
+.ls-row>label{flex:0 0 190px;color:var(--text)}
+.ls-row input[type=range]{flex:1 1 180px;min-width:120px;accent-color:var(--accent)}
+.ls-row .ctrl-select{flex:1 1 220px;max-width:420px}
+.ls-val{min-width:64px;color:var(--text-dim);font-variant-numeric:tabular-nums}
+.ls-check{display:flex;align-items:flex-start;gap:8px;margin:8px 0;color:var(--text)}
+.ls-radios{display:flex;flex-wrap:wrap;gap:6px 14px}
+.ls-radios label{display:flex;align-items:center;gap:5px}
+.ls-pane[hidden]{display:none}
+.ls-step{background:var(--surface);border:1px solid var(--border);color:var(--text);border-radius:6px;cursor:pointer;padding:2px 8px;margin-right:4px}
+.book-info{margin:6px 0 10px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;font-size:.82rem}
+.bi-title{font-weight:700;margin-bottom:3px}.bi-meta{color:var(--text-dim);line-height:1.5}
+.para-list{margin:4px 0 8px;font-size:.82rem;font-family:'Noto Sans Devanagari',sans-serif}
+.para-row{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text-dim);padding:2px 0}.para-row.cur{color:var(--text)}
+#custom-text{width:100%;box-sizing:border-box;background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:10px;font:inherit;font-family:'Noto Sans Devanagari',sans-serif}
+.lp-keys{display:flex;flex-wrap:wrap;gap:3px}
+.lp-key{min-width:26px;text-align:center;padding:3px 5px;border-radius:4px;font-size:.85rem;font-family:'Noto Sans Devanagari',sans-serif;background:var(--surface);color:var(--text-faint);border:1px solid var(--border)}
+.lp-key.on{background:rgba(34,197,94,.22);color:var(--text);border-color:rgba(34,197,94,.5)}
+.lp-key.cur{outline:2px solid var(--accent);font-weight:700}
+.lp-current{margin:8px 0 2px;font-size:.85rem}.lp-sample{font-family:'Noto Sans Devanagari',sans-serif;color:var(--text-dim);font-size:.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html.cur-box .text-current{background:transparent!important;box-shadow:none!important;outline:2px solid var(--accent);outline-offset:-1px}
+html.cur-line .text-current{background:transparent!important;box-shadow:inset 3px 0 0 var(--accent)!important}
+html.cur-underline .text-current{background:transparent!important;box-shadow:0 3px 0 var(--accent)!important}
+@media(max-width:600px){.ls-row>label{flex:1 1 100%}.ls-tab{padding:8px 9px;font-size:.85rem}}
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;700&display=swap" rel="stylesheet"></head>
 <body>
@@ -1376,52 +1408,56 @@
 
             <!-- Lesson settings (keybr-style: collapsed by default) -->
             <details class="lesson-settings" id="lesson-settings">
-                <summary>⚙ Lesson settings</summary>
-                <div class="ls-grid">
-                    <div class="ctrl-item">
-                        <label for="text-source-select">Text source</label>
-                        <select class="ctrl-select" id="text-source-select"></select>
-                    </div>
-                    <div class="ctrl-item">
-                        <label for="jump-select">Learning mode</label>
-                        <select class="ctrl-select" id="jump-select"></select>
-                    </div>
-                    <div class="ctrl-item">
-                        <label for="speed-goal-select">Goal speed (WPM to unlock)</label>
-                        <select class="ctrl-select" id="speed-goal-select">
-                            <option value="15">15 WPM (Beginner)</option>
-                            <option value="20">20 WPM (Intermediate)</option>
-                            <option value="25" selected>25 WPM</option>
-                            <option value="30">30 WPM</option>
-                            <option value="35">35 WPM (Advanced Typist)</option>
-                            <option value="40">40 WPM (Master)</option>
-                            <option value="50">50 WPM (Pro)</option>
-                            <option value="60">60 WPM (Expert)</option>
-                            <option value="80">80 WPM (Champion)</option>
-                            <option value="100">100 WPM (Ultimate)</option>
-                        </select>
-                    </div>
-                    <div class="ctrl-item">
-                        <label for="words-select">Words per lesson</label>
-                        <select class="ctrl-select" id="words-select">
-                            <option value="15">15 words</option>
-                            <option value="20">20 words</option>
-                            <option value="25" selected>25 words</option>
-                            <option value="35">35 words</option>
-                            <option value="50">50 words</option>
-                            <option value="75">75 words</option>
-                            <option value="100">100 words</option>
-                        </select>
-                    </div>
-                    <div class="ctrl-item">
-                        <label for="daily-goal-select-lesson">Daily goal</label>
-                        <select class="ctrl-select" id="daily-goal-select-lesson"><option value="10">10 minutes</option><option value="15">15 minutes</option><option value="30">30 minutes</option><option value="45">45 minutes</option><option value="60">60 minutes</option></select>
-                    </div>
+                <summary>⚙ Lessons</summary>
+                <div class="ls-tabs" role="tablist">
+                    <button type="button" class="ls-tab" data-lstab="words" role="tab">Guided lessons</button>
+                    <button type="button" class="ls-tab" data-lstab="books" role="tab">Books</button>
+                    <button type="button" class="ls-tab" data-lstab="custom" role="tab">Custom text</button>
                 </div>
-                <p class="ls-note" id="text-source-note">Adaptive words: every lesson is built from the keys you have unlocked.</p>
+                <div class="ls-body">
+                    <h4>Lesson options</h4>
+                    <div class="ls-row"><label for="speed-goal-select">Target typing speed</label><input type="range" id="speed-goal-select" min="10" max="100" step="5" value="25"><span class="ls-val" id="speed-goal-val">25.0 wpm</span></div>
+                    <div class="ls-pane" data-pane="words">
+                        <div class="ls-row"><label for="jump-select">Learning mode</label><select class="ctrl-select" id="jump-select"></select></div>
+                        <label class="ls-check"><input type="checkbox" id="opt-strict"> Unlock a next key only when the previous keys are also above the target speed</label>
+                        <div class="ls-row"><label for="opt-repeat">Repeat each word</label><input type="range" id="opt-repeat" min="1" max="5" step="1" value="1"><span class="ls-val" id="opt-repeat-val">1</span></div>
+                        <div class="ls-row"><label for="opt-punct">Add punctuation (।)</label><input type="range" id="opt-punct" min="0" max="100" step="10" value="0"><span class="ls-val" id="opt-punct-val">0%</span></div>
+                    </div>
+                    <div class="ls-pane" data-pane="books">
+                        <div class="ls-row"><label for="book-select">Book</label><select class="ctrl-select" id="book-select"></select></div>
+                        <div class="book-info" id="book-info"></div>
+                        <div class="ls-row"><label for="para-range">Paragraph</label><input type="range" id="para-range" min="1" max="1" step="1" value="1"><span class="ls-val"><button type="button" class="ls-step" id="para-prev" aria-label="Previous paragraph">◀</button><button type="button" class="ls-step" id="para-next" aria-label="Next paragraph">▶</button> <span id="para-val">#1</span></span></div>
+                        <div class="para-list" id="para-list"></div>
+                        <label class="ls-check"><input type="checkbox" id="opt-removepunct"> Remove punctuation characters</label>
+                    </div>
+                    <div class="ls-pane" data-pane="custom">
+                        <textarea id="custom-text" rows="4" placeholder="यहाँ अपना हिंदी पाठ चिपकाएँ (Paste your own Hindi text here). Words that cannot be typed on the Remington layout are skipped."></textarea>
+                        <label class="ls-check"><input type="checkbox" id="opt-removepunct2"> Remove punctuation characters</label>
+                    </div>
+                    <div class="ls-row"><label for="words-select">Words per lesson</label><select class="ctrl-select" id="words-select">
+                            <option value="15">15 words</option><option value="20">20 words</option><option value="25" selected>25 words</option><option value="35">35 words</option><option value="50">50 words</option><option value="75">75 words</option><option value="100">100 words</option></select></div>
+                    <div class="ls-row"><label for="daily-goal-select-lesson">Daily goal</label><select class="ctrl-select" id="daily-goal-select-lesson"><option value="10">10 minutes</option><option value="15">15 minutes</option><option value="30">30 minutes</option><option value="45">45 minutes</option><option value="60">60 minutes</option></select></div>
+
+                    <h4>Lesson preview</h4>
+                    <div class="lp-keys" id="lp-keys"></div>
+                    <div class="lp-current" id="lp-current"></div>
+                    <div class="lp-sample" id="lp-sample"></div>
+                    <p class="ls-note" id="text-source-note"></p>
+
+                    <h4>Typing options</h4>
+                    <label class="ls-check"><input type="checkbox" id="opt-stop"> Stop cursor on error</label>
+                    <label class="ls-check"><input type="checkbox" id="opt-skip"> Space skips words</label>
+
+                    <h4>Text appearance</h4>
+                    <div class="ls-row"><label for="opt-font">Font</label><select class="ctrl-select" id="opt-font"></select></div>
+                    <div class="ls-row"><label>Cursor shape</label><span class="ls-radios" id="opt-cursor"><label><input type="radio" name="cur" value="block"> Block</label><label><input type="radio" name="cur" value="box"> Box</label><label><input type="radio" name="cur" value="line"> Line</label><label><input type="radio" name="cur" value="underline"> Underline</label></span></div>
+                    <div class="ls-row"><label>Play sounds</label><span class="ls-radios" id="opt-sounds"><label><input type="radio" name="snd" value="none"> No sounds</label><label><input type="radio" name="snd" value="error"> Error sounds only</label><label><input type="radio" name="snd" value="key"> Key sounds only</label><label><input type="radio" name="snd" value="all"> All sounds</label></span></div>
+                    <div class="ls-row"><label for="opt-volume">Volume</label><input type="range" id="opt-volume" min="0" max="100" step="5" value="70"><span class="ls-val" id="opt-volume-val">70%</span></div>
+                    <div class="ls-row"><label for="opt-theme">Sound theme</label><select class="ctrl-select" id="opt-theme"><option value="mechanical">Mechanical</option><option value="soft">Soft</option><option value="typewriter">Typewriter</option></select></div>
+                </div>
             </details>
 
-<div class="practice-live"><span id="practice-speed">0.0 WPM</span><span id="practice-accuracy">100% accuracy</span><button class="btn-modal cancel" id="pause-btn">Pause</button><span class="mobile-notice">Use a physical keyboard for Remington practice.</span></div>
+<div class="practice-live"><span id="practice-speed">0.0 WPM</span><span id="practice-accuracy">100% accuracy</span><span class="mobile-notice">Use a physical keyboard for Remington practice.</span></div>
             <div class="insight-row" style="font-size:.75rem;color:var(--text-dim)"><span>Lesson completion: <strong id="lesson-completion-pct">0%</strong></span><div class="goal-track"><div class="goal-fill" id="lesson-completion-fill"></div></div></div>
             <!-- Keybr Speed-Maintenance & Confidence Card -->
             <div class="target-card">
@@ -1984,6 +2020,8 @@
         let targetKeyBuffer = []; // Rolling sliding window of recent hits on target key
         let targetSpeedGoal = 25; // WPM required to advance
         let textSource='words', bookPos={};
+        const DEFAULT_OPTS={strict:false,repeat:1,punct:0,removePunct:false,stopOnError:true,spaceSkips:false,cursor:'block',soundMode:'all',volume:70,soundTheme:'mechanical',lastBook:'',customText:''};
+        let opts=Object.assign({},DEFAULT_OPTS);
         let currentLessonText = ''; // Continuous string of ~25 words
         let targetKrutiText = ''; // Keystroke sequence in KrutiDev 010 mapping
         let cursorIndex = 0; // Current typing position in targetKrutiText
@@ -2074,6 +2112,8 @@
         // ─────────────────────────────────────────────────────────────
         function playTone(frequency, duration, type = 'sine', volume = 0.14) {
             if (!soundEnabled) return;
+            volume = volume * (opts.volume/70);
+            if (volume<=0) return;
             try {
                 if (!audioCtx) {
                     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -2095,8 +2135,8 @@
         }
 
         const sound = {
-            click: () => playTone(540, 0.035, 'triangle', 0.12),
-            error: () => playTone(160, 0.12, 'sawtooth', 0.16),
+            click: () => { if(opts.soundMode==='all'||opts.soundMode==='key'){const t={mechanical:['triangle',540],soft:['sine',420],typewriter:['square',300]}[opts.soundTheme]||['triangle',540];playTone(t[1], 0.035, t[0], t[0]==='square'?0.07:0.12);} },
+            error: () => { if(opts.soundMode==='all'||opts.soundMode==='error')playTone(160, 0.12, 'sawtooth', 0.16); },
             unlock: () => {
                 const notes = [440, 554, 659, 880];
                 notes.forEach((f, i) => setTimeout(() => playTone(f, 0.12, 'sine', 0.15), i * 90));
@@ -2117,7 +2157,7 @@
             try {
                 const payload = {
                     unlockedIndex, highestUnlocked, hiddenWords,
-                    targetSpeedGoal, textSource, bookPos, wordsPerLesson:el.wordsSelect&&el.wordsSelect.value,
+                    targetSpeedGoal, textSource, bookPos, opts, wordsPerLesson:el.wordsSelect&&el.wordsSelect.value,
                     totalTypedCount,
                     totalErrorsCount,
                     keyStats, lessonHistory, keyLearning, dailyPractice, accuracyStreak, dailyGoalMinutes, lessonStyle, keyFont, displayFont, measurementVersion:2,
@@ -2142,7 +2182,8 @@
                 unlockedIndex=highestUnlocked; // Recover old saves stuck on a manually selected starter key.
                 hiddenWords=Array.isArray(data.hiddenWords)?data.hiddenWords:[];
                 bookPos=(data.bookPos&&typeof data.bookPos==='object')?data.bookPos:{};
-                textSource=(typeof data.textSource==='string'&&(data.textSource==='words'||findBook(data.textSource)))?data.textSource:'words';
+                if(data.opts&&typeof data.opts==='object')opts=Object.assign({},DEFAULT_OPTS,data.opts);
+                textSource=(typeof data.textSource==='string'&&(data.textSource==='words'||(data.textSource==='custom'&&opts.customText.trim())||findBook(data.textSource)))?data.textSource:'words';
                 if(el.wordsSelect&&data.wordsPerLesson&&[...el.wordsSelect.options].some(o=>o.value===String(data.wordsPerLesson)))el.wordsSelect.value=String(data.wordsPerLesson);
                 if (typeof data.targetSpeedGoal === 'number') {
                     targetSpeedGoal = data.targetSpeedGoal;
@@ -2753,6 +2794,12 @@
 
         // Readiness banks a robust completed-lesson mean, not an EMA dragged by old lessons.
         // Ten clean timings in one accurate lesson prevent a lucky individual hit unlocking.
+        function keyAboveTarget(item){
+            const st=keyStats[item.k]||{},ms=12000/targetSpeedGoal;
+            if(!st.accurateBest&&!st.ttt)return true; // no timing data yet: not evidence of being slow
+            return (st.accurateBest&&st.accurateBest<=ms)||(st.ttt&&st.ttt<=ms);
+        }
+        function previousKeysAboveTarget(){return KEY_PROGRESSION.slice(0,unlockedIndex).every(keyAboveTarget);}
         function currentUnlockState() {
             const item=KEY_PROGRESSION[unlockedIndex];
             if(!item)return {pct:0,ready:false,samples:0,minimum:10};
@@ -2762,9 +2809,10 @@
             const starterReady=unlockedIndex>=INITIAL_UNLOCKED_COUNT||KEY_PROGRESSION.slice(0,INITIAL_UNLOCKED_COUNT).every(x=>{
                 const stats=keyStats[x.k];return (stats.modelSamples||0)>=10&&(stats.lastAccuracy||0)>=95&&stats.accurateBest&&stats.accurateBest<=targetMs;
             });
-            const ready=bank>=1&&samples>=10&&recentAccuracy&&starterReady;
+            const strictOk=!opts.strict||previousKeysAboveTarget();
+            const ready=bank>=1&&samples>=10&&recentAccuracy&&starterReady&&strictOk;
             const pct=ready?100:Math.min(99,Math.round(Math.min(samples/10,bank)*100));
-            return {pct,ready,samples,minimum:10,starterReady,bank,recentAccuracy};
+            return {pct,ready,samples,minimum:10,starterReady,bank,recentAccuracy,strictOk};
         }
 
         function updateMasteryCard() {
@@ -2776,6 +2824,7 @@
             el.leadFinger.style.display = showFingerHint ? 'block' : 'none';
             el.leadFinger.textContent = currentItem.alt ? `👉 ${currentItem.finger}` : `👉 ${currentItem.finger} finger`;
             el.leadGoalSpeed.textContent = `${targetSpeedGoal} WPM`;
+            { const v=document.getElementById('speed-goal-val'); if(v)v.textContent=targetSpeedGoal.toFixed(1)+' wpm'; if(el.speedGoalSelect&&el.speedGoalSelect.value!==String(targetSpeedGoal))el.speedGoalSelect.value=targetSpeedGoal; }
 
             const { curSpeed, consistency } = calculateConfidence();
             const unlockState = currentUnlockState();
@@ -2803,6 +2852,7 @@
                 if((current.recentLessonAccuracy||current.lastAccuracy||0)<95)el.leadSamplesStatus.textContent+=' · need 95% lesson accuracy';
                 else if((current.accurateBest||Infinity)>12000/targetSpeedGoal)el.leadSamplesStatus.textContent+=' · best '+(current.accurateBest?12000/current.accurateBest:0).toFixed(1)+' / '+targetSpeedGoal+' WPM goal';
                 else if(!unlockState.starterReady)el.leadSamplesStatus.textContent+=' · calibrating starter keys';
+                else if(!unlockState.strictOk)el.leadSamplesStatus.textContent+=' · earlier keys must also reach the target speed';
             }
 
             // Keep the per-key confidence heat map live as stats change
@@ -2823,7 +2873,7 @@
             if(starter&&starter.k!==KEY_PROGRESSION[unlockedIndex].k)return starter;
             return KEY_PROGRESSION.slice(0, unlockedIndex).filter(item => {
                 const stats = keyStats[item.k];
-                return stats && (stats.tttSamples || 0) >= 12 && stats.ttt > targetMs / 0.8;
+                return stats && (stats.tttSamples || 0) >= 12 && stats.ttt > (opts.strict ? targetMs : targetMs / 0.8);
             }).sort((a, b) => keyStats[b.k].ttt - keyStats[a.k].ttt)[0] || null;
         }
 
@@ -3093,52 +3143,137 @@
         // Book and poem text (public-domain texts in books.js). Lessons are read in order
         // and the position is remembered, like keybr's book lessons. Free practice: no unlocks.
         const bookWordCache={};
-        function findBook(id){return (window.HIKEYBR_BOOKS||[]).find(b=>b.id===id);}
-        function bookWords(book){
-            if(bookWordCache[book.id])return bookWordCache[book.id];
+        const PUNCT_RE=/[।॥,;:!?"'“”‘’()\[\]\-–—.…॰]/g;
+        function findBook(id){
+            if(id==='custom')return opts.customText.trim()?{id:'custom',title:'Custom text',author:'You',kind:'custom',lines:opts.customText.split(/\n+/).filter(l=>l.trim())}:null;
+            return (window.HIKEYBR_BOOKS||[]).find(b=>b.id===id);
+        }
+        // Paragraphs of typable words (Unicode) for a book, honoring "remove punctuation".
+        function bookParagraphs(book){
+            const key=book.id+(opts.removePunct?':np':':p')+(book.id==='custom'?':'+opts.customText.length:'');
+            if(bookWordCache[key])return bookWordCache[key];
             const out=[];
-            for(const line of book.lines)for(const w of line.split(' ')){
-                if(!w||!isSuitableWord(w))continue;
-                const seq=unicodeToKrutiDev(w);
-                if(/[\u0900-\u097f]/.test(seq)||!seq.length)continue;
-                out.push(w);
+            for(const line of book.lines){
+                const ws=[];
+                for(let w of line.split(/\s+/)){
+                    if(opts.removePunct)w=w.replace(PUNCT_RE,'');
+                    if(!w||!isSuitableWord(w))continue;
+                    const seq=unicodeToKrutiDev(w);
+                    if(/[\u0900-\u097f]/.test(seq)||!seq.length)continue;
+                    ws.push(w);
+                }
+                if(ws.length)out.push(ws);
             }
-            return bookWordCache[book.id]=out;
+            return bookWordCache[key]=out;
+        }
+        function bookStats(book){
+            const paras=bookParagraphs(book),all=paras.flat();
+            const chars=all.reduce((n,w)=>n+[...w].length,0);
+            return {paragraphs:paras.length,words:all.length,unique:new Set(all).size,chars,avg:all.length?chars/all.length:0};
         }
         function bookLessonText(book,count){
-            const words=bookWords(book);
-            if(!words.length)return '';
-            let pos=Number.isInteger(bookPos[book.id])?bookPos[book.id]%words.length:0;
-            const out=[];
-            for(let i=0;i<count;i++)out.push(words[(pos+i)%words.length]);
-            bookPos[book.id]=(pos+count)%words.length;
+            const paras=bookParagraphs(book);
+            if(!paras.length)return '';
+            let pos=Number.isInteger(bookPos[book.id])?((bookPos[book.id]%paras.length)+paras.length)%paras.length:0;
+            const out=[];let n=0,used=0;
+            while(out.length<count&&used<paras.length){
+                out.push(...paras[(pos+n)%paras.length]);n++;used++;
+            }
+            if(out.length>count*2)out.length=count*2;
+            bookPos[book.id]=(pos+n)%paras.length;
+            lastLessonParaStart=pos;
             const st=document.getElementById('word-pool-status');
-            if(st)st.textContent=`${book.title} · ${book.author} · word ${pos+1}–${pos+count} of ${words.length.toLocaleString()}`;
+            if(st)st.textContent=`${book.title} · ${book.author} · paragraph ${pos+1}${n>1?'–'+(pos+n):''} of ${paras.length.toLocaleString()}`;
             return out.join(' ');
         }
+        let lastLessonParaStart=0;
+        let forceTab=null;
+        function currentTab(){if(forceTab)return forceTab;return textSource==='words'?'words':(textSource==='custom'?'custom':'books');}
         function populateTextSources(){
-            const sel=document.getElementById('text-source-select');if(!sel)return;
-            sel.replaceChildren(new Option('Adaptive Hindi words (unlock keys)','words'));
+            const sel=document.getElementById('book-select');if(!sel)return;
+            sel.replaceChildren();
             const groups=[['novel','Novels'],['story','Stories'],['poem','Poems and dohas']];
             for(const [kind,label] of groups){
                 const bs=(window.HIKEYBR_BOOKS||[]).filter(b=>b.kind===kind);if(!bs.length)continue;
                 const og=document.createElement('optgroup');og.label=label;
                 bs.forEach(b=>og.appendChild(new Option(`${b.title} - ${b.author}`,b.id)));sel.appendChild(og);
             }
-            sel.value=textSource;
-            updateTextSourceNote();
+            const books=window.HIKEYBR_BOOKS||[];
+            if(!findBook(opts.lastBook)||opts.lastBook==='custom')opts.lastBook=books[0]?books[0].id:'';
+            if(textSource!=='words'&&textSource!=='custom'&&findBook(textSource))opts.lastBook=textSource;
+            sel.value=opts.lastBook;
+            syncSettingsUI();
+        }
+        function syncSettingsUI(){
+            const $=id=>document.getElementById(id);
+            const tab=currentTab();
+            document.querySelectorAll('.ls-tab').forEach(t=>t.classList.toggle('active',t.dataset.lstab===tab));
+            document.querySelectorAll('.ls-pane').forEach(p=>p.hidden=p.dataset.pane!==tab);
+            $('opt-strict').checked=!!opts.strict;
+            $('opt-repeat').value=opts.repeat;$('opt-repeat-val').textContent=opts.repeat;
+            $('opt-punct').value=opts.punct;$('opt-punct-val').textContent=opts.punct+'%';
+            $('opt-removepunct').checked=$('opt-removepunct2').checked=!!opts.removePunct;
+            $('opt-stop').checked=!!opts.stopOnError;$('opt-skip').checked=!!opts.spaceSkips;
+            document.querySelectorAll('input[name=cur]').forEach(r=>r.checked=r.value===opts.cursor);
+            document.querySelectorAll('input[name=snd]').forEach(r=>r.checked=r.value===opts.soundMode);
+            $('opt-volume').value=opts.volume;$('opt-volume-val').textContent=opts.volume+'%';
+            $('opt-theme').value=opts.soundTheme;
+            if($('custom-text')&&$('custom-text').value!==opts.customText)$('custom-text').value=opts.customText;
+            const of=$('opt-font');
+            if(of&&!of.options.length){Object.entries(FONT_REGISTRY).forEach(([k,f])=>of.appendChild(new Option(f.label,k)));}
+            if(of)of.value=displayFont;
+            ['cur-block','cur-box','cur-line','cur-underline'].forEach(c=>document.documentElement.classList.remove(c));
+            document.documentElement.classList.add('cur-'+opts.cursor);
+            updateTextSourceNote();updateBookPanel();
+        }
+        function updateBookPanel(){
+            const book=currentTab()==='books'?findBook(textSource):null;
+            const info=document.getElementById('book-info'),list=document.getElementById('para-list'),range=document.getElementById('para-range');
+            if(!info)return;
+            if(!book){info.replaceChildren();list.replaceChildren();return;}
+            const st=bookStats(book),paras=bookParagraphs(book);
+            info.innerHTML='';
+            const t=document.createElement('div');t.className='bi-title';t.textContent=book.title+' - '+book.author;
+            const m=document.createElement('div');m.className='bi-meta';
+            m.textContent=`Paragraphs: ${st.paragraphs.toLocaleString()} · All words: ${st.words.toLocaleString()} · Unique words: ${st.unique.toLocaleString()} · Characters: ${st.chars.toLocaleString()} · Average word length: ${st.avg.toFixed(2)}`;
+            info.append(t,m);
+            range.max=Math.max(1,st.paragraphs);
+            const cur=Number.isInteger(bookPos[book.id])?bookPos[book.id]:0;
+            const shown=(lastLessonParaStart!=null&&currentLessonText)?lastLessonParaStart:cur;
+            range.value=shown+1;
+            document.getElementById('para-val').textContent='#'+(shown+1);
+            list.replaceChildren();
+            for(let i=shown;i<Math.min(paras.length,shown+3);i++){
+                const row=document.createElement('div');row.className='para-row'+(i===shown?' cur':'');
+                row.textContent=`#${i+1} ${i===shown?'▶ ':''}${paras[i].join(' ')}`;list.appendChild(row);
+            }
+        }
+        function updateLessonPreview(){
+            const keys=document.getElementById('lp-keys');if(!keys)return;
+            keys.replaceChildren();
+            const free=textSource!=='words';
+            KEY_PROGRESSION.forEach((item,idx)=>{
+                const c=document.createElement('span');
+                c.className='lp-key'+((free||idx<=highestUnlocked)?' on':'')+(!free&&idx===unlockedIndex?' cur':'');
+                c.textContent=item.h;c.title=item.d||'';keys.appendChild(c);
+            });
+            const cur=document.getElementById('lp-current');
+            const item=KEY_PROGRESSION[unlockedIndex];
+            cur.textContent=free?'All keys are unlocked (practice text, no unlocking).':'Current key: '+item.h+' ('+(item.alt?'Alt+'+item.alt:(item.conjunct?item.h:item.k.toUpperCase()))+')';
+            const smp=document.getElementById('lp-sample');
+            smp.textContent=(currentLessonText||'').split(' ').slice(0,8).join(' ')+' …';
         }
         function updateTextSourceNote(){
             const note=document.getElementById('text-source-note');if(!note)return;
             const b=textSource==='words'?null:findBook(textSource);
             document.documentElement.classList.toggle('book-mode',!!b);
-            note.textContent=b?`${b.title} by ${b.author} (d. ${b.died}, public domain). Practice mode: lessons follow the text in order, key unlocking is paused. Source: ${b.source}`:'Adaptive words: every lesson is built from the keys you have unlocked.';
+            note.textContent=b?(b.id==='custom'?'Custom text: lessons follow your text in order. Key unlocking is paused.':`${b.title} by ${b.author} (d. ${b.died}, public domain). Practice mode: lessons follow the text in order, key unlocking is paused. Source: ${b.source}`):'Guided lessons: every lesson is built from the keys you have unlocked.';
         }
         function generateLessonText() {
-            if(textSource!=='words'){const book=findBook(textSource);if(book){const t=bookLessonText(book,parseInt(el.wordsSelect.value,10)||25);if(t)return t;}textSource='words';}
+            if(textSource!=='words'){const book=findBook(textSource);if(book){const t=bookLessonText(book,parseInt(el.wordsSelect.value,10)||25);if(t)return t;}textSource='words';syncSettingsUI();}
             const unlockedItems = KEY_PROGRESSION.slice(0, highestUnlocked + 1);
             const activeItem = KEY_PROGRESSION[unlockedIndex];
-            const wordCount = parseInt(el.wordsSelect.value, 10) || 25;
+            const wordCount = Math.max(1,Math.ceil((parseInt(el.wordsSelect.value, 10) || 25)/Math.max(1,opts.repeat)));
 
             // BUG 4 FIX: Keystroke-based eligibility check
             const SHIFT_BASE = { '~':'`', '!':'1', '@':'2', '#':'3', '$':'4', '%':'5', '^':'6', '&':'7', '*':'8', '(':'9', ')':'0', '_':'-', '+':'=', '{':'[', '}':']', '|':'\\', ':':';', '"':"'", '<':',', '>':'.', '?':'/' };
@@ -3227,6 +3362,8 @@
                 [words[i], words[j]] = [words[j], words[i]];
             }
             recentLessonWords=recentLessonWords.concat(words).slice(-150);
+            if(opts.repeat>1){const r=[];words.forEach(w=>{for(let i=0;i<opts.repeat;i++)r.push(w);});words.length=0;words.push(...r);}
+            if(opts.punct>0&&unlockedKeySet.has('a')){for(let i=0;i<words.length;i++)if(Math.random()*100<opts.punct&&!words[i].includes('।'))words[i]+='।';}
             document.getElementById('word-pool-status').textContent=`${focusedPool.length.toLocaleString()} target words / ${eligibleRealWords.length.toLocaleString()} usable at this level / ${encodedWordBank.length.toLocaleString()} total`+(mixedStarters?' · Mixed starter practice: क, ा, ि, र.':focusedPool.length===0?' · New glyph plus unlocked-word practice.':focusedPool.length<wordCount?' · Small target pool: some repetition needed.':'');
             return words.join(' ');
         }
@@ -3356,7 +3493,6 @@
             lessonCompleted = false;
             pausedAt=null;pausedTotal=0;lessonEndedAt=null;
             document.getElementById('lesson-result').hidden=true;
-            document.getElementById('pause-btn').textContent='Pause';
             pendingUnlockIndex = null;
             lessonKeyTimes = {}; measurementEvents=[]; previousAttemptWrong=false; lessonActiveSeconds = 0; activityAt = null;
             currentLessonText = generateLessonText();
@@ -3372,16 +3508,17 @@
             updateAlphabetStrip();
             updateMasteryCard();
             updateLiveStats();
+            updateLessonPreview();updateBookPanel();
         }
 
         // ─────────────────────────────────────────────────────────────
         // 10. TYPING INPUT ENGINE (STRICT ERROR BLOCKING & METRICS)
         // ─────────────────────────────────────────────────────────────
         function lessonElapsed(){return sessionStartTime?Math.max(0,(lessonEndedAt||pausedAt||Date.now())-sessionStartTime-pausedTotal):0;}
-        function pauseLesson(){if(sessionStartTime&&!lessonCompleted&&!pausedAt){pausedAt=Date.now();activityAt=null;lastKeystrokeTime=null;}document.getElementById('pause-btn').textContent=pausedAt?'Resume':'Pause';}
-        function resumeLesson(){if(pausedAt){pausedTotal+=Date.now()-pausedAt;pausedAt=null;lastKeystrokeTime=null;activityAt=null;}document.getElementById('pause-btn').textContent='Pause';el.hiddenInput.focus();}
+        function pauseLesson(){if(sessionStartTime&&!lessonCompleted&&!pausedAt){pausedAt=Date.now();activityAt=null;lastKeystrokeTime=null;}}
+        function resumeLesson(){if(pausedAt){pausedTotal+=Date.now()-pausedAt;pausedAt=null;lastKeystrokeTime=null;activityAt=null;}el.hiddenInput.focus();}
         function handleKeystroke(keyString) {
-            if(pausedAt)return;
+            if(pausedAt)resumeLesson();
             if (cursorIndex >= targetKrutiText.length) return;
 
             const expected = targetKrutiText.charAt(cursorIndex);
@@ -3410,6 +3547,13 @@
             // STRICT ERROR BLOCKING:
             // If pressed key does NOT match expected, DO NOT ADVANCE!
             // ─────────────────────────────────────────────────────────
+            if (opts.spaceSkips && keyString === ' ' && expected !== ' ') {
+                let j = targetKrutiText.indexOf(' ', cursorIndex);
+                cursorIndex = j < 0 ? targetKrutiText.length : j + 1;
+                rawKeys.push(' ');
+                updateDisplay(); updateLiveStats();
+                return;
+            }
             if (keyString !== expected) {
                 previousAttemptWrong=true;
                 sound.error();
@@ -3463,9 +3607,10 @@
                     }, 220);
                 }
 
+                if (!opts.stopOnError) { cursorIndex++; rawKeys.push(keyString); updateDisplay(); }
                 updateLiveStats();
                 updateMasteryCard();
-                return; // STRICT RETURN! CURSOR DOES NOT ADVANCE!
+                return; // with 'Stop cursor on error' (default) the cursor does not advance
             }
 
             // ─────────────────────────────────────────────────────────
@@ -3630,8 +3775,7 @@
 
         window.addEventListener('blur',pauseLesson);
         document.addEventListener('visibilitychange',()=>{if(document.hidden)pauseLesson();});
-        document.getElementById('pause-btn').onclick=()=>pausedAt?resumeLesson():pauseLesson();
-        document.getElementById('continue-btn').onclick=()=>{regenerateLesson();el.hiddenInput.focus();};
+                document.getElementById('continue-btn').onclick=()=>{regenerateLesson();el.hiddenInput.focus();};
         document.addEventListener('keydown',e=>{if(e.key==='Enter'&&lessonCompleted&&document.getElementById('panel-practice').classList.contains('active')){e.preventDefault();document.getElementById('continue-btn').click();}});
         // Navigation Tabs switching
         document.querySelectorAll('.nav-tab').forEach(tab => {
@@ -3695,10 +3839,42 @@
         });
 
         el.wordsSelect.addEventListener('change', ()=>{saveStorage();regenerateLesson();});
-        document.getElementById('text-source-select').addEventListener('change', e=>{
-            textSource=e.target.value;updateTextSourceNote();saveStorage();regenerateLesson();
-            setTimeout(()=>el.hiddenInput.focus(),60);
-        });
+        // ---- Lessons panel (keybr-style) ----
+        const $id=id=>document.getElementById(id);
+        const refocus=()=>setTimeout(()=>el.hiddenInput.focus(),60);
+        const applyOpts=(regen)=>{saveStorage();syncSettingsUI();if(regen)regenerateLesson();};
+        document.querySelectorAll('.ls-tab').forEach(t=>t.addEventListener('click',()=>{
+            const tab=t.dataset.lstab;
+            if(tab==='words')textSource='words';
+            else if(tab==='books')textSource=opts.lastBook||((window.HIKEYBR_BOOKS||[])[0]||{}).id||'words';
+            else textSource=opts.customText.trim()?'custom':'words';
+            forceTab=(tab==='custom'&&!opts.customText.trim())?'custom':null;
+            saveStorage();syncSettingsUI();regenerateLesson();
+            if(forceTab)$id('custom-text').focus();else refocus();
+        }));
+        $id('book-select').addEventListener('change',e=>{opts.lastBook=e.target.value;textSource=e.target.value;applyOpts(true);refocus();});
+        $id('para-range').addEventListener('change',e=>{const b=findBook(textSource);if(!b)return;bookPos[b.id]=parseInt(e.target.value,10)-1;applyOpts(true);refocus();});
+        $id('para-range').addEventListener('input',e=>{$id('para-val').textContent='#'+e.target.value;});
+        const stepPara=d=>{const b=findBook(textSource);if(!b)return;const n=bookParagraphs(b).length;if(!n)return;bookPos[b.id]=(((lastLessonParaStart+d)%n)+n)%n;applyOpts(true);refocus();};
+        $id('para-prev').onclick=()=>stepPara(-1);$id('para-next').onclick=()=>stepPara(1);
+        $id('opt-strict').onchange=e=>{opts.strict=e.target.checked;targetKeyBuffer=[];applyOpts(true);updateMasteryCard();};
+        $id('opt-repeat').oninput=e=>{opts.repeat=parseInt(e.target.value,10);$id('opt-repeat-val').textContent=opts.repeat;};
+        $id('opt-repeat').onchange=()=>{applyOpts(true);refocus();};
+        $id('opt-punct').oninput=e=>{opts.punct=parseInt(e.target.value,10);$id('opt-punct-val').textContent=opts.punct+'%';};
+        $id('opt-punct').onchange=()=>{applyOpts(true);refocus();};
+        ['opt-removepunct','opt-removepunct2'].forEach(id=>$id(id).onchange=e=>{opts.removePunct=e.target.checked;applyOpts(true);});
+        $id('opt-stop').onchange=e=>{opts.stopOnError=e.target.checked;applyOpts(false);};
+        $id('opt-skip').onchange=e=>{opts.spaceSkips=e.target.checked;applyOpts(false);};
+        document.querySelectorAll('input[name=cur]').forEach(r=>r.onchange=()=>{opts.cursor=r.value;applyOpts(false);});
+        document.querySelectorAll('input[name=snd]').forEach(r=>r.onchange=()=>{opts.soundMode=r.value;applyOpts(false);sound.click();});
+        $id('opt-volume').oninput=e=>{opts.volume=parseInt(e.target.value,10);$id('opt-volume-val').textContent=opts.volume+'%';};
+        $id('opt-volume').onchange=()=>{saveStorage();sound.click();};
+        $id('opt-theme').onchange=e=>{opts.soundTheme=e.target.value;applyOpts(false);sound.click();};
+        $id('opt-font').onchange=e=>{displayFont=e.target.value;if(document.getElementById('display-font-select'))document.getElementById('display-font-select').value=displayFont;saveStorage();applyDisplayPreferences();regenerateLesson();};
+        $id('custom-text').onchange=e=>{opts.customText=e.target.value;Object.keys(bookWordCache).forEach(k=>{if(k.startsWith('custom'))delete bookWordCache[k];});
+            textSource=opts.customText.trim()?'custom':'words';forceTab=opts.customText.trim()?null:'custom';applyOpts(true);};
+        el.speedGoalSelect.addEventListener('input',e=>{const v=parseInt(e.target.value,10);const l=$id('speed-goal-val');if(l)l.textContent=v.toFixed(1)+' wpm';});
+
         const dgl=document.getElementById('daily-goal-select-lesson');
         if(dgl){dgl.addEventListener('change',e=>{dailyGoalMinutes=Number(e.target.value);const d=document.getElementById('daily-goal-select');if(d)d.value=dailyGoalMinutes;saveStorage();updateInsights();});}
 
