@@ -71,3 +71,6 @@ HiKeybr is a standalone, single-page application with zero build tools or server
 | **ख** | `[` + `k` | `{` (`क्ष्`) | Right Pinky |
 | **ृ** | `` ` `` | `~` (`्`) | Left Pinky |
 | **त्र**| `=` | `+` (`़`) | Right Pinky |
+
+## Text sources
+Lesson settings (top of the Practice tab) include a text source: adaptive Hindi words (unlocks keys) or public-domain books and poems (Premchand, Kabir, Rahim, Tulsidas) from Hindi Wikisource, stored in `books.js`. Book lessons are free practice and do not unlock keys. Only texts whose authors died more than 60 years ago are included.
