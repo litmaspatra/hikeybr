@@ -1361,7 +1361,7 @@
             <div class="workspace-bar">
                 <div class="quick-controls">
                     <div class="ctrl-item">
-                        <label for="jump-select">Target Key:</label>
+                        <label for="jump-select">Learning mode:</label>
                         <select class="ctrl-select" id="jump-select"></select>
                     </div>
                     <div class="ctrl-item">
@@ -1732,7 +1732,7 @@
 
             // Special Keys
             { k: '[',  h: 'ख',  sh: 'क्ष', d: 'Kha / Ksha',     finger: 'Right Pinky'   },
-            { k: ']',  h: 'द्व', sh: 'द्व', d: 'Dva conjunct',   finger: 'Right Pinky'   },
+            { k: ']',  h: 'द्व', sh: 'द्व', d: 'Dva conjunct (Shift + ])', finger: 'Right Pinky', conjunct: true },
             { k: '`',  h: 'ृ',  sh: '्',  d: 'Ri / Virama',    finger: 'Left Pinky'   },
             { k: '=',  h: 'त्र', sh: '़', d: 'Tra / Nukta',    finger: 'Right Pinky'   },
 
@@ -1946,6 +1946,7 @@
         // ─────────────────────────────────────────────────────────────
         const INITIAL_UNLOCKED_COUNT = 4;
         let unlockedIndex = INITIAL_UNLOCKED_COUNT - 1;
+        let reviewMode=false; // Review is temporary. Reload always resumes automatic progression.
         let highestUnlocked=unlockedIndex, pausedAt=null, pausedTotal=0, lessonEndedAt=null, hiddenWords=[],lastHiddenWord=null;
         let keyStats = {}; // { key: { hits: 0, errors: 0, ttt: 0, tttSamples: 0 } }
         let pendingUnlockIndex = null;
@@ -2108,7 +2109,7 @@
                     unlockedIndex = Math.max(0, Math.min(data.unlockedIndex, KEY_PROGRESSION.length - 1));
                 }
                 highestUnlocked=Math.max(INITIAL_UNLOCKED_COUNT-1,Math.min(69,data.highestUnlocked??unlockedIndex));
-                unlockedIndex=Math.min(unlockedIndex,highestUnlocked);
+                unlockedIndex=highestUnlocked; // Recover old saves stuck on a manually selected starter key.
                 hiddenWords=Array.isArray(data.hiddenWords)?data.hiddenWords:[];
                 if (typeof data.targetSpeedGoal === 'number') {
                     targetSpeedGoal = data.targetSpeedGoal;
@@ -2647,7 +2648,7 @@
         }
 
         function updateKeyboardHighlights(hintInfo) {
-            const unlockedSet = new Set(KEY_PROGRESSION.slice(0, unlockedIndex + 1).map(x => x.k.toLowerCase()));
+            const unlockedSet = new Set(KEY_PROGRESSION.slice(0, highestUnlocked + 1).map(x => x.k.toLowerCase()));
 
             keyDOMMap.forEach((keyEl, k) => {
                 keyEl.classList.remove('target', 'shift-needed', 'unlocked', 'heat-1', 'heat-2', 'heat-3');
@@ -2753,15 +2754,15 @@
             el.leadSamplesStatus.textContent = `Clean timings: ${unlockState.samples} / ${unlockState.minimum || 10} (updated at lesson end)`;
 
             // Queue only. Never replace the lesson while it is being typed.
-            if (unlockState.ready && unlockedIndex < KEY_PROGRESSION.length - 1) {
+            if (!reviewMode && unlockState.ready && unlockedIndex < KEY_PROGRESSION.length - 1) {
                 pendingUnlockIndex = unlockedIndex;
                 el.leadSamplesStatus.textContent += ' - goal reached; finish the lesson';
             }
 
-            el.metricUnlocked.textContent = unlockedIndex + 1;
+            el.metricUnlocked.textContent = highestUnlocked + 1;
             if (document.getElementById('metric-total-keys')) document.getElementById('metric-total-keys').textContent = KEY_PROGRESSION.length;
             if (document.getElementById('total-keys-header')) document.getElementById('total-keys-header').textContent = KEY_PROGRESSION.length;
-            el.jumpSelect.value = unlockedIndex;
+            el.jumpSelect.value = reviewMode ? String(unlockedIndex) : 'auto';
             const weak = reviewKey();
             if (weak && !lessonCompleted) el.leadSamplesStatus.textContent += ` - practice focus: ${weak.h}`;
             if(!unlockState.ready){
@@ -2834,6 +2835,7 @@
 
                 badge.addEventListener('click', () => {
                     if (idx <= highestUnlocked) {
+                        reviewMode = idx !== highestUnlocked;
                         unlockedIndex = idx;
                         targetKeyBuffer = [];
                         populateJumpSelect();
@@ -2845,7 +2847,7 @@
                 el.alphabetContainer.appendChild(badge);
             });
 
-            el.progressionSummary.textContent = `${highestUnlocked+1} keys available · reviewing ${unlockedIndex+1}`;
+            el.progressionSummary.textContent = `${highestUnlocked+1} keys available · ${reviewMode ? "reviewing key "+(unlockedIndex+1) : "automatic progression"}`;
         }
 
         function applyDisplayPreferences() {
@@ -2863,9 +2865,9 @@
            First trigger has no fabricated 400ms sample. Correct key timing is
            measured from the preceding attempt, errors are recorded separately.
            Lesson averages are smoothed alpha=.1; best filtered mean is banked.
-           Keep the user's 40-hit / two-lesson / end-of-lesson progression guard. */
+           Unlock only at lesson end, after ten clean timings and 95% accuracy. */
         function commitKeyMeasurements() {
-            KEY_PROGRESSION.slice(0,unlockedIndex+1).forEach(item=>{
+            KEY_PROGRESSION.slice(0,highestUnlocked+1).forEach(item=>{
                 const sequence=(!item.conjunct&&!item.alt&&item.k.length===1)?item.k:unicodeToKrutiDev(item.h), times=[];
                 for(let end=sequence.length-1;end<measurementEvents.length;end++){
                     const group=measurementEvents.slice(end-sequence.length+1,end+1);
@@ -2974,12 +2976,13 @@
 
         function populateJumpSelect() {
             el.jumpSelect.innerHTML = '';
+            el.jumpSelect.add(new Option('Auto: learn '+KEY_PROGRESSION[highestUnlocked].h+' (next key unlocks at goal)', 'auto'));
             KEY_PROGRESSION.forEach((item, idx) => {
                 if(idx>highestUnlocked)return;
                 const opt = document.createElement('option');
                 opt.value = idx;
-                opt.textContent = `L${idx + 1}: ${item.h} (${item.alt ? ('Alt+' + item.alt) : (item.conjunct ? item.h : item.k.toUpperCase())}) — ${item.d}`;
-                if (idx === unlockedIndex) opt.selected = true;
+                opt.textContent = `Review L${idx + 1}: ${item.h} (${item.alt ? ('Alt+' + item.alt) : (item.conjunct ? item.h : item.k.toUpperCase())}) — ${item.d}`;
+                if (reviewMode && idx === unlockedIndex) opt.selected = true;
                 el.jumpSelect.appendChild(opt);
             });
         }
@@ -3099,24 +3102,32 @@
             const weak = reviewKey();
             const reviewSequence = weak ? ((!weak.conjunct&&!weak.alt&&weak.k.length===1)?weak.k:unicodeToKrutiDev(weak.h)) : '';
             let reviewPool = weak ? focusedPool.filter(word => unicodeToKrutiDev(word).includes(reviewSequence)) : [];
-            const starterCalibration=highestUnlocked<INITIAL_UNLOCKED_COUNT&&weak&&!reviewPool.length;
-            if(starterCalibration)reviewPool=realPool.filter(word=>unicodeToKrutiDev(word).includes(reviewSequence));
-            const reviewQuota=reviewPool.length?Math.min(Math.ceil(wordCount*(starterCalibration?.40:.60)),wordCount):0;
+            const reviewQuota=reviewPool.length?Math.min(Math.ceil(wordCount*.60),wordCount):0;
+            const mixedStarters=!reviewMode&&highestUnlocked===INITIAL_UNLOCKED_COUNT-1;
+            const starterCounts=Object.fromEntries(unlockedItems.map(item=>[item.k,0]));
             let reviewWords = 0;
             let previous = '';
             const used=new Set(), recent=new Set(recentLessonWords);
             const pick = pool => {
                 let choices=pool.filter(word=>!used.has(word)&&!recent.has(word));
-                if(!choices.length)choices=focusedPool.filter(word=>!used.has(word)&&!recent.has(word));
+
                 if(!choices.length)choices=pool.filter(word=>!used.has(word));
-                if(!choices.length)choices=focusedPool.filter(word=>!used.has(word));
+
                 if(!choices.length)choices=pool.filter(word=>word!==previous);
                 if(!choices.length)choices=pool;
                 const chosen=choices[Math.floor(Math.random()*choices.length)];used.add(chosen);return chosen;
             };
             for (let w = 0; w < wordCount; w++) {
                 let chosen;
-                if (reviewWords < reviewQuota) {
+                if (mixedStarters) {
+                    // Cover every starter, including pre-base ि. A target-only
+                    // pool can starve ि and leave the first unlock stuck.
+                    const least=unlockedItems.reduce((a,b)=>starterCounts[a.k]<=starterCounts[b.k]?a:b);
+                    const pool=realPool.filter(word=>unicodeToKrutiDev(word).includes(least.k));
+                    chosen=pool.length?pick(pool):least.h+KEY_PROGRESSION[0].h;
+                    const seq=unicodeToKrutiDev(chosen);
+                    unlockedItems.forEach(item=>{starterCounts[item.k]+=seq.split(item.k).length-1;});
+                } else if (reviewWords < reviewQuota) {
                     chosen = pick(reviewPool);
                     reviewWords++;
                 } else if (focusedPool.length) {
@@ -3125,7 +3136,8 @@
                     // No real word can teach this glyph yet (digits, rare Alt codes,
                     // or very early levels). Use only the minimum short glyph drill.
                     const count = 2;
-                    chosen = activeItem.h.repeat(count);
+                    const context=realPool.length?pick(realPool):KEY_PROGRESSION[0].h;
+                    chosen = activeItem.h.repeat(count)+' '+context;
                 }
                 words.push(chosen);
                 previous = chosen;
@@ -3136,7 +3148,7 @@
                 [words[i], words[j]] = [words[j], words[i]];
             }
             recentLessonWords=recentLessonWords.concat(words).slice(-150);
-            document.getElementById('word-pool-status').textContent=`${focusedPool.length.toLocaleString()} target words / ${eligibleRealWords.length.toLocaleString()} usable at this level / ${encodedWordBank.length.toLocaleString()} total`+(focusedPool.length===0?' · No real target words yet: focused glyph drill.':focusedPool.length<wordCount?' · Small target pool: some repetition needed.':'');
+            document.getElementById('word-pool-status').textContent=`${focusedPool.length.toLocaleString()} target words / ${eligibleRealWords.length.toLocaleString()} usable at this level / ${encodedWordBank.length.toLocaleString()} total`+(mixedStarters?' · Mixed starter practice: क, ा, ि, र.':focusedPool.length===0?' · New glyph plus unlocked-word practice.':focusedPool.length<wordCount?' · Small target pool: some repetition needed.':'');
             return words.join(' ');
         }
 
@@ -3236,7 +3248,7 @@
                     ks.targetLessons = (ks.targetLessons || 0) + 1;
                     const state = currentUnlockState();
                     if (state.ready) pendingUnlockIndex = unlockedIndex;
-                    const cleared = pendingUnlockIndex === unlockedIndex &&
+                    const cleared = !reviewMode && unlockedIndex === highestUnlocked && pendingUnlockIndex === unlockedIndex &&
                         sessionCorrect/Math.max(1,sessionCorrect+sessionErrors)>=.95 && unlockedIndex < KEY_PROGRESSION.length - 1;
                     if (cleared) {
                         unlockedIndex++;
@@ -3245,7 +3257,7 @@
                         targetKeyBuffer = [];
                         populateJumpSelect();
                         updateAlphabetStrip();
-                        el.metricUnlocked.textContent = unlockedIndex + 1;
+                        el.metricUnlocked.textContent = highestUnlocked + 1;
                         el.leadSamplesStatus.textContent = 'Key cleared - press Continue for the next lesson';
                         el.liveHintChar.textContent = `Key cleared: ${item.h}!`;
                         el.liveHintDetail.textContent = `Next lesson introduces ${KEY_PROGRESSION[unlockedIndex].h}`;
@@ -3597,7 +3609,9 @@
 
         // Quick Controls
         el.jumpSelect.addEventListener('change', (e) => {
-            const selected=parseInt(e.target.value,10);if(selected>highestUnlocked)return;
+            reviewMode=e.target.value!=='auto';
+            const selected=reviewMode?parseInt(e.target.value,10):highestUnlocked;
+            if(!Number.isInteger(selected)||selected<0||selected>highestUnlocked)return;
             unlockedIndex=selected;
             targetKeyBuffer = [];
             saveStorage();
@@ -3707,6 +3721,7 @@
 
         el.modalConfirmBtn.addEventListener('click', () => {
             // Clear only learning data; immediately save the retained preferences.
+            reviewMode=false;
             unlockedIndex = INITIAL_UNLOCKED_COUNT - 1;
             highestUnlocked=unlockedIndex;
             totalTypedCount = 0;
