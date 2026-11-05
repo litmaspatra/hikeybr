@@ -977,17 +977,13 @@
             align-items: center;
             justify-content: center;
             position: relative;
-            cursor: pointer;
+            cursor: default;
+            user-select: none;
             transition: all 0.08s ease;
             padding: 2px 4px;
         }
 
-        .k-key:hover {
-            border-color: var(--accent);
-            transform: translateY(-1px);
-        }
-
-        .k-key:active, .k-key.pressed {
+        .k-key.pressed {
             transform: translateY(2px);
             border-bottom-width: 1px;
             background: var(--surface-hover);
@@ -3358,12 +3354,6 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
                         keyEl.innerHTML = `${shiftHtml}<span class="hi-main">${item.h}</span><span class="en-sub">${enLabel}</span>`;
                     }
 
-                    keyEl.addEventListener('mousedown', (e) => {
-                        e.preventDefault();
-                        if (!item.label || item.k === ' ') handleKeystroke(item.k);
-                        el.hiddenInput.focus({preventScroll:true});
-                    });
-
                     rowEl.appendChild(keyEl);
                     keyDOMMap.set(item.k, keyEl);
                     if (item.k.length === 1) {
@@ -4496,8 +4486,8 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
                     // the metrics and history, and a freshly generated lesson
                     // REPLACES the text instantly - a separate lesson, not appended
                     // text, and no Enter/Continue/toast.
-                    const guidance=cleared?'Key cleared. Next: '+KEY_PROGRESSION[unlockedIndex].h:state.ready?'Ready. Continue to practice.':!state.recentAccuracy?'Reach 95% accuracy in a completed lesson.':state.samples<10?'Need 10 clean target timings.':!state.starterReady?'Calibrate each starter key at goal speed.':'Best target speed is below your '+targetSpeedGoal+' WPM goal.';
-                    flashPracticeEvent('Lesson: '+last.wpm.toFixed(1)+' WPM · '+last.acc.toFixed(1)+'% accuracy'+(pendingLessonEvents.length?' · '+pendingLessonEvents.join(' · '):'')+' · '+guidance);
+                    const guidance=textSource!=='words'?'':cleared?'Key cleared. Next: '+KEY_PROGRESSION[unlockedIndex].h:state.ready?'Ready. Continue to practice.':!state.recentAccuracy?'Reach 95% accuracy in a completed lesson.':state.samples<10?'Need 10 clean target timings.':!state.starterReady?'Calibrate each starter key at goal speed.':'Best target speed is below your '+targetSpeedGoal+' WPM goal.';
+                    flashPracticeEvent('Lesson: '+last.wpm.toFixed(1)+' WPM · '+last.acc.toFixed(1)+'% accuracy'+(pendingLessonEvents.length?' · '+pendingLessonEvents.join(' · '):'')+(guidance?' · '+guidance:''));
                     pendingLessonEvents=[];
                     regenerateLesson();
                 }
