@@ -1031,11 +1031,13 @@
            (clipped) corners. Deliberately not keybr's soft look.
            ─────────────────────────────────────────────────────────── */
         *, *::before, *::after { border-radius: 0 !important; }
-        button, select, input[type="text"], .nav-tab, .pill-btn, .mash-btn, .btn-icon,
-        .mash-bar, .snippet-banner, .hud-card, .typing-canvas, .live-hint-strip,
-        .alt-helper-pill, .keyboard-frame, .results-card, .r-stat, .quote-citation,
-        .rank-badge, .brand-icon, .progress-bar-container {
+        .snippet-banner, .typing-canvas, .results-card, .keyboard-frame, .mash-bar {
             clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+        }
+        button, select, input[type="text"], .nav-tab, .pill-btn, .mash-btn, .btn-icon,
+        .r-stat, .quote-citation, .rank-badge, .brand-icon, .progress-bar-container {
+            clip-path: none !important;
+            border-radius: 0 !important;
         }
         .k-key {
             clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
@@ -1045,7 +1047,10 @@
         /* keymash-style typing: no speed/accuracy HUD while typing;
            the numbers belong to the results screen only. */
         .hud-strip, .progress-bar-container { display: none !important; }
+            footer a { color: var(--accent) !important; text-decoration: underline !important; }
+        .k-key .hi-shift, .k-key .en-sub { font-size: 10.5px !important; color: var(--text-dim) !important; }
     </style>
+    <link rel="stylesheet" href="theme.css">
 </head>
 <body>
 
@@ -1096,7 +1101,7 @@
                 <button class="mash-btn" id="restart-btn" title="पुनः प्रारंभ करें (Esc)">
                     <span>🔁 पुनः प्रयास</span>
                 </button>
-                <button class="mash-btn primary" id="next-btn" title="अगला उद्धरण (Tab + Enter)">
+                <button class="mash-btn primary" id="next-btn" title="अगला उद्धरण (Tab)">
                     <span>⏭️ अगला उद्धरण</span>
                 </button>
             </div>
@@ -1143,7 +1148,7 @@
         <div class="typing-canvas" id="typing-canvas">
             <div class="canvas-top-tag">
                 <div><span class="pulse-dot"></span><span>क्लिक करें या टाइप करना शुरू करें (Remington GAIL)</span></div>
-                <div style="font-family:'JetBrains Mono'; font-size:0.6rem;">Tab + Enter = अगला उद्धरण | Esc = पुनः प्रारंभ</div>
+                <div style="font-family:'JetBrains Mono'; font-size:0.6rem;">Tab = अगला उद्धरण | Esc = पुनः प्रारंभ</div>
             </div>
 
             <!-- Authentic KrutiDev 010 Stream Container -->

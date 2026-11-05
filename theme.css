@@ -1,0 +1,281 @@
+/* ═══════════════════════════════════════════════════════════
+   HIKEYBR & HIKEYMASH SHARED ANGULAR DESIGN SYSTEM (theme.css)
+   ═══════════════════════════════════════════════════════════ */
+
+/* ───────────────────────────────────────────────────────────
+   1. THEME PALETTES (Six Distinct, High-Contrast Angular Themes)
+   ─────────────────────────────────────────────────────────── */
+
+:root, :root[data-theme="dark"] {
+    --bg: #10140f;
+    --surface: #181e17;
+    --surface-hover: #222a1f;
+    --surface-card: #141a13;
+    --border: #3d4f3b;
+    --border-subtle: #2d3b2b;
+    --text: #f2ede0;
+    --text-dim: #aaa491;
+    --text-faint: #757468;
+    --accent: #f0a62c;
+    --accent-glow: rgba(240, 166, 44, 0.35);
+    --accent-soft: rgba(240, 166, 44, 0.13);
+    --correct: #5fce8a;
+    --correct-glow: rgba(95, 206, 138, 0.25);
+    --error: #e5544b;
+    --error-bg: rgba(229, 84, 75, 0.22);
+    --key-bg: #161c15;
+    --key-border: #3d4f3b;
+    --key-bottom: #0a0d09;
+    --key-active: #f0a62c;
+    --key-unlocked: #22311f;
+    --key-unlocked-border: #4d7340;
+    --chip-bg: #26260f;
+    --chip-border: #f0a62c;
+}
+
+:root[data-theme="navy"] {
+    --bg: #062028;
+    --surface: #0b2d38;
+    --surface-hover: #103c4a;
+    --surface-card: #082630;
+    --border: #245e70;
+    --border-subtle: #16424f;
+    --text: #eaf7f4;
+    --text-dim: #a5d8d4;
+    --text-faint: #82b5b7; /* > 4.5:1 against #062028 */
+    --accent: #06b6d4;
+    --accent-glow: rgba(6, 182, 212, 0.4);
+    --accent-soft: rgba(6, 182, 212, 0.14);
+    --correct: #34d399;
+    --correct-glow: rgba(52, 211, 153, 0.25);
+    --error: #fb7185;
+    --error-bg: rgba(251, 113, 133, 0.22);
+    --key-bg: #0a2933;
+    --key-border: #256073;
+    --key-bottom: #04141b;
+    --key-active: #06b6d4;
+    --key-unlocked: #0e3d3f;
+    --key-unlocked-border: #1d7e82;
+    --chip-bg: #08333d;
+    --chip-border: #06b6d4;
+}
+
+:root[data-theme="amber"] {
+    --bg: #1e1409;
+    --surface: #2a1d0f;
+    --surface-hover: #382715;
+    --surface-card: #241809;
+    --border: #5a4529;
+    --border-subtle: #40301b;
+    --text: #f6ecd8;
+    --text-dim: #c4af8d;
+    --text-faint: #917f60;
+    --accent: #e0512e;
+    --accent-glow: rgba(224, 81, 46, 0.35);
+    --accent-soft: rgba(224, 81, 46, 0.13);
+    --correct: #9ab84a;
+    --correct-glow: rgba(154, 184, 74, 0.25);
+    --error: #f26d6d;
+    --error-bg: rgba(242, 109, 109, 0.22);
+    --key-bg: #271b0d;
+    --key-border: #5d462b;
+    --key-bottom: #100a04;
+    --key-active: #e0512e;
+    --key-unlocked: #323616;
+    --key-unlocked-border: #62702a;
+    --chip-bg: #38160c;
+    --chip-border: #e0512e;
+}
+
+:root[data-theme="light"] {
+    --bg: #efe6d0;
+    --surface: #f8f2e2;
+    --surface-hover: #ece2c8;
+    --surface-card: #f6efdc;
+    --border: #b8a885;
+    --border-subtle: #d0c29f;
+    --text: #241f14;
+    --text-dim: #5c523b;
+    --text-faint: #5f543e; /* > 4.5:1 against #efe6d0 */
+    --accent: #2b3fbf;
+    --accent-glow: rgba(43, 63, 191, 0.25);
+    --accent-soft: rgba(43, 63, 191, 0.09);
+    --correct: #2e8b57;
+    --correct-glow: rgba(46, 139, 87, 0.2);
+    --error: #c22f2f;
+    --error-bg: rgba(194, 47, 47, 0.14);
+    --key-bg: #fdf9ec;
+    --key-border: #baa984;
+    --key-bottom: #9c8a63;
+    --key-active: #2b3fbf;
+    --key-unlocked: #e2ecd4;
+    --key-unlocked-border: #8ab379;
+    --chip-bg: #e7e2f2;
+    --chip-border: #2b3fbf;
+}
+
+:root[data-theme="sunshine"] {
+    --bg: #f3c93c;
+    --surface: #f9da6b;
+    --surface-hover: #f7d152;
+    --surface-card: #f6d45a;
+    --border: #b38b16;
+    --border-subtle: #cca327;
+    --text: #38270a;
+    --text-dim: #614a0f;
+    --text-faint: #594411; /* > 4.5:1 against #f3c93c */
+    --accent: #7c2d12;
+    --accent-glow: rgba(124, 45, 18, 0.35);
+    --accent-soft: rgba(124, 45, 18, 0.12);
+    --correct: #206324;
+    --correct-glow: rgba(32, 99, 36, 0.25);
+    --error: #b3261e;
+    --error-bg: rgba(179, 38, 30, 0.16);
+    --key-bg: #fbe384;
+    --key-border: #b58d19;
+    --key-bottom: #96700c;
+    --key-active: #7c2d12;
+    --key-unlocked: #e8e5af;
+    --key-unlocked-border: #96a356;
+    --chip-bg: #f0c0a8;
+    --chip-border: #7c2d12;
+}
+
+:root[data-theme="forest"] {
+    --bg: #08190e;
+    --surface: #102617;
+    --surface-hover: #16331f;
+    --surface-card: #0c2013;
+    --border: #2e6b40;
+    --border-subtle: #1f4f2c;
+    --text: #e9f4e4;
+    --text-dim: #aad2af;
+    --text-faint: #78a67e;
+    --accent: #34d399;
+    --accent-glow: rgba(52, 211, 153, 0.35);
+    --accent-soft: rgba(52, 211, 153, 0.14);
+    --correct: #4ade80;
+    --correct-glow: rgba(74, 222, 128, 0.25);
+    --error: #f87171;
+    --error-bg: rgba(248, 113, 113, 0.22);
+    --key-bg: #0f2416;
+    --key-border: #316d43;
+    --key-bottom: #06120a;
+    --key-active: #34d399;
+    --key-unlocked: #183d22;
+    --key-unlocked-border: #2f7e45;
+    --chip-bg: #10331f;
+    --chip-border: #34d399;
+}
+
+/* ───────────────────────────────────────────────────────────
+   2. ANGULAR SHAPE SYSTEM (Fixes Bugs #1, #2, #3, #4, #5, #6)
+   ─────────────────────────────────────────────────────────── */
+
+*, *::before, *::after {
+    border-radius: 0 !important;
+}
+
+/* Major surfaces get the signature angular chamfer */
+.alt-card, .target-card, #lesson-result, .workspace-bar, .modal-card,
+.modal-content, #results-modal .modal-content, .card-surface, .alt-sand-card {
+    clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+}
+
+/* Virtual keyboard keys get micro-chamfer */
+.key, .kb-key, .k-key, .mash-key {
+    clip-path: polygon(5px 0, 100% 0, 100% calc(100% - 5px), calc(100% - 5px) 100%, 0 100%, 0 5px);
+}
+
+/* Small interactive controls get FULL rectangular borders with 3px accent edge (NO chamfer) */
+.ctrl-select, select, input[type="text"], input[type="number"], textarea {
+    border: 1px solid var(--border) !important;
+    border-left: 3px solid var(--accent) !important;
+    background: var(--surface) !important;
+    color: var(--text) !important;
+    max-width: 420px;
+    clip-path: none !important;
+    outline: none;
+    transition: border-color 0.15s ease;
+}
+
+.ctrl-select:focus, select:focus, input[type="text"]:focus, input[type="number"]:focus, textarea:focus {
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 0 1px var(--accent-soft);
+}
+
+/* Checkboxes (Fix Bug #2) */
+.ls-check, .mash-check {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 8px 0;
+    color: var(--text);
+    cursor: pointer;
+}
+
+.ls-check input[type="checkbox"], .mash-check input[type="checkbox"], input[type="checkbox"] {
+    margin: 0 8px 0 2px !important;
+    accent-color: var(--accent);
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    vertical-align: middle;
+    clip-path: none !important;
+}
+
+/* Progress bars (Fix Bug #4) */
+.goal-track, .progress-track, .progress-bar-container {
+    border-radius: 0 !important;
+    border: 1px solid var(--border) !important;
+    overflow: hidden !important;
+    clip-path: none !important;
+}
+
+/* Buttons & Header Icon Buttons (Fix Bug #6) */
+.btn-icon, .btn, button, .mash-btn, .nav-tab, .ls-tab, .pill-btn, .btn-modal {
+    clip-path: none !important;
+}
+
+.btn-icon {
+    border: 1px solid var(--border) !important;
+    background: var(--surface) !important;
+    color: var(--text-dim) !important;
+}
+
+.btn-icon:hover {
+    color: var(--text) !important;
+    border-color: var(--accent) !important;
+    background: var(--surface-hover) !important;
+}
+
+/* Reset settings button (Fix Bug #7) */
+#reset-settings-btn {
+    white-space: nowrap !important;
+    padding: 10px 18px !important;
+}
+
+/* Footer links styling (Fix Bug #11) */
+footer a, .footer a {
+    color: var(--accent) !important;
+    text-decoration: underline !important;
+}
+
+/* Key label visibility & contrast (Fix Bug #12) */
+.k-key .hi-shift, .k-key .en-sub, .mash-key .hi-shift, .mash-key .en-sub {
+    font-size: 10.5px !important;
+    color: var(--text-dim) !important;
+}
+
+/* Responsive mobile header and nav (Fix Bugs #8, #9, #10) */
+@media (max-width: 600px) {
+    .brand-badge {
+        display: none !important;
+    }
+}
+
+@media (max-width: 420px) {
+    .nav-tab .nav-label {
+        display: none !important;
+    }
+}

@@ -35,8 +35,8 @@
             --surface: #181e17;
             --surface-hover: #20281e;
             --surface-card: #141a13;
-            --border: #2e3a2c;
-            --border-subtle: #232b21;
+            --border: #3d4f3b;
+            --border-subtle: #2d3b2b;
             --text: #f2ede0;
             --text-dim: #aaa491;
             --text-faint: #6b6a5e;
@@ -66,7 +66,7 @@
             --border-subtle: #123845;
             --text: #eaf7f4;
             --text-dim: #93c4c0;
-            --text-faint: #4a7a7c;
+            --text-faint: #82b5b7;
             --accent: #2dd4bf;
             --accent-glow: rgba(45, 212, 191, 0.35);
             --accent-soft: rgba(45, 212, 191, 0.12);
@@ -120,7 +120,7 @@
             --border-subtle: #e2d7bd;
             --text: #241f14;
             --text-dim: #6d6248;
-            --text-faint: #a2967a;
+            --text-faint: #5f543e;
             --accent: #2b3fbf;
             --accent-glow: rgba(43, 63, 191, 0.25);
             --accent-soft: rgba(43, 63, 191, 0.09);
@@ -144,10 +144,11 @@
            (clipped) corners. Deliberately not keybr's soft look.
            ─────────────────────────────────────────────────────────── */
         *, *::before, *::after { border-radius: 0 !important; }
-        button, .btn, .ctrl-select, select, input[type="text"], input[type="number"], textarea,
-        .nav-tab, .ls-tab, .alt-card, .target-card, .metric-chip, .target-char-pill,
-        .workspace-bar, .brand-icon, .ls-check, .goal-track, .progress-track {
+        .alt-card, .target-card, #lesson-result, .workspace-bar, .modal-card, #results-modal .modal-content, .card-surface {
             clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+        }
+        .key, .kb-key {
+            clip-path: polygon(5px 0, 100% 0, 100% calc(100% - 5px), calc(100% - 5px) 100%, 0 100%, 0 5px);
         }
         .key, .kb-key {
             clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
@@ -186,8 +187,8 @@
             --surface: #122619;
             --surface-hover: #173020;
             --surface-card: #0f2114;
-            --border: #265032;
-            --border-subtle: #1a3a24;
+            --border: #386b46;
+            --border-subtle: #234f2d;
             --text: #e9f4e4;
             --text-dim: #a3c3a6;
             --text-faint: #5d8a61;
@@ -1404,7 +1405,37 @@
 .ls-grid .ctrl-select{width:100%}
 .ls-note{margin:8px 2px 0;font-size:.76rem;color:var(--text-dim)}
 
-/* Lessons panel (keybr-style) */
+
+        /* Lessons Drawer (Bug #22 Fix) */
+        @media (min-width: 860px) {
+            .lesson-settings[open] .ls-tabs,
+            .lesson-settings[open] .ls-body {
+                position: fixed !important;
+                right: 0 !important;
+                top: 0 !important;
+                width: 480px !important;
+                max-width: 90vw !important;
+                height: 100vh !important;
+                background: var(--surface) !important;
+                box-shadow: -8px 0 32px rgba(0,0,0,0.5) !important;
+                z-index: 1000 !important;
+                overflow-y: auto !important;
+                border-left: 2px solid var(--accent) !important;
+                padding: 24px 20px !important;
+            }
+            .lesson-settings[open] .ls-tabs {
+                top: 0 !important;
+                height: auto !important;
+                border-bottom: 1px solid var(--border) !important;
+                z-index: 1001 !important;
+            }
+            .lesson-settings[open] .ls-body {
+                top: 60px !important;
+                height: calc(100vh - 60px) !important;
+            }
+        }
+
+        /* Lessons panel (keybr-style) */
 .lesson-settings>summary{font-weight:700}
 .ls-tabs{display:flex;flex-wrap:wrap;gap:4px;margin-top:10px;border-bottom:1px solid var(--border)}
 .ls-tab{background:none;border:0;border-bottom:2px solid transparent;color:var(--text-dim);padding:8px 14px;cursor:pointer;font:inherit}
@@ -1470,7 +1501,8 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
         .ak-badge .ak-bar{position:absolute;left:0;right:0;bottom:0;opacity:.4;pointer-events:none}
         @media(max-width:650px){.cal-grid{grid-template-columns:repeat(7,13px)}.cal-cell{width:13px;height:13px}.pg-key{flex-basis:26px;font-size:.8rem}}
     </style>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;700&display=swap" rel="stylesheet"></head>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;700&display=swap" rel="stylesheet">    <link rel="stylesheet" href="theme.css">
+</head>
 <body>
 
     <!-- ═══════════════════════════════════════════════════════════
@@ -1484,20 +1516,20 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
         </div>
 
         <nav>
-            <button class="nav-tab active" data-target="practice">
-                <span>⌨️ Practice</span>
+            <button class="nav-tab active" data-target="practice" title="Practice">
+                <span class="nav-icon">⌨️</span><span class="nav-label"> Practice</span>
             </button>
-            <button class="nav-tab" data-target="profile">
-                <span>📊 Profile</span>
+            <button class="nav-tab" data-target="profile" title="Profile">
+                <span class="nav-icon">📊</span><span class="nav-label"> Profile</span>
             </button>
-            <button class="nav-tab" data-target="altlab">
-                <span>⚡ Alt-Codes Lab</span>
+            <button class="nav-tab" data-target="altlab" title="Alt-Codes Lab">
+                <span class="nav-icon">⚡</span><span class="nav-label"> Alt-Codes Lab</span>
             </button>
-            <button class="nav-tab" data-target="settings">
-                <span>⚙️ Settings</span>
+            <button class="nav-tab" data-target="settings" title="Settings">
+                <span class="nav-icon">⚙️</span><span class="nav-label"> Settings</span>
             </button>
             <a href="hikeymash.html" class="nav-tab" style="text-decoration:none;" title="Keymash Hindi Literature Typing">
-                <span>📜 HiKeymash</span>
+                <span class="nav-icon">📜</span><span class="nav-label"> HiKeymash</span>
             </a>
         </nav>
 
@@ -1639,7 +1671,10 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
             <div class="alphabet-strip">
                 <div class="alphabet-header">
                     <span>Remington GAIL Progression (<span id="total-keys-header">70</span> Keys)</span>
-                    <span id="progression-summary">Key 4 of 70 Unlocked</span>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <button class="btn-modal" id="toggle-locked-keys-btn" style="padding:3px 10px; font-size:0.75rem;">Show All 70 Keys</button>
+                        <span id="progression-summary">Key 4 of 70 Unlocked</span>
+                    </div>
                 </div>
                 <div class="alphabet-keys" id="alphabet-container"></div>
                 <div class="heat-legend">
@@ -1664,7 +1699,7 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
             <div class="typing-canvas" id="typing-canvas">
                 <div class="canvas-hint">
                     <span class="pulse-dot"></span>
-                    <span>Start typing</span>
+                    <span id="canvas-hint-text">Start typing</span>
                 </div>
                 <div class="text-stream-container" id="text-stream-container">
                     <span id="text-correct" class="text-correct"></span><span id="text-error" class="text-error"></span><span id="text-current" class="text-current"></span><span id="text-remaining" class="text-remaining"></span>
@@ -1809,81 +1844,156 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
                     </div>
                 </div>
 
-                <div style="display: flex; flex-direction: column; gap: 18px; max-width: 600px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <div>
-                            <strong style="font-size: 0.9rem;">Color Theme</strong>
-                            <p style="font-size: 0.78rem; color: var(--text-dim);">Six angular palettes: Ink, Peacock, Letterpress, Paper, Marigold, Forest.</p>
+                <div class="settings-grid">
+                    <div class="settings-row">
+                        <div class="settings-info">
+                            <strong>Color Theme</strong>
+                            <p>Six distinct angular palettes: Ink, Peacock, Letterpress, Paper, Marigold, Forest.</p>
                         </div>
-                        <select class="ctrl-select" id="theme-select">
-                            <option value="dark">Ink (Default)</option>
-                            <option value="navy">Peacock</option>
-                            <option value="amber">Letterpress</option>
-                            <option value="light">Paper</option><option value="sunshine">Marigold</option><option value="forest">Forest</option>
-                        </select>
+                        <div class="settings-ctrl">
+                            <select class="ctrl-select" id="theme-select">
+                                <option value="dark">Ink (Default)</option>
+                                <option value="navy">Peacock</option>
+                                <option value="amber">Letterpress</option>
+                                <option value="light">Paper</option>
+                                <option value="sunshine">Marigold</option>
+                                <option value="forest">Forest</option>
+                            </select>
+                        </div>
                     </div>
 
-<div><strong>Hindi lesson font</strong> <select class="ctrl-select" id="display-font-select"><option value="krutidev">KrutiDev 010 (embedded)</option><option value="devlys010">DevLys 010 (embedded)</option><option value="noto">Noto Sans Devanagari (Unicode)</option><option value="serif">Noto Serif Devanagari (Unicode)</option><option value="mangal">Mangal (installed font required)</option></select><p id="font-status" style="font-size:.78rem;color:var(--text-dim)">All fonts use the same Remington input. Unicode is display-only, not Inscript.</p></div>
-<div style="font-size:.78rem;color:var(--text-dim)"><strong>How measurements work</strong><p>Practice WPM = accepted Remington input units ÷ 5 ÷ minutes, including spaces. An Alt-code glyph is one input unit; modifier/numpad digits are not separate text units. Hindi words/minute counts completed space-separated words. Accuracy counts every wrong attempt equally, including matras and conjuncts. No guessed exam marks. Per-key results use clean intervals, grouped per finished lesson and smoothed at 0.1. Pauses remain in lesson speed but intervals over 12 seconds are excluded from key calibration.</p></div>
-<div><strong>Lesson font style</strong><p style="font-size:.78rem;color:var(--text-dim)">Keeps the Remington KrutiDev font so Hindi glyphs stay correct.</p><select class="ctrl-select" id="lesson-style-select"><option value="classic">Classic KrutiDev</option><option value="bold">Bold KrutiDev</option><option value="spaced">Spacious KrutiDev</option><option value="large">Large KrutiDev</option></select></div>
-<div><strong>Keyboard Hindi font</strong> <select class="ctrl-select" id="key-font-select"><option value="sans">Noto Sans</option><option value="serif">Noto Serif</option><option value="system">System Hindi</option></select></div>
-<div><strong>Daily practice goal</strong> <select class="ctrl-select" id="daily-goal-select"><option value="10">10 minutes</option><option value="15">15 minutes</option><option value="30">30 minutes</option><option value="45">45 minutes</option><option value="60">60 minutes</option></select><p style="font-size:.78rem;color:var(--text-dim)">Counts active typing time, excluding long pauses.</p></div>
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <div>
-                            <strong style="font-size: 0.9rem;">Target Speed to Advance Key</strong>
-                            <p style="font-size: 0.78rem; color: var(--text-dim);">Minimum lesson speed required before unlocking the next letter.</p>
+                    <div class="settings-row">
+                        <div class="settings-info">
+                            <strong>Target Speed to Advance Key</strong>
+                            <p>Minimum lesson speed required before unlocking the next letter. (Synced with Lessons panel slider)</p>
                         </div>
-                        <select class="ctrl-select" id="settings-speed-goal">
-                            <option value="10">10 WPM</option>
-                            <option value="15">15 WPM (Beginner)</option>
-                            <option value="20">20 WPM (Intermediate)</option>
-                            <option value="25" selected>25 WPM</option>
-                            <option value="30">30 WPM</option>
-                            <option value="35">35 WPM (Advanced)</option>
-                            <option value="40">40 WPM (Master)</option>
-                            <option value="45">45 WPM</option>
-                            <option value="50">50 WPM (Pro)</option>
-                            <option value="55">55 WPM</option>
-                            <option value="60">60 WPM (Expert)</option>
-                            <option value="65">65 WPM</option>
-                            <option value="70">70 WPM</option>
-                            <option value="75">75 WPM</option>
-                            <option value="80">80 WPM (Champion)</option>
-                            <option value="85">85 WPM</option>
-                            <option value="90">90 WPM</option>
-                            <option value="95">95 WPM</option>
-                            <option value="100">100 WPM (Ultimate)</option>
-                        </select>
+                        <div class="settings-ctrl">
+                            <select class="ctrl-select" id="settings-speed-goal">
+                                <option value="10">10 WPM</option>
+                                <option value="15">15 WPM (Beginner)</option>
+                                <option value="20">20 WPM (Intermediate)</option>
+                                <option value="25" selected>25 WPM</option>
+                                <option value="30">30 WPM</option>
+                                <option value="35">35 WPM (Advanced)</option>
+                                <option value="40">40 WPM (Master)</option>
+                                <option value="45">45 WPM</option>
+                                <option value="50">50 WPM (Pro)</option>
+                                <option value="55">55 WPM</option>
+                                <option value="60">60 WPM (Expert)</option>
+                                <option value="65">65 WPM</option>
+                                <option value="70">70 WPM</option>
+                                <option value="75">75 WPM</option>
+                                <option value="80">80 WPM (Champion)</option>
+                                <option value="85">85 WPM</option>
+                                <option value="90">90 WPM</option>
+                                <option value="95">95 WPM</option>
+                                <option value="100">100 WPM (Ultimate)</option>
+                            </select>
+                        </div>
                     </div>
 
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <div>
-                            <strong style="font-size: 0.9rem;">Audio Feedback</strong>
-                            <p style="font-size: 0.78rem; color: var(--text-dim);">Crisp mechanical switch clicks &amp; error cues.</p>
+                    <div class="settings-row">
+                        <div class="settings-info">
+                            <strong>Hindi lesson font</strong>
+                            <p id="font-status">All fonts use the same Remington input. Unicode is display-only, not Inscript.</p>
                         </div>
-                        <select class="ctrl-select" id="sound-select">
-                            <option value="on">Enabled</option>
-                            <option value="off">Muted</option>
-                        </select>
+                        <div class="settings-ctrl">
+                            <select class="ctrl-select" id="display-font-select">
+                                <option value="krutidev">KrutiDev 010 (embedded)</option>
+                                <option value="devlys010">DevLys 010 (embedded)</option>
+                                <option value="noto">Noto Sans Devanagari (Unicode)</option>
+                                <option value="serif">Noto Serif Devanagari (Unicode)</option>
+                                <option value="mangal">Mangal (installed font required)</option>
+                            </select>
+                        </div>
                     </div>
 
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <div>
-                            <strong style="font-size: 0.9rem;">Finger Guide Hint</strong>
-                            <p style="font-size: 0.78rem; color: var(--text-dim);">Display recommended finger for the target key.</p>
+                    <div class="settings-row">
+                        <div class="settings-info">
+                            <strong>Lesson font style</strong>
+                            <p>Keeps the Remington KrutiDev font so Hindi glyphs stay correct.</p>
                         </div>
-                        <select class="ctrl-select" id="finger-hint-select">
-                            <option value="show">Always Visible</option>
-                            <option value="hide">Hidden</option>
-                        </select>
+                        <div class="settings-ctrl">
+                            <select class="ctrl-select" id="lesson-style-select">
+                                <option value="classic">Classic KrutiDev</option>
+                                <option value="bold">Bold KrutiDev</option>
+                                <option value="spaced">Spacious KrutiDev</option>
+                                <option value="large">Large KrutiDev</option>
+                            </select>
+                        </div>
                     </div>
 
-                    <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 16px;">
-                        <div>
-                            <strong style="font-size: 0.9rem; color: var(--error);">Reset Progress</strong>
-                            <p style="font-size: 0.78rem; color: var(--text-dim);">Clear progress and typing stats. Keep your theme, sound and practice preferences.</p>
+                    <div class="settings-row">
+                        <div class="settings-info">
+                            <strong>Keyboard Hindi font</strong>
+                            <p>Font family used on the virtual on-screen keyboard.</p>
                         </div>
-                        <button class="btn-modal danger" id="reset-settings-btn">Reset Progress</button>
+                        <div class="settings-ctrl">
+                            <select class="ctrl-select" id="key-font-select">
+                                <option value="sans">Noto Sans</option>
+                                <option value="serif">Noto Serif</option>
+                                <option value="system">System Hindi</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="settings-row">
+                        <div class="settings-info">
+                            <strong>Daily practice goal</strong>
+                            <p>Counts active typing time, excluding long pauses. (Synced with Lessons panel)</p>
+                        </div>
+                        <div class="settings-ctrl">
+                            <select class="ctrl-select" id="daily-goal-select">
+                                <option value="10">10 minutes</option>
+                                <option value="15">15 minutes</option>
+                                <option value="30">30 minutes</option>
+                                <option value="45">45 minutes</option>
+                                <option value="60">60 minutes</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="settings-row">
+                        <div class="settings-info">
+                            <strong>Audio Feedback</strong>
+                            <p>Crisp mechanical switch clicks &amp; error cues.</p>
+                        </div>
+                        <div class="settings-ctrl">
+                            <select class="ctrl-select" id="sound-select">
+                                <option value="on">Enabled</option>
+                                <option value="off">Muted</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="settings-row">
+                        <div class="settings-info">
+                            <strong>Finger Guide Hint</strong>
+                            <p>Display recommended finger for the target key.</p>
+                        </div>
+                        <div class="settings-ctrl">
+                            <select class="ctrl-select" id="finger-hint-select">
+                                <option value="show">Always Visible</option>
+                                <option value="hide">Hidden</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="settings-row" style="grid-column: 1 / -1; background: var(--surface-card); border-left: 1px solid var(--border);">
+                        <div class="settings-info">
+                            <strong>How measurements work</strong>
+                            <p>Practice WPM = accepted Remington input units ÷ 5 ÷ minutes, including spaces. An Alt-code glyph is one input unit; modifier/numpad digits are not separate text units. Hindi words/minute counts completed space-separated words. Accuracy counts every wrong attempt equally, including matras and conjuncts. No guessed exam marks. Per-key results use clean intervals, grouped per finished lesson and smoothed at 0.1. Pauses remain in lesson speed but intervals over 12 seconds are excluded from key calibration.</p>
+                        </div>
+                    </div>
+
+                    <div class="settings-row danger-row" style="border-top: 1px solid var(--border); border-left: 3px solid var(--error);">
+                        <div class="settings-info">
+                            <strong style="color: var(--error);">Reset Progress</strong>
+                            <p>Clear progress and typing stats. Keep your theme, sound and practice preferences.</p>
+                        </div>
+                        <div class="settings-ctrl">
+                            <button class="btn-modal danger" id="reset-settings-btn">Reset Progress</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -3702,14 +3812,21 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
             renderCalendar();
         }
 
+        let showAllProfileKeys = false;
         function updateProfileTable() {
             if (!el.profileTableBody) return;
             el.profileTableBody.innerHTML = '';
+            const toggleBtn = document.getElementById('toggle-locked-keys-btn');
+            if (toggleBtn) {
+                toggleBtn.textContent = showAllProfileKeys ? 'Hide Locked Keys' : 'Show All 70 Keys';
+                toggleBtn.onclick = () => { showAllProfileKeys = !showAllProfileKeys; updateProfileTable(); };
+            }
 
             let masteredCount = 0;
 
             KEY_PROGRESSION.forEach((item, idx) => {
                 const s = keyStats[item.k] || { hits: 0, errors: 0 };
+                if (!showAllProfileKeys && idx > unlockedIndex && (s.hits || 0) === 0) return;
                 const total = s.hits + s.errors;
                 const acc = total > 0 ? Math.round((s.hits / total) * 100) + '%' : '—';
                 const isMastered = keyHeatLevel(item)===3 && (s.modelSamples||0)>=10;
@@ -4151,8 +4268,8 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
         // 10. TYPING INPUT ENGINE (STRICT ERROR BLOCKING & METRICS)
         // ─────────────────────────────────────────────────────────────
         function lessonElapsed(){return sessionStartTime?Math.max(0,(lessonEndedAt||pausedAt||Date.now())-sessionStartTime-pausedTotal):0;}
-        function pauseLesson(){if(sessionStartTime&&!lessonCompleted&&!pausedAt){pausedAt=Date.now();activityAt=null;lastKeystrokeTime=null;}}
-        function resumeLesson(){if(pausedAt){pausedTotal+=Date.now()-pausedAt;pausedAt=null;lastKeystrokeTime=null;activityAt=null;}el.hiddenInput.focus({preventScroll:true});}
+        function pauseLesson(){if(sessionStartTime&&!lessonCompleted&&!pausedAt){pausedAt=Date.now();activityAt=null;lastKeystrokeTime=null;const ht=document.getElementById('canvas-hint-text');if(ht)ht.textContent='Paused';}}
+        function resumeLesson(){if(pausedAt){pausedTotal+=Date.now()-pausedAt;pausedAt=null;lastKeystrokeTime=null;activityAt=null;const ht=document.getElementById('canvas-hint-text');if(ht)ht.textContent='Typing…';}el.hiddenInput.focus({preventScroll:true});}
         function handleKeystroke(keyString) {
             if(pausedAt)resumeLesson();
             if (cursorIndex >= targetKrutiText.length) return;
