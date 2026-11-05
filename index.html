@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="hi" data-theme="dark">
+<html lang="hi" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1678,15 +1678,17 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
             .k-key.w-space { flex: 6.5 1 0; min-width: 0; max-width: none; }
             .k-spacer { flex: 1.9 1 0; visibility: hidden; }
         }
+        /* The Paragraph text size setting (--practice-fs) wins on every screen;
+           the compact clamps below are only fallbacks before settings load. */
         @media (max-height: 740px) {
-            .text-stream-container { font-size: clamp(1.3rem, 2vw, 1.55rem) !important; }
+            .text-stream-container { font-size: var(--practice-fs, clamp(1.3rem, 2vw, 1.55rem)) !important; }
         }
         @media (max-width: 650px) {
-            .text-stream-container { font-size: 1.3rem !important; height: 4.9em !important; max-height: 4.9em !important; }
+            .text-stream-container { font-size: var(--practice-fs, 1.3rem) !important; height: 4.9em !important; max-height: 4.9em !important; }
         }
 
         /* Keep the whole practice view inside one 1366x768-class viewport */
-        @media (min-height: 741px) and (max-height: 800px) {
+        @media (min-width: 651px) and (max-height: 800px) {
             header { height: 40px; }
             .confidence-hint { display: none; }
             .heat-legend { display: none; }
@@ -2054,10 +2056,10 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
                         </div>
                         <div class="settings-ctrl">
                             <select class="ctrl-select" id="theme-select">
-                                <option value="dark">Ink (Default)</option>
+                                <option value="dark">Ink</option>
                                 <option value="navy">Peacock</option>
                                 <option value="amber">Letterpress</option>
-                                <option value="light">Paper</option>
+                                <option value="light">Paper (Default)</option>
                                 <option value="sunshine">Marigold</option>
                                 <option value="forest">Forest</option>
                             </select>
@@ -2548,7 +2550,7 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
         let totalErrorsCount = 0;
         let soundEnabled = true;
         let showFingerHint = true;
-        let currentTheme = 'dark';
+        let currentTheme = 'light';
         let lessonHistory = [], keyLearning = {}, dailyPractice = {day:'', seconds:0};
         let accuracyStreak = 0, dailyGoalMinutes = 30, lessonStyle = 'classic', keyFont = 'sans';
         // Per-day and lifetime aggregates backing the profile charts (persisted).
@@ -3366,7 +3368,10 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
         }
 
         function updateKeyboardHighlights(hintInfo) {
-            const unlockedSet = new Set(KEY_PROGRESSION.slice(0, highestUnlocked + 1).map(x => x.k.toLowerCase()));
+            // Unlocked/heat colouring is guided-lesson state. In Books/Custom
+            // every key is available, so the keyboard stays neutral (the
+            // current-target hint below still highlights the next key).
+            const unlockedSet = textSource==='words' ? new Set(KEY_PROGRESSION.slice(0, highestUnlocked + 1).map(x => x.k.toLowerCase())) : new Set();
 
             keyDOMMap.forEach((keyEl, k) => {
                 keyEl.classList.remove('target', 'shift-needed', 'unlocked', 'heat-1', 'heat-2', 'heat-3');
@@ -4487,7 +4492,7 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
                     // REPLACES the text instantly - a separate lesson, not appended
                     // text, and no Enter/Continue/toast.
                     const guidance=textSource!=='words'?'':cleared?'Key cleared. Next: '+KEY_PROGRESSION[unlockedIndex].h:state.ready?'Ready. Continue to practice.':!state.recentAccuracy?'Reach 95% accuracy in a completed lesson.':state.samples<10?'Need 10 clean target timings.':!state.starterReady?'Calibrate each starter key at goal speed.':'Best target speed is below your '+targetSpeedGoal+' WPM goal.';
-                    flashPracticeEvent('Lesson: '+last.wpm.toFixed(1)+' WPM · '+last.acc.toFixed(1)+'% accuracy'+(pendingLessonEvents.length?' · '+pendingLessonEvents.join(' · '):'')+(guidance?' · '+guidance:''));
+                    if(textSource==='words')flashPracticeEvent('Lesson: '+last.wpm.toFixed(1)+' WPM · '+last.acc.toFixed(1)+'% accuracy'+(pendingLessonEvents.length?' · '+pendingLessonEvents.join(' · '):'')+(guidance?' · '+guidance:''));
                     pendingLessonEvents=[];
                     regenerateLesson();
                 }
