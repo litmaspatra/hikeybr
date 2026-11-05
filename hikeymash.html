@@ -1256,6 +1256,61 @@
             right: 4px;
         }
 
+        /* ── Mobile (<=650px): reflow header, fit keyboard ─────────── */
+        @media (max-width: 650px) {
+            html, body { width: 100%; overflow-x: hidden; }
+
+            /* Header grows to fit its wrapped rows instead of letting the
+               nav spill over the race heading below it */
+            header {
+                height: auto;
+                padding: 8px 12px;
+                gap: 8px;
+            }
+            .brand { gap: 8px; }
+            .brand-title { font-size: 1rem; }
+            .brand-badge { display: none; }
+            nav {
+                order: 3;
+                width: 100%;
+                display: flex;
+                gap: 6px;
+            }
+            nav .nav-tab {
+                flex: 1;
+                justify-content: center;
+                padding: 6px 4px;
+                font-size: 0.74rem;
+                white-space: nowrap;
+            }
+            .header-actions { margin-left: auto; }
+
+            main { padding: 12px !important; }
+
+            /* Keyboard: rows always fit the viewport instead of clipping
+               at both edges */
+            .keyboard-frame {
+                padding: 6px 4px;
+                gap: 3px;
+                overflow: hidden;
+            }
+            .k-row { gap: 2px; flex-wrap: nowrap; }
+            .k-key {
+                flex: 1 1 0;
+                min-width: 0;
+                width: auto;
+                height: 36px;
+                padding: 1px;
+                border-radius: 4px;
+            }
+            .k-key .hi-main { font-size: 0.72rem; margin-top: 2px; }
+            .k-key .hi-shift { font-size: 8px; top: 1px; left: 2px; }
+            .k-key .en-sub { font-size: 7.5px; bottom: 1px; right: 2px; }
+
+            .match-top-header { flex-wrap: wrap; gap: 4px 8px; }
+            .live-hint-strip { flex-wrap: wrap; }
+        }
+
         /* ═══════════════════════════════════════════════════════════
            RESULTS SCREEN (IMAGE 1)
            ═══════════════════════════════════════════════════════════ */
