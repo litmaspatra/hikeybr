@@ -1085,6 +1085,21 @@
         .hud-strip, .progress-bar-container { display: none !important; }
             footer a { color: var(--accent) !important; text-decoration: underline !important; }
         .k-key .hi-shift, .k-key .en-sub { font-size: 10.5px !important; color: var(--text-dim) !important; }
+
+        /* ═══ FINAL: zero layout shift while typing (2026-11-05) ═══ */
+        .kruti-stream { height: 110px; }
+        .text-current.space-cursor {
+            display: inline;
+            width: auto;
+            height: auto;
+            vertical-align: baseline;
+            background-color: var(--gold-glow);
+            box-shadow: 0 0 8px var(--gold-glow);
+            text-decoration: none;
+        }
+        /* Alt pill keeps its slot; only visibility toggles, never layout */
+        .alt-helper-pill { display: flex; visibility: hidden; }
+        .alt-helper-pill.active { visibility: visible; }
     </style>
     <link rel="stylesheet" href="theme.css">
 </head>

@@ -1532,6 +1532,112 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
         .ak-badge{position:relative;overflow:hidden}
         .ak-badge .ak-bar{position:absolute;left:0;right:0;bottom:0;opacity:.4;pointer-events:none}
         @media(max-width:650px){.cal-grid{grid-template-columns:repeat(7,13px)}.cal-cell{width:13px;height:13px}.pg-key{flex-basis:26px;font-size:.8rem}}
+
+        /* ═══════════════════════════════════════════════════════════════
+           FINAL: single-viewport practice layout + zero layout shift
+           (overrides every earlier practice-sizing rule; theme.css angular
+           shape system still applies on top)
+           ═══════════════════════════════════════════════════════════════ */
+        header { height: 44px; }
+        main { padding: 8px 16px 10px; gap: 6px; }
+        #panel-practice.panel.active { gap: 6px; }
+        .practice-live { display: none; margin: 0; }
+        .lesson-settings { margin: 0; }
+        .lesson-settings>summary { padding: 3px 10px; font-size: .78rem; }
+        #panel-practice .insight-row { font-size: .7rem; gap: 10px; }
+
+        .target-card { padding: 6px 12px; gap: 4px; }
+        .target-char-pill { padding: 2px 10px; }
+        .target-char-pill .t-char { font-size: 1rem; }
+        .target-metrics { font-size: .7rem; gap: 10px; }
+        .metric-chip strong { font-size: .78rem; }
+        .progress-track-wrapper { gap: 8px; }
+        .progress-track { height: 6px; }
+        .confidence-hint { font-size: .62rem; gap: 10px; }
+        .confidence-hint>span { flex: 1 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .confidence-hint>span:last-child { text-align: right; }
+
+        .stats-strip { gap: 6px; }
+        .stat-card { padding: 4px 10px; gap: 1px; }
+        .stat-card .s-label { font-size: .58rem; }
+        .stat-card .s-value { font-size: 1.05rem; }
+        .stat-card .s-sub { font-size: .6rem; }
+
+        .alphabet-strip { padding: 4px 10px; gap: 3px; }
+        .alphabet-header { font-size: .62rem; }
+        .alphabet-keys { gap: 2px; padding-bottom: 2px; }
+        .ak-badge { min-width: 26px; height: 30px; font-size: .78rem; }
+        .ak-badge .ak-key { font-size: .46rem; }
+        .heat-legend { margin-top: 1px; font-size: .58rem; }
+
+        .practice-substats { margin: 0; font-size: .7rem; flex-wrap: nowrap; white-space: nowrap; overflow: hidden; }
+        .practice-substats .wp-status { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+
+        /* Typing canvas: FIXED two-line height - the page can never resize while typing */
+        .typing-canvas { min-height: 0 !important; padding: 8px 14px !important; }
+        .text-stream-container {
+            font-size: clamp(1.15rem, 2vw, 1.45rem) !important;
+            line-height: 1.6 !important;
+            height: 3.2em !important;
+            min-height: 0 !important;
+            max-height: none !important;
+            padding: 0 4px !important;
+            overflow-y: auto !important;
+            overflow-x: hidden;
+            scroll-behavior: auto;
+        }
+
+        /* Space cursor stays a normal inline space: no inline-block, no fixed
+           width, so line wrapping can never change when the cursor crosses a
+           space (this was the page-resize bug). */
+        .text-current.space-cursor {
+            display: inline;
+            width: auto;
+            height: auto;
+            vertical-align: baseline;
+            background-color: var(--accent-glow);
+            box-shadow: 0 0 8px var(--accent-glow);
+            text-decoration: none;
+        }
+
+        /* Live hint: fixed one-line strip; Alt-code info is folded into it */
+        .live-hint-strip { min-height: 22px; height: 22px; max-height: 22px; margin: 0; overflow: hidden; white-space: nowrap; font-size: .76rem; gap: 8px; }
+        .live-hint-strip>span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+        /* The old Alt helper banner never enters layout flow (its info now
+           lives in the hint strip above the keyboard). */
+        .alt-helper-bar { display: none !important; }
+
+        /* Lesson-event flash: reserved one-line slot, never changes page height */
+        #practice-event[hidden] { display: block; visibility: hidden; }
+        #practice-event { margin: 0; padding: 2px 10px; font-size: .7rem; min-height: 20px; box-sizing: border-box; }
+
+        .keyboard-frame { padding: 6px 12px; gap: 3px; }
+        .k-row { gap: 3px; }
+        .k-key { height: 33px; min-width: 32px; }
+        .k-key .hi-main { font-size: .82rem; margin-top: 2px; }
+
+        footer { padding: 4px 16px; font-size: .6rem; }
+
+        /* Shorter laptop screens: trim harder */
+        @media (max-height: 740px) {
+            header { height: 40px; }
+            .confidence-hint { display: none; }
+            .heat-legend { display: none; }
+            .k-key { height: 30px; min-width: 30px; }
+            .text-stream-container { font-size: clamp(1.05rem, 1.7vw, 1.3rem) !important; }
+            footer { display: none; }
+        }
+        /* Tall screens: breathe a little */
+        @media (min-height: 1000px) {
+            .text-stream-container { font-size: clamp(1.3rem, 2vw, 1.65rem) !important; }
+            .k-key { height: 38px; }
+        }
+        @media (max-width: 650px) {
+            .practice-live { display: flex; margin: 2px 0; font-size: .7rem; }
+            .text-stream-container { font-size: 1.25rem !important; line-height: 1.6 !important; height: 3.2em !important; }
+            .live-hint-strip { height: auto; max-height: 44px; white-space: normal; }
+        }
     </style>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;700&display=swap" rel="stylesheet">    <link rel="stylesheet" href="theme.css">
 </head>
@@ -4217,16 +4323,12 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
                     isShifted: hint.isShifted
                 });
 
-                // Alt code helper bar update
+                // Alt code: folded into the fixed-height hint strip so the
+                // page layout never shifts when a conjunct comes up.
                 const altCode = GLYPH_TO_ALT_CODE[hint.hindiChar];
                 if (altCode) {
                     const catalogRow = ALT_CODES_CATALOG.find(x => x.glyph === hint.hindiChar);
-                    el.altHelperBar.classList.add('active');
-                    el.altHelperGlyph.textContent = hint.hindiChar;
-                    el.altHelperCode.textContent = 'Alt + ' + altCode;
-                    el.altHelperGail.textContent = catalogRow ? catalogRow.gail : ('Alt + ' + altCode + ' on Numpad');
-                } else {
-                    el.altHelperBar.classList.remove('active');
+                    el.liveHintDetail.textContent = (hint.detail ? '(' + hint.detail + ') ' : '') + '• Alt + ' + altCode + ' on Numpad' + (catalogRow ? ' • ' + catalogRow.gail : '');
                 }
             } else {
                 el.liveHintKey.textContent = '✓';
