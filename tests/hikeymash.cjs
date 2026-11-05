@@ -46,10 +46,31 @@ const path = require('node:path');
     assert.ok(await page.locator('#modal-next-btn').isVisible(), 'next action visible');
     assert.ok(await page.locator('#modal-retry-btn').isVisible(), 'retry action visible');
 
+    // 4b. Results reveal the title that was hidden while typing.
+    assert.ok((await page.locator('#res-quote-title').textContent()).includes('टेस्ट'), 'results reveal the hidden title');
+
     // 5. The next action returns to the typing view.
     await page.click('#modal-next-btn');
     assert.ok(await page.evaluate(() => !document.body.classList.contains('showing-results')), 'results cleared');
     assert.notEqual(await page.evaluate(() => getComputedStyle(document.getElementById('typing-canvas')).display), 'none', 'typing area back after next');
+
+    // 6. Half-letter conjuncts convert to true KrutiDev half-form bytes.
+    assert.equal(await page.evaluate(() => window.__HIKEYMASH__.unicodeToKrutiDev('कृष्णा')), 'd`".kk', 'कृष्णा uses the half-ष byte, not full ष + halant');
+    assert.equal(await page.evaluate(() => window.__HIKEYMASH__.unicodeToKrutiDev('लक्ष्मी')), 'y{eh', 'लक्ष्मी uses the half-क्ष byte');
+    assert.equal(await page.evaluate(() => window.__HIKEYMASH__.unicodeToKrutiDev('ष')), '"k', 'standing ष keeps its stem');
+    assert.ok(!(await page.evaluate(() => window.__HIKEYMASH__.unicodeToKrutiDev('कृष्णा'))).includes('~'), 'no leftover halant byte');
+
+    // 7. Guess-the-title: the banner never reveals title or author while typing.
+    await page.evaluate(() => window.__HIKEYMASH__.loadSnippet({ id: 't2', title: 'गुप्त-रचना', author: 'गुप्त-लेखक', category: 'prose', genre: 'परीक्षण', text: 'राम सीता' }));
+    const bannerText = await page.evaluate(() => document.querySelector('.snippet-banner').textContent);
+    assert.ok(!bannerText.includes('गुप्त-रचना'), 'title hidden while typing');
+    assert.ok(!bannerText.includes('गुप्त-लेखक'), 'author hidden while typing');
+
+    // 8. keymash-style: no category picker, no WPM/accuracy HUD or progress bar
+    //    while typing - the numbers live on the results screen only.
+    assert.equal(await page.$$eval('.pill-btn[data-cat]', els => els.length), 0, 'no category selector');
+    assert.equal(await page.evaluate(() => getComputedStyle(document.querySelector('.hud-strip')).display), 'none', 'no speed/accuracy HUD while typing');
+    assert.equal(await page.evaluate(() => getComputedStyle(document.querySelector('.progress-bar-container')).display), 'none', 'no progress bar while typing');
 
     assert.deepEqual(errors, [], 'no page errors: ' + errors.join(' | '));
     console.log('PASS: Remington punctuation keys, single typing view, inline keymash-style results, next/retry flow.');

@@ -1706,7 +1706,7 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
                 <div style="margin-top: 10px;">
                     <h3 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 8px;">Interactive Alt-Code Sandbox</h3>
                     <div style="display: flex; gap: 10px; align-items: center;">
-                        <input type="text" id="alt-tester-input" placeholder="Type here (e.g. hold Alt + 0204 or type GAIL)..." style="background:var(--surface); border:1px solid var(--border); color:var(--text); padding:10px 14px; border-radius:8px; font-size:1.1rem; flex:1; outline:none; font-family:'Noto Sans Devanagari', sans-serif;">
+                        <input type="text" id="alt-tester-input" placeholder="Type here (e.g. hold Alt + 0204 or type GAIL) - committed glyphs appear in KrutiDev..." style="background:var(--surface); border:1px solid var(--border); color:var(--text); padding:10px 14px; font-size:1.35rem; flex:1; outline:none; font-family:'KrutiDev010', 'Noto Sans Devanagari', sans-serif;" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
                         <button class="btn-modal cancel" id="clear-alt-test-btn" style="padding:10px 16px;">Clear</button>
                     </div>
                     <div id="alt-test-result" style="margin-top: 8px; font-size: 0.85rem; min-height: 24px;"></div>
@@ -2464,16 +2464,19 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
             s = s.replace(/\u0930\u0941/g, '#');
             s = s.replace(/\u0930\u0942/g, ':');
 
-            // 5. Half consonants followed by standing stem (9 consonants that are half-form + k)
-            s = s.replace(/ख/g, '[k');
-            s = s.replace(/क्ष/g, '{k');
-            s = s.replace(/ण/g, '.k');
-            s = s.replace(/ध/g, '/k');
-            s = s.replace(/घ/g, '?k');
-            s = s.replace(/थ/g, 'Fk');
-            s = s.replace(/भ/g, 'Hk');
-            s = s.replace(/श/g, "'k");
-            s = s.replace(/ष/g, '"k');
+            // 5. Half consonants followed by standing stem (9 consonants that are half-form + k).
+            // Only when NOT followed by a halant: ख + ् must become the true half
+            // form below ([, not [k~), otherwise the font shows a full letter with
+            // a visible halant mark (the क ृ ष ् ण bug in कृष्णा).
+            s = s.replace(/ख(?!्)/g, '[k');
+            s = s.replace(/क्ष(?!्)/g, '{k');
+            s = s.replace(/ण(?!्)/g, '.k');
+            s = s.replace(/ध(?!्)/g, '/k');
+            s = s.replace(/घ(?!्)/g, '?k');
+            s = s.replace(/थ(?!्)/g, 'Fk');
+            s = s.replace(/भ(?!्)/g, 'Hk');
+            s = s.replace(/श(?!्)/g, "'k");
+            s = s.replace(/ष(?!्)/g, '"k');
 
             // Half forms (halant):
             s = s.replace(/ख्/g, '[');
@@ -3334,7 +3337,7 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
                     </div>
                 `;
                 card.addEventListener('click', () => {
-                    labTarget=item;labBuffer='';labDigits='';el.altTesterInput.value='';
+                    labTarget=item;labBuffer='';labDigits='';labText='';el.altTesterInput.value='';
                     const parts=[];if(item.gail)parts.push(item.gail);if(item.code)parts.push('Alt+'+item.code);
                     el.altTestResult.textContent='Practice '+item.glyph+': '+parts.join(' or ')+'.';
                     el.altTesterInput.focus({preventScroll:true});
@@ -3687,7 +3690,7 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
                         populateJumpSelect();
                         updateAlphabetStrip();
                         el.metricUnlocked.textContent = highestUnlocked + 1;
-                        el.leadSamplesStatus.textContent = 'Key cleared - press Continue for the next lesson';
+                        el.leadSamplesStatus.textContent = 'Key cleared - the next lesson has begun';
                         el.liveHintChar.textContent = `Key cleared: ${item.h}!`;
                         el.liveHintDetail.textContent = `Next lesson introduces ${KEY_PROGRESSION[unlockedIndex].h}`;
                     }
@@ -3695,18 +3698,19 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
                     saveStorage();
                     const last=lessonHistory.at(-1);
                     document.getElementById('result-text').textContent=last.wpm.toFixed(1)+' WPM · '+last.acc.toFixed(1)+'% accuracy. '+(cleared?'Key cleared. Next: '+KEY_PROGRESSION[unlockedIndex].h:state.ready?'Ready. Continue to practice.':!state.recentAccuracy?'Reach 95% accuracy in a completed lesson.':state.samples<10?'Need 10 clean target timings.':!state.starterReady?'Calibrate each starter key at goal speed.':'Best target speed is below your '+targetSpeedGoal+' WPM goal.');
+                    // keybr-style everywhere: flash the result briefly and roll
+                    // straight on - no Enter/Continue. Guided lessons extend the
+                    // same text; books/custom advance to the next paragraphs.
                     if(textSource==='words'){
-                        // Continuous practice: flash the result, extend the text, keep typing.
-                        const res=document.getElementById('lesson-result');
-                        document.getElementById('continue-btn').style.display='none';
-                        res.hidden=false;
-                        clearTimeout(toastTimer);toastTimer=setTimeout(()=>{res.hidden=true;},3600);
                         extendLessonText();
-                        updateDisplay();
                     } else {
-                        document.getElementById('continue-btn').style.display='';
-                        document.getElementById('lesson-result').hidden=false;
+                        regenerateLesson();
                     }
+                    const res=document.getElementById('lesson-result');
+                    document.getElementById('continue-btn').style.display='none';
+                    res.hidden=false;
+                    clearTimeout(toastTimer);toastTimer=setTimeout(()=>{res.hidden=true;},3600);
+                    updateDisplay();
                 }
             }
         }
@@ -4213,26 +4217,45 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
         }
 
         // Shared catalog describes both Lab and Practice aliases. Success requires real key events.
-        let labTarget=ALT_CODES_CATALOG[0],labBuffer='',labDigits='',practiceAlias='';
+        // labText is the running line of committed KrutiDev bytes, rendered in the
+        // KrutiDev font so every typed glyph stays visible; labBuffer is the
+        // in-progress GAIL sequence (shown in the status line until it matches).
+        let labTarget=ALT_CODES_CATALOG[0],labBuffer='',labDigits='',labText='',labEchoUntil=0,practiceAlias='';
         function labResult(glyph,method){
-            el.altTesterInput.value=glyph;el.altTestResult.textContent=glyph===labTarget.glyph?'Typed correctly: '+glyph+' via '+method+'.':'Typed '+glyph+'; target is '+labTarget.glyph+'.';
+            labText+=unicodeToKrutiDev(glyph);
+            el.altTesterInput.value=labText;
+            el.altTestResult.textContent=glyph===labTarget.glyph?'Typed correctly: '+glyph+' via '+method+'.':'Typed '+glyph+' via '+method+'; target is '+labTarget.glyph+'.';
             labBuffer='';labDigits='';
         }
         function commitLabAltCode(){
             if(!labDigits)return;
             const code=labDigits;labDigits='';
             const glyph=KRUTIDEV_ALT_CODES[code];
-            if(glyph)labResult(glyph,'Alt+'+code);
+            if(glyph){labResult(glyph,'Alt+'+code);labEchoUntil=Date.now()+1500;}
             else el.altTestResult.textContent='Unknown Alt code '+code;
         }
+        function commitLabSymbol(ch){
+            // Windows composed the cp1252 symbol itself (digit keydowns and the
+            // Alt keyup never reached the page): the symbol's code point IS the
+            // Alt code. Without this branch the old swallow rule ate the only
+            // commit signal and the character never appeared.
+            if(!ch||ch.length!==1)return false;
+            const code='0'+ch.charCodeAt(0);
+            const glyph=KRUTIDEV_ALT_CODES[code];
+            if(!glyph)return false;
+            labResult(glyph,'Alt+'+code);labEchoUntil=Date.now()+1500;
+            return true;
+        }
         el.altTesterInput.addEventListener('paste',()=>{labBuffer='';labDigits='';el.altTestResult.textContent='Preview only. Type the sequence or Alt code to verify your input.';});
-        el.altTesterInput.addEventListener('input',()=>{
+        el.altTesterInput.addEventListener('input',e=>{
             // Windows can swallow the Alt keyup and force the composed cp1252
             // symbol into the field on Alt release; that insertion is the
-            // commit signal. Otherwise restore the verified buffer.
+            // commit signal. Otherwise restore the verified text.
             if(labDigits){commitLabAltCode();return;}
-            setTimeout(()=>{if(!labDigits&&el.altTesterInput.value!==labBuffer)el.altTesterInput.value=labBuffer;},0);
-            el.altTestResult.textContent='Keep typing with physical keys.';
+            if(Date.now()<labEchoUntil){labEchoUntil=0;el.altTesterInput.value=labText;return;} // OS echo of a code we already committed
+            if(e.data&&commitLabSymbol(e.data))return;
+            setTimeout(()=>{if(!labDigits&&el.altTesterInput.value!==labText)el.altTesterInput.value=labText;},0);
+            if(el.altTesterInput.value!==labText)el.altTestResult.textContent='Keep typing with physical keys.';
         });
         el.altTesterInput.addEventListener('keydown',e=>{
             if(e.ctrlKey||e.metaKey)return;
@@ -4240,10 +4263,20 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
             if(e.key==='Alt'&&labDigits)commitLabAltCode();
             if(e.key==='Alt'||e.key==='Shift')return;
             if(labDigits&&!MODIFIER_KEYS.includes(e.key))commitLabAltCode();
-            if(e.key.length===1&&e.key.charCodeAt(0)>127){e.preventDefault();return;} // swallow the OS-composed symbol
-            if(e.key==='Backspace'){e.preventDefault();labBuffer=labBuffer.slice(0,-1);el.altTesterInput.value=labBuffer;return;}
+            if(e.key.length===1&&e.key.charCodeAt(0)>127){
+                // OS-composed symbol: drop the echo of a code just committed,
+                // otherwise it is the commit signal itself (no digits seen).
+                e.preventDefault();
+                if(Date.now()<labEchoUntil)labEchoUntil=0;
+                else commitLabSymbol(e.key);
+                return;
+            }
+            if(e.key==='Backspace'){e.preventDefault();
+                if(labBuffer){labBuffer=labBuffer.slice(0,-1);el.altTestResult.textContent=labBuffer?('Sequence '+labBuffer+'…'):'Sequence cleared.';}
+                else{labText=labText.slice(0,-1);el.altTesterInput.value=labText;}
+                return;}
             if(e.key.length!==1)return;
-            e.preventDefault();labBuffer+=e.key;el.altTesterInput.value=labBuffer;
+            e.preventDefault();labBuffer+=e.key;
             if(!labTarget.gail){el.altTestResult.textContent=labTarget.glyph+' is Alt only: use Alt+'+labTarget.code+'.';labBuffer='';return;}
             if(labBuffer===labTarget.gail){labResult(labTarget.glyph,'keys '+labTarget.gail);return;}
             if(!labTarget.gail.startsWith(labBuffer)){el.altTestResult.textContent='Try again: '+labTarget.gail+' (case-sensitive).';labBuffer='';}
@@ -4251,7 +4284,7 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
         });
         // Keyup for Alt-code release (unreliable on Windows; see commitLabAltCode callers).
         window.addEventListener('keyup',e=>{if(e.key==='Alt'||e.code==='AltLeft'||e.code==='AltRight')commitLabAltCode();});
-        el.clearAltTestBtn.onclick=()=>{labBuffer='';labDigits='';el.altTesterInput.value='';const parts=[];if(labTarget.gail)parts.push(labTarget.gail);if(labTarget.code)parts.push('Alt+'+labTarget.code);el.altTestResult.textContent='Target '+labTarget.glyph+': '+parts.join(' or ');el.altTesterInput.focus({preventScroll:true});};
+        el.clearAltTestBtn.onclick=()=>{labBuffer='';labDigits='';labText='';el.altTesterInput.value='';const parts=[];if(labTarget.gail)parts.push(labTarget.gail);if(labTarget.code)parts.push('Alt+'+labTarget.code);el.altTestResult.textContent='Target '+labTarget.glyph+': '+parts.join(' or ');el.altTesterInput.focus({preventScroll:true});};
 
         async function selectDisplayFont(requested) {
             const font=FONT_REGISTRY[requested];

@@ -6,7 +6,7 @@
     <title>HiKeymash — Hindi Literature Remington (GAIL) Typing Test</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         /* ═══════════════════════════════════════════════════════════
            AUTHENTIC KRUTIDEV 010 FONT (Base64 Embedded + Fallback)
@@ -31,100 +31,169 @@
            THEMES & CSS VARIABLES (Keymash Palette)
            ═══════════════════════════════════════════════════════════ */
         :root[data-theme="dark"] {
-            --bg: #141416;
-            --surface: #1e1e24;
-            --surface-hover: #292930;
-            --surface-card: #19191f;
-            --border: #32323d;
-            --border-subtle: #25252e;
-            --text: #f4f4f7;
-            --text-dim: #9d9da8;
-            --text-faint: #5d5d6b;
-            --accent: #ff6b00;
-            --accent-glow: rgba(255, 107, 0, 0.35);
-            --accent-soft: rgba(255, 107, 0, 0.12);
-            --correct: #4ade80;
-            --correct-glow: rgba(74, 222, 128, 0.25);
-            --error: #ef4444;
-            --error-bg: rgba(239, 68, 68, 0.22);
-            --key-bg: #202028;
-            --key-border: #383846;
-            --key-bottom: #121217;
-            --gold: #f59e0b;
-            --gold-glow: rgba(245, 158, 11, 0.3);
+            --bg: #10140f;
+            --surface: #181e17;
+            --surface-hover: #20281e;
+            --surface-card: #141a13;
+            --border: #2e3a2c;
+            --border-subtle: #232b21;
+            --text: #f2ede0;
+            --text-dim: #aaa491;
+            --text-faint: #6b6a5e;
+            --accent: #f0a62c;
+            --accent-glow: rgba(240, 166, 44, 0.35);
+            --accent-soft: rgba(240, 166, 44, 0.13);
+            --correct: #5fce8a;
+            --correct-glow: rgba(95, 206, 138, 0.25);
+            --error: #e5544b;
+            --error-bg: rgba(229, 84, 75, 0.22);
+            --key-bg: #161c15;
+            --key-border: #33402f;
+            --key-bottom: #0a0d09;
+            --key-active: #f0a62c;
+            --key-unlocked: #22311f;
+            --key-unlocked-border: #3d5c33;
+            --chip-bg: #26260f;
+            --chip-border: #f0a62c;
         }
 
         :root[data-theme="navy"] {
-            --bg: #090e17;
-            --surface: #121c2e;
-            --surface-hover: #18263d;
-            --surface-card: #0d1524;
-            --border: #1f304d;
-            --border-subtle: #162238;
-            --text: #f8fafc;
-            --text-dim: #94a3b8;
-            --text-faint: #475569;
-            --accent: #38bdf8;
-            --accent-glow: rgba(56, 189, 248, 0.35);
-            --accent-soft: rgba(56, 189, 248, 0.12);
-            --correct: #34d399;
-            --correct-glow: rgba(52, 211, 153, 0.25);
-            --error: #f87171;
-            --error-bg: rgba(248, 113, 113, 0.22);
-            --key-bg: #142036;
-            --key-border: #23375c;
-            --key-bottom: #090e1a;
-            --gold: #38bdf8;
-            --gold-glow: rgba(56, 189, 248, 0.3);
+            --bg: #062028;
+            --surface: #0b2d38;
+            --surface-hover: #0f3a47;
+            --surface-card: #082630;
+            --border: #1c4a58;
+            --border-subtle: #123845;
+            --text: #eaf7f4;
+            --text-dim: #93c4c0;
+            --text-faint: #4a7a7c;
+            --accent: #2dd4bf;
+            --accent-glow: rgba(45, 212, 191, 0.35);
+            --accent-soft: rgba(45, 212, 191, 0.12);
+            --correct: #6ee7a0;
+            --correct-glow: rgba(110, 231, 160, 0.25);
+            --error: #fb7185;
+            --error-bg: rgba(251, 113, 133, 0.22);
+            --key-bg: #0a2933;
+            --key-border: #205264;
+            --key-bottom: #04141b;
+            --key-active: #14b8a6;
+            --key-unlocked: #0f3d36;
+            --key-unlocked-border: #1b6b5e;
+            --chip-bg: #0a3a3a;
+            --chip-border: #2dd4bf;
         }
 
         :root[data-theme="amber"] {
-            --bg: #15120f;
-            --surface: #221d18;
-            --surface-hover: #2d2620;
-            --surface-card: #1c1713;
-            --border: #3b3128;
-            --border-subtle: #2a231c;
-            --text: #faf5ee;
-            --text-dim: #b8aba0;
-            --text-faint: #6e6359;
-            --accent: #f59e0b;
-            --accent-glow: rgba(245, 158, 11, 0.35);
-            --accent-soft: rgba(245, 158, 11, 0.12);
-            --correct: #84cc16;
-            --correct-glow: rgba(132, 204, 22, 0.25);
-            --error: #f43f5e;
-            --error-bg: rgba(244, 63, 94, 0.22);
-            --key-bg: #221c17;
-            --key-border: #44372d;
-            --key-bottom: #100d0a;
-            --gold: #f59e0b;
-            --gold-glow: rgba(245, 158, 11, 0.3);
+            --bg: #1e1409;
+            --surface: #2a1d0f;
+            --surface-hover: #352615;
+            --surface-card: #241809;
+            --border: #4c3a22;
+            --border-subtle: #382a18;
+            --text: #f6ecd8;
+            --text-dim: #c4af8d;
+            --text-faint: #7a6a4e;
+            --accent: #e0512e;
+            --accent-glow: rgba(224, 81, 46, 0.35);
+            --accent-soft: rgba(224, 81, 46, 0.13);
+            --correct: #9ab84a;
+            --correct-glow: rgba(154, 184, 74, 0.25);
+            --error: #f26d6d;
+            --error-bg: rgba(242, 109, 109, 0.22);
+            --key-bg: #271b0d;
+            --key-border: #554027;
+            --key-bottom: #100a04;
+            --key-active: #e0512e;
+            --key-unlocked: #2f3315;
+            --key-unlocked-border: #556224;
+            --chip-bg: #38160c;
+            --chip-border: #e0512e;
         }
 
         :root[data-theme="light"] {
-            --bg: #f7f7f9;
-            --surface: #ffffff;
-            --surface-hover: #ececf0;
-            --surface-card: #ffffff;
-            --border: #d4d4dc;
-            --border-subtle: #e6e6ed;
-            --text: #1a1a1e;
-            --text-dim: #64646e;
-            --text-faint: #9696a2;
-            --accent: #e05500;
-            --accent-glow: rgba(224, 85, 0, 0.25);
-            --accent-soft: rgba(224, 85, 0, 0.08);
-            --correct: #16a34a;
-            --correct-glow: rgba(22, 163, 74, 0.2);
-            --error: #dc2626;
-            --error-bg: rgba(220, 38, 38, 0.14);
-            --key-bg: #ffffff;
-            --key-border: #d4d4dc;
-            --key-bottom: #bcbcc6;
-            --gold: #d97706;
-            --gold-glow: rgba(217, 119, 6, 0.2);
+            --bg: #efe6d0;
+            --surface: #f8f2e2;
+            --surface-hover: #eee5cd;
+            --surface-card: #f6efdc;
+            --border: #d3c4a3;
+            --border-subtle: #e2d7bd;
+            --text: #241f14;
+            --text-dim: #6d6248;
+            --text-faint: #a2967a;
+            --accent: #2b3fbf;
+            --accent-glow: rgba(43, 63, 191, 0.25);
+            --accent-soft: rgba(43, 63, 191, 0.09);
+            --correct: #2e8b57;
+            --correct-glow: rgba(46, 139, 87, 0.2);
+            --error: #c22f2f;
+            --error-bg: rgba(194, 47, 47, 0.14);
+            --key-bg: #fdf9ec;
+            --key-border: #d3c4a3;
+            --key-bottom: #b3a27c;
+            --key-active: #2b3fbf;
+            --key-unlocked: #e2ecd4;
+            --key-unlocked-border: #9cc18b;
+            --chip-bg: #e7e2f2;
+            --chip-border: #2b3fbf;
         }
+
+        :root[data-theme="sunshine"] {
+            --bg: #f3c93c;
+            --surface: #f9da6b;
+            --surface-hover: #f7d152;
+            --surface-card: #f6d45a;
+            --border: #c99e1f;
+            --border-subtle: #e0b733;
+            --text: #38270a;
+            --text-dim: #715815;
+            --text-faint: #a3812b;
+            --accent: #7c2d12;
+            --accent-glow: rgba(124, 45, 18, 0.3);
+            --accent-soft: rgba(124, 45, 18, 0.1);
+            --correct: #2f7d32;
+            --correct-glow: rgba(47, 125, 50, 0.25);
+            --error: #b3261e;
+            --error-bg: rgba(179, 38, 30, 0.16);
+            --key-bg: #fbe384;
+            --key-border: #cfa62a;
+            --key-bottom: #a87f14;
+            --key-active: #7c2d12;
+            --key-unlocked: #e9e6b0;
+            --key-unlocked-border: #a8b56a;
+            --chip-bg: #f0c0a8;
+            --chip-border: #7c2d12;
+        }
+
+        :root[data-theme="forest"] {
+            --bg: #0b1a10;
+            --surface: #122619;
+            --surface-hover: #173020;
+            --surface-card: #0f2114;
+            --border: #265032;
+            --border-subtle: #1a3a24;
+            --text: #e9f4e4;
+            --text-dim: #a3c3a6;
+            --text-faint: #5d8a61;
+            --accent: #a3e635;
+            --accent-glow: rgba(163, 230, 53, 0.32);
+            --accent-soft: rgba(163, 230, 53, 0.12);
+            --correct: #4ade80;
+            --correct-glow: rgba(74, 222, 128, 0.25);
+            --error: #f87171;
+            --error-bg: rgba(248, 113, 113, 0.22);
+            --key-bg: #102315;
+            --key-border: #2c5c39;
+            --key-bottom: #071008;
+            --key-active: #a3e635;
+            --key-unlocked: #1b3a22;
+            --key-unlocked-border: #31663f;
+            --chip-bg: #24380f;
+            --chip-border: #a3e635;
+        }
+
+        /* HiKeybr palettes carry no --gold: alias it to the accent. */
+        :root { --gold: var(--accent); --gold-glow: var(--accent-glow); }
 
         * {
             box-sizing: border-box;
@@ -135,7 +204,7 @@
         body {
             background-color: var(--bg);
             color: var(--text);
-            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Space Grotesk', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -172,12 +241,12 @@
         .brand-icon {
             width: 28px;
             height: 28px;
-            background: linear-gradient(135deg, #f59e0b, #ff6b00);
+            background: var(--accent);
             border-radius: 7px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #ffffff;
+            color: var(--bg);
             font-family: 'Noto Sans Devanagari', sans-serif;
             font-weight: 800;
             font-size: 1.05rem;
@@ -371,14 +440,14 @@
         }
 
         .mash-btn.primary {
-            background: linear-gradient(135deg, #ff6b00, #e05500);
-            border-color: #ff6b00;
-            color: #ffffff;
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--bg);
             box-shadow: 0 2px 8px var(--accent-glow);
         }
 
         .mash-btn.primary:hover {
-            background: linear-gradient(135deg, #ff7a1a, #f06000);
+            background: var(--surface-hover);
             transform: translateY(-1px);
         }
 
@@ -955,6 +1024,27 @@
             from { opacity: 0; transform: scale(0.96); }
             to { opacity: 1; transform: scale(1); }
         }
+
+        /* ───────────────────────────────────────────────────────────
+           ANGULAR SHAPE LANGUAGE (same as HiKeybr)
+           Zero rounded corners; major surfaces get chamfered
+           (clipped) corners. Deliberately not keybr's soft look.
+           ─────────────────────────────────────────────────────────── */
+        *, *::before, *::after { border-radius: 0 !important; }
+        button, select, input[type="text"], .nav-tab, .pill-btn, .mash-btn, .btn-icon,
+        .mash-bar, .snippet-banner, .hud-card, .typing-canvas, .live-hint-strip,
+        .alt-helper-pill, .keyboard-frame, .results-card, .r-stat, .quote-citation,
+        .rank-badge, .brand-icon, .progress-bar-container {
+            clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+        }
+        .k-key {
+            clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+        }
+        ::selection { background: var(--accent); color: var(--bg); }
+
+        /* keymash-style typing: no speed/accuracy HUD while typing;
+           the numbers belong to the results screen only. */
+        .hud-strip, .progress-bar-container { display: none !important; }
     </style>
 </head>
 <body>
@@ -996,15 +1086,10 @@
          ═══════════════════════════════════════════════════════════ -->
     <main>
 
-        <!-- Literature Category Filter & Mode Bar -->
+        <!-- Mode Bar: snippets arrive randomly from every category (no picker) -->
         <div class="mash-bar">
             <div class="filter-group">
-                <span class="filter-label">साहित्य:</span>
-                <button class="pill-btn active" data-cat="all">🌟 सभी</button>
-                <button class="pill-btn" data-cat="prose">📖 गद्य व उपन्यास</button>
-                <button class="pill-btn" data-cat="poetry">🎭 ओजस्वी काव्य</button>
-                <button class="pill-btn" data-cat="dohe">📿 दोहे व पद</button>
-                <button class="pill-btn" data-cat="folk">🌿 सरल व कथा</button>
+                <span class="filter-label">🎲 यादृच्छिक उद्धरण — सभी विधाएँ (गद्य, काव्य, दोहे, कथा)</span>
             </div>
 
             <div class="action-btns">
@@ -1020,8 +1105,8 @@
         <!-- Snippet Information Card -->
         <div class="snippet-banner">
             <div class="snippet-info">
-                <span class="snippet-title" id="snippet-title">📖 रश्मिरथी (कृष्ण की चेतावनी)</span>
-                <span class="snippet-author" id="snippet-author">✍️ रामधारी सिंह 'दिनकर'</span>
+                <span class="snippet-title" id="snippet-title">❓ रचना व लेखक गुप्त हैं</span>
+                <span class="snippet-author" id="snippet-author">टाइप करते हुए अनुमान लगाएँ — परिणाम में खुलासा!</span>
                 <span class="snippet-badge" id="snippet-genre">काव्य</span>
             </div>
             <div class="snippet-words">
@@ -1419,16 +1504,19 @@
             s = s.replace(/\u0930\u0941/g, '#');
             s = s.replace(/\u0930\u0942/g, ':');
 
-            // 5. Half consonants followed by standing stem (9 consonants that are half-form + k)
-            s = s.replace(/ख/g, '[k');
-            s = s.replace(/क्ष/g, '{k');
-            s = s.replace(/ण/g, '.k');
-            s = s.replace(/ध/g, '/k');
-            s = s.replace(/घ/g, '?k');
-            s = s.replace(/थ/g, 'Fk');
-            s = s.replace(/भ/g, 'Hk');
-            s = s.replace(/श/g, "'k");
-            s = s.replace(/ष/g, '"k');
+            // 5. Half consonants followed by standing stem (9 consonants that are half-form + k).
+            // Only when NOT followed by a halant: ख + ् must become the true half
+            // form below ([, not [k~), otherwise the font shows a full letter with
+            // a visible halant mark (the क ृ ष ् ण bug in कृष्णा).
+            s = s.replace(/ख(?!्)/g, '[k');
+            s = s.replace(/क्ष(?!्)/g, '{k');
+            s = s.replace(/ण(?!्)/g, '.k');
+            s = s.replace(/ध(?!्)/g, '/k');
+            s = s.replace(/घ(?!्)/g, '?k');
+            s = s.replace(/थ(?!्)/g, 'Fk');
+            s = s.replace(/भ(?!्)/g, 'Hk');
+            s = s.replace(/श(?!्)/g, "'k");
+            s = s.replace(/ष(?!्)/g, '"k');
 
             // Half forms (halant):
             s = s.replace(/ख्/g, '[');
@@ -1843,6 +1931,28 @@
         let audioCtx = null;
         let altCodeBuffer = '';
         let altCodeActive = false;
+        let altEchoUntil = 0;
+        function commitMashCode(code) {
+            const char = KRUTIDEV_ALT_CODES[code];
+            if (!char) return false;
+            altEchoUntil = Date.now() + 1500;
+            const krutiSeq = unicodeToKrutiDev(char);
+            for (const k of krutiSeq) handleKeystroke(k);
+            return true;
+        }
+        function commitMashAltCode() {
+            if (!altCodeActive) return;
+            const code = altCodeBuffer;
+            altCodeBuffer = '';
+            altCodeActive = false;
+            commitMashCode(code);
+        }
+        function commitMashSymbol(ch) {
+            // Windows composed the cp1252 symbol itself (no digit keydowns, no
+            // Alt keyup): the symbol's code point IS the Alt code.
+            if (!ch || ch.length !== 1) return false;
+            return commitMashCode('0' + ch.charCodeAt(0));
+        }
 
         const el = {
             canvas: document.getElementById('typing-canvas'),
@@ -2013,9 +2123,8 @@
             totalTyped = 0;
             cursorIndex = 0;
 
-            // Update Metadata Header
-            el.snippetTitle.textContent = '📖 ' + snippet.title;
-            el.snippetAuthor.textContent = '✍️ ' + snippet.author;
+            // Title and author stay hidden while typing (guess-the-title);
+            // they are revealed on the results screen. Genre is the only hint.
             el.snippetGenre.textContent = snippet.genre || 'साहित्य';
 
             const rawWords = snippet.text.trim().split(/\s+/);
@@ -2240,7 +2349,12 @@
 
         el.hiddenInput.addEventListener('focus', () => el.canvas.classList.add('active-focus'));
         el.hiddenInput.addEventListener('blur', () => el.canvas.classList.remove('active-focus'));
-        el.hiddenInput.addEventListener('input', () => { if (altCodeActive) commitMashAltCode(); el.hiddenInput.value = ''; });
+        el.hiddenInput.addEventListener('input', (e) => {
+            if (altCodeActive) commitMashAltCode();
+            else if (Date.now() < altEchoUntil) altEchoUntil = 0; // OS echo of a code we already committed
+            else if (e.data && e.data.length === 1 && e.data.charCodeAt(0) >= 160 && e.data.charCodeAt(0) <= 255) commitMashSymbol(e.data);
+            el.hiddenInput.value = '';
+        });
 
         // Keystroke Dispatcher on hiddenInput
         el.hiddenInput.addEventListener('keydown', (e) => {
@@ -2269,6 +2383,9 @@
             if (altCodeActive && !MODIFIER_KEYS.includes(e.key)) commitMashAltCode();
             if (e.key.length === 1 && e.key.charCodeAt(0) > 127 && !e.ctrlKey && !e.metaKey) {
                 e.preventDefault();
+                if (Date.now() < altEchoUntil) { altEchoUntil = 0; return; } // OS echo, drop it
+                if (altCodeActive) { commitMashAltCode(); return; }
+                commitMashSymbol(e.key);
                 return;
             }
 
@@ -2317,29 +2434,6 @@
                 commitMashAltCode();
                 return;
             }
-            if (false && e.key === 'Alt' && altCodeActive) {
-                const code = altCodeBuffer;
-                altCodeBuffer = '';
-                altCodeActive = false;
-
-                const char = KRUTIDEV_ALT_CODES[code];
-                if (char) {
-                    const krutiSeq = unicodeToKrutiDev(char);
-                    for (const k of krutiSeq) {
-                        handleKeystroke(k);
-                    }
-                }
-            }
-        });
-
-        // Category Filter Buttons
-        document.querySelectorAll('.pill-btn[data-cat]').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.pill-btn[data-cat]').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                currentCategory = btn.dataset.cat;
-                loadSnippet(pickSnippet(currentCategory));
-            });
         });
 
         // Next & Restart Buttons
@@ -2389,7 +2483,7 @@
         });
 
         // Theme Toggle
-        const themes = ['dark', 'navy', 'amber', 'light'];
+        const themes = ['dark', 'navy', 'amber', 'light', 'sunshine', 'forest'];
         el.themeBtn.addEventListener('click', () => {
             const nextIdx = (themes.indexOf(currentTheme) + 1) % themes.length;
             currentTheme = themes[nextIdx];

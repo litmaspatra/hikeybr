@@ -37,7 +37,7 @@ const path = require('node:path');
     // 3. Alt-code glyph commits as ONE input unit and matches the target sequence.
     await page.evaluate(() => {
         const t = document.getElementById('custom-text');
-        t.value = 'क्त क्त';
+        t.value = 'क्त क्त क्त';
         t.dispatchEvent(new Event('change'));
     });
     assert.ok((await page.evaluate(() => HiKeybr.targetKrutiText)).startsWith('Dr'), 'क्त encodes to Remington Dr');
@@ -60,7 +60,7 @@ const path = require('node:path');
     // 3b. Verified Kruti Dev 010 / DevLys 010 byte table: Alt+0221 must give फ्र (was wrongly 0217).
     await page.evaluate(() => {
         const t = document.getElementById('custom-text');
-        t.value = 'फ्र ह्र';
+        t.value = 'फ्र ह्र ह्र';
         t.dispatchEvent(new Event('change'));
     });
     assert.ok((await page.evaluate(() => HiKeybr.targetKrutiText)).startsWith(String.fromCharCode(221)), 'फ्र encodes to byte 221');
@@ -82,7 +82,7 @@ const path = require('node:path');
     //     not register as a keystroke.
     await page.evaluate(() => {
         const t = document.getElementById('custom-text');
-        t.value = 'क्त क्त क्त';
+        t.value = 'क्त क्त क्त क्त';
         t.dispatchEvent(new Event('change'));
     });
     await page.click('#typing-canvas');
@@ -133,10 +133,32 @@ const path = require('node:path');
     await page.evaluate(() => {
         document.getElementById('alt-tester-input').dispatchEvent(new KeyboardEvent('keydown', { key: 'Ø', bubbles: true, cancelable: true }));
     });
-    assert.equal(await page.locator('#alt-tester-input').inputValue(), 'क्त', 'lab commits the buffered code on the OS symbol');
+    assert.equal(await page.locator('#alt-tester-input').inputValue(), 'Dr', 'lab commits the buffered code on the OS symbol (KrutiDev bytes stay visible)');
     assert.ok((await page.locator('#alt-test-result').textContent()).includes('Alt+0228'), 'lab reports the Alt code used');
     await page.keyboard.up('Alt');
-    assert.equal(await page.locator('#alt-tester-input').inputValue(), 'क्त', 'late Alt keyup does not double-commit in the lab');
+    assert.equal(await page.locator('#alt-tester-input').inputValue(), 'Dr', 'late Alt keyup does not double-commit in the lab');
+
+    // 3f. Lab sandbox, Windows order 3: the OS swallows the digits AND the Alt
+    //     keyup; only the composed symbol arrives. It must still commit.
+    await page.click('#clear-alt-test-btn');
+    await page.evaluate(() => {
+        document.getElementById('alt-tester-input').dispatchEvent(new KeyboardEvent('keydown', { key: 'Ì', bubbles: true, cancelable: true }));
+    });
+    assert.equal(await page.locator('#alt-tester-input').inputValue(), 'n~n', 'lab commits द्द from the OS-composed symbol alone');
+    assert.ok((await page.locator('#alt-test-result').textContent()).includes('Alt+0204'), 'lab reports the symbol Alt code');
+
+    // 3g. Lab sandbox keeps earlier glyphs visible: Alt and GAIL entries accumulate.
+    await page.click('#clear-alt-test-btn');
+    await page.click('#alt-tester-input');
+    await page.keyboard.press('D');
+    await page.keyboard.press('r');
+    assert.equal(await page.locator('#alt-tester-input').inputValue(), 'Dr', 'GAIL Dr commits क्त and it stays visible');
+    await page.keyboard.down('Alt');
+    for (const k of ['Numpad0', 'Numpad2', 'Numpad0', 'Numpad4']) await page.keyboard.press(k);
+    await page.keyboard.up('Alt');
+    assert.equal(await page.locator('#alt-tester-input').inputValue(), 'Drn~n', 'next Alt code accumulates - earlier letters never vanish');
+    await page.keyboard.press('Backspace');
+    assert.equal(await page.locator('#alt-tester-input').inputValue(), 'Drn~', 'backspace trims the committed line');
 
     // 3c. DevLys 010 is a bundled font option and per-cluster highlighting splits text at graphemes.
     const fontOptions = await page.$$eval('#display-font-select option', os => os.map(o => o.value));
@@ -213,6 +235,15 @@ const path = require('node:path');
     assert.equal(await page.evaluate(() => HiKeybr.unicodeToKrutiDev('घ')), '?k', "the '?' byte still types घ");
     assert.equal(await page.evaluate(() => HiKeybr.unicodeToKrutiDev('।')), 'A', 'danda = Shift+A');
 
+    // 8b. Half-letter conjuncts: consonant + halant converts to the font's true
+    //     half-form byte (the क ृ ष ् ण bug), never full letter + halant mark.
+    assert.equal(await page.evaluate(() => HiKeybr.unicodeToKrutiDev('कृष्णा')), 'd`".kk', 'कृष्णा uses the half-ष byte "');
+    assert.equal(await page.evaluate(() => HiKeybr.unicodeToKrutiDev('ष')), '"k', 'standing ष keeps half + stem');
+    assert.equal(await page.evaluate(() => HiKeybr.unicodeToKrutiDev('लक्ष्मी')), 'y{eh', 'लक्ष्मी uses the half-क्ष byte {');
+    assert.equal(await page.evaluate(() => HiKeybr.unicodeToKrutiDev('क्षमा')), '{kek', 'standing क्ष keeps half + stem');
+    assert.equal(await page.evaluate(() => HiKeybr.unicodeToKrutiDev('क्यों')), 'D;ksa', 'क्यों uses half-क D');
+    assert.ok(!(await page.evaluate(() => HiKeybr.unicodeToKrutiDev('कृष्णा'))).includes('~'), 'no leftover halant byte in कृष्णा');
+
     // 9. Custom text with punctuation expects the Remington keys ] and \.
     await fresh();
     await page.click('#lesson-settings > summary');
@@ -223,6 +254,33 @@ const path = require('node:path');
         t.dispatchEvent(new Event('change'));
     });
     assert.equal(await page.evaluate(() => HiKeybr.targetKrutiText), 'jke] D;k\\', 'custom text punctuation uses Remington keys');
+
+    // 10. keybr-style flow: finishing a books/custom lesson flashes the result
+    //     and starts the next lesson automatically - no Enter, no Continue.
+    await fresh();
+    await page.click('#lesson-settings > summary');
+    await page.click('.ls-tab[data-lstab="custom"]');
+    await page.evaluate(() => {
+        const t = document.getElementById('custom-text');
+        t.value = 'राम सीता';
+        t.dispatchEvent(new Event('change'));
+    });
+    await page.evaluate(() => {
+        const seq = HiKeybr.targetKrutiText;
+        for (const ch of seq) HiKeybr.handleKeystroke(ch);
+    });
+    const flow = await page.evaluate(() => ({
+        cursor: HiKeybr.cursorIndex,
+        target: HiKeybr.targetKrutiText,
+        resultHidden: document.getElementById('lesson-result').hidden,
+        continueShown: document.getElementById('continue-btn').style.display !== 'none',
+        resultText: document.getElementById('result-text').textContent
+    }));
+    assert.equal(flow.cursor, 0, 'next lesson started automatically (cursor reset)');
+    assert.equal(flow.continueShown, false, 'no Enter/Continue needed');
+    assert.equal(flow.resultHidden, false, 'result still flashes briefly');
+    assert.ok(flow.target.length > 0, 'fresh lesson text is ready');
+    assert.ok(flow.resultText.includes('WPM'), 'result shows the lesson speed');
 
     assert.deepEqual(errors, [], 'no page errors: ' + errors.join(' | '));
     console.log('PASS: real key events, custom text focus, Alt-code unit scoring, speed control sync, reload persistence, strict unlock, save-failure warning.');
