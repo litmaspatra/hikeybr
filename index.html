@@ -1067,7 +1067,7 @@
         .k-key.w-shift-r { min-width: 98px; }
         .k-key.w-ctrl { min-width: 60px; }
         .k-key.w-alt { min-width: 58px; }
-        .k-key.w-space { min-width: 320px; }
+        .k-key.w-space { flex: 1 1 auto; min-width: 240px; max-width: 460px; }
 
         .k-key.label-key .hi-main {
             font-size: 0.75rem;
@@ -1415,7 +1415,7 @@
 /* Assessment fixes: text-first practice, accessible small screens. */
 .practice-live,.word-tools{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:12px 0}.practice-live{font-size:.95rem}.practice-live button{margin-left:auto}.mobile-notice{font-size:.75rem;color:var(--text-dim)}
 #panel-practice .typing-canvas{min-height:190px;padding-top:30px}.text-stream-container{max-height:260px;min-height:100px;color:var(--text-dim);scroll-behavior:auto}.confidence-hint{font-size:.76rem;color:var(--text-dim)}.table-scroll{overflow-x:auto}.table-scroll table{min-width:620px}.word-tools label{display:flex;gap:8px;align-items:center;font-size:.8rem}button,select{min-height:36px}.word-tools select{max-width:170px;background:var(--surface);color:var(--text)}
-@media(max-width:650px){html,body{width:100%;overflow-x:hidden}header,.header-inner,.top-bar{max-width:100%}header{height:auto!important;flex-wrap:wrap;gap:6px;padding:8px!important}header nav{order:3;width:100%;display:flex;justify-content:space-between;min-width:0;gap:2px}header nav button{flex:1;padding:8px 3px!important;font-size:.72rem!important;white-space:nowrap}main{padding:12px!important;min-width:0;width:100%;box-sizing:border-box}.panel,.content-card,.workspace-bar{min-width:0;max-width:100%;box-sizing:border-box}.quick-controls,.ctrl-item{width:100%;min-width:0}.ctrl-select{max-width:100%}.target-card-top,.confidence-hint{flex-wrap:wrap;gap:8px}.progress-track-wrapper{gap:8px}.progress-stat{font-size:.76rem;white-space:nowrap}.keyboard-frame{padding:8px 3px;gap:4px;max-width:100%;box-sizing:border-box}.k-row{gap:2px}.k-key{min-width:0!important;width:calc((100vw - 66px)/13);flex:0 1 auto;height:42px;border-radius:4px}.k-key .hi-main{font-size:.85rem}.k-key .hi-shift{font-size:.58rem}.k-key .en-sub{font-size:.5rem}.typing-canvas{padding:26px 8px 12px!important}.text-stream-container{font-size:1.65rem;max-height:240px;padding:4px;box-sizing:border-box;line-height:1.8}.canvas-hint{font-size:.6rem;right:8px}.live-hint-strip{flex-wrap:wrap;gap:6px}.content-card{padding:16px}.card-header{flex-wrap:wrap}.target-identity{flex-wrap:wrap}.insight-row{flex-wrap:wrap}.word-tools label{width:100%;flex-wrap:wrap}.logo-badge{display:none}.nav-tab{min-width:0}#panel-altlab input{min-width:0;width:100%}.alt-cards-grid{grid-template-columns:1fr!important}}
+@media(max-width:650px){html,body{width:100%;overflow-x:hidden}header,.header-inner,.top-bar{max-width:100%}header{height:auto!important;flex-wrap:wrap;gap:6px;padding:8px!important}header nav{order:3;width:100%;display:flex;justify-content:space-between;min-width:0;gap:2px}header nav button{flex:1;padding:8px 3px!important;font-size:.72rem!important;white-space:nowrap}main{padding:12px!important;min-width:0;width:100%;box-sizing:border-box}.panel,.content-card,.workspace-bar{min-width:0;max-width:100%;box-sizing:border-box}.quick-controls,.ctrl-item{width:100%;min-width:0}.ctrl-select{max-width:100%}.target-card-top,.confidence-hint{flex-wrap:wrap;gap:8px}.progress-track-wrapper{gap:8px}.progress-stat{font-size:.76rem;white-space:nowrap}.keyboard-frame{padding:8px 3px;gap:4px;max-width:100%;box-sizing:border-box}.k-row{gap:2px}.k-key{min-width:0!important;width:calc((100vw - 70px)/14);flex:0 1 auto;height:42px;border-radius:4px}.k-key.w-backspace,.k-key.w-tab,.k-key.w-caps,.k-key.w-enter,.k-key.w-shift-l,.k-key.w-shift-r,.k-key.w-ctrl,.k-key.w-alt{min-width:0!important}.k-key.w-space{min-width:0!important;max-width:none;flex:3 1 auto!important}.k-key .hi-main{font-size:.85rem}.k-key .hi-shift{font-size:.58rem}.k-key .en-sub{font-size:.5rem}.typing-canvas{padding:26px 8px 12px!important}.text-stream-container{font-size:1.65rem;max-height:240px;padding:4px;box-sizing:border-box;line-height:1.8}.canvas-hint{font-size:.6rem;right:8px}.live-hint-strip{flex-wrap:wrap;gap:6px}.content-card{padding:16px}.card-header{flex-wrap:wrap}.target-identity{flex-wrap:wrap}.insight-row{flex-wrap:wrap}.word-tools label{width:100%;flex-wrap:wrap}.logo-badge{display:none}.nav-tab{min-width:0}#panel-altlab input{min-width:0;width:100%}.alt-cards-grid{grid-template-columns:1fr!important}}
 @media(max-width:650px){.confidence-hint>span{flex-basis:100%;text-align:left!important}.word-tools{overflow-wrap:anywhere}.brand{gap:8px}nav .nav-tab{font-size:.66rem!important}footer{overflow-wrap:anywhere}}
 @media(max-width:650px){.stats-strip{grid-template-columns:repeat(2,1fr)}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto!important;transition:none!important}}
@@ -1438,33 +1438,14 @@
 .ls-note{margin:8px 2px 0;font-size:.76rem;color:var(--text-dim)}
 
 
-        /* Lessons Drawer (Bug #22 Fix) */
-        @media (min-width: 860px) {
-            .lesson-settings[open] .ls-tabs,
-            .lesson-settings[open] .ls-body {
-                position: fixed !important;
-                right: 0 !important;
-                top: 0 !important;
-                width: 480px !important;
-                max-width: 90vw !important;
-                height: 100vh !important;
-                background: var(--surface) !important;
-                box-shadow: -8px 0 32px rgba(0,0,0,0.5) !important;
-                z-index: 1000 !important;
-                overflow-y: auto !important;
-                border-left: 2px solid var(--accent) !important;
-                padding: 24px 20px !important;
-            }
-            .lesson-settings[open] .ls-tabs {
-                top: 0 !important;
-                height: auto !important;
-                border-bottom: 1px solid var(--border) !important;
-                z-index: 1001 !important;
-            }
-            .lesson-settings[open] .ls-body {
-                top: 60px !important;
-                height: calc(100vh - 60px) !important;
-            }
+        /* Lessons settings open inline on the page (drawer removed at user request) */
+
+        /* Alt-lab sandbox: placeholder is English guidance, so keep it in a
+           Latin UI font - the KrutiDev input font made it look like random glyphs */
+        #alt-tester-input::placeholder {
+            font-family: 'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif !important;
+            font-size: 0.95rem !important;
+            opacity: 0.55;
         }
 
         /* Lessons panel (keybr-style) */
@@ -1615,6 +1596,14 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
         .keyboard-frame { padding: 6px 12px; gap: 3px; }
         .k-row { gap: 3px; }
         .k-key { height: 33px; min-width: 32px; }
+        .k-key.w-backspace { min-width: 58px; }
+        .k-key.w-tab { min-width: 48px; }
+        .k-key.w-caps { min-width: 54px; }
+        .k-key.w-enter { min-width: 60px; }
+        .k-key.w-shift-l, .k-key.w-shift-r { min-width: 68px; }
+        .k-key.w-ctrl, .k-key.w-alt { min-width: 44px; }
+        .k-key.w-space { min-width: 180px; }
+        .k-key.label-key .hi-main { font-size: .62rem; }
         .k-key .hi-main { font-size: .82rem; margin-top: 2px; }
 
         footer { padding: 4px 16px; font-size: .6rem; }
@@ -1664,11 +1653,11 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
             overflow-y: auto !important;
             overflow-x: hidden !important;
             line-height: 1.6 !important;
-            font-size: clamp(1.35rem, 2.2vw, 1.7rem) !important;
+            font-size: clamp(1.6rem, 2.6vw, 2rem) !important;
         }
         :root[data-lesson-style="spaced"] .text-stream-container { height: 6.2em !important; max-height: 6.2em !important; }
         @media (max-height: 740px) {
-            .text-stream-container { font-size: clamp(1.1rem, 1.8vw, 1.35rem) !important; }
+            .text-stream-container { font-size: clamp(1.3rem, 2vw, 1.55rem) !important; }
         }
         @media (max-width: 650px) {
             .text-stream-container { font-size: 1.3rem !important; height: 4.9em !important; max-height: 4.9em !important; }
@@ -2003,7 +1992,7 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
                 <div style="margin-top: 10px;">
                     <h3 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 8px;">Interactive Alt-Code Sandbox</h3>
                     <div style="display: flex; gap: 10px; align-items: center;">
-                        <input type="text" id="alt-tester-input" placeholder="Type here (e.g. hold Alt + 0204 or type GAIL) - committed glyphs appear in KrutiDev..." style="background:var(--surface); border:1px solid var(--border); color:var(--text); padding:10px 14px; font-size:1.35rem; flex:1; outline:none; font-family:'KrutiDev010', 'Noto Sans Devanagari', sans-serif;" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+                        <input type="text" id="alt-tester-input" placeholder="Type here - Alt + digits, or the GAIL key sequence..." style="background:var(--surface); border:1px solid var(--border); color:var(--text); padding:10px 14px; font-size:1.35rem; flex:1; outline:none; font-family:'KrutiDev010', 'Noto Sans Devanagari', sans-serif;" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
                         <button class="btn-modal cancel" id="clear-alt-test-btn" style="padding:10px 16px;">Clear</button>
                     </div>
                     <div id="alt-test-result" style="margin-top: 8px; font-size: 0.85rem; min-height: 24px;"></div>
@@ -2321,10 +2310,12 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
                 { k: '9',  h: '9',  sh: '(',  code: 'Digit9' },
                 { k: '0',  h: '0',  sh: 'द्ध', code: 'Digit0' },
                 { k: '-',  h: '-',  sh: 'ऋ',  code: 'Minus' },
-                { k: '=',  h: 'त्र', sh: '़',  code: 'Equal' }
+                { k: '=',  h: 'त्र', sh: '़',  code: 'Equal' },
+                { k: 'Backspace', h: '⌫ Backspace', label: true, w: 'w-backspace' }
             ],
             // Row 2: Top Alpha
             [
+                { k: 'Tab', h: '↹ Tab', label: true, w: 'w-tab' },
                 { k: 'q',  h: 'ु',  sh: 'फ',  code: 'KeyQ' },
                 { k: 'w',  h: 'ू',  sh: 'ॅ',  code: 'KeyW' },
                 { k: 'e',  h: 'म',  sh: 'म्', code: 'KeyE' },
@@ -2341,6 +2332,7 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
             ],
             // Row 3: Home Alpha
             [
+                { k: 'CapsLock', h: '⇪ Caps', label: true, w: 'w-caps' },
                 { k: 'a',  h: 'ं',  sh: 'ँ',  code: 'KeyA' },
                 { k: 's',  h: 'े',  sh: 'ै',  code: 'KeyS' },
                 { k: 'd',  h: 'क',  sh: 'क्', code: 'KeyD' },
@@ -2351,10 +2343,12 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
                 { k: 'k',  h: 'ा',  sh: 'ज्ञ', code: 'KeyK' },
                 { k: 'l',  h: 'स',  sh: 'स्', code: 'KeyL' },
                 { k: ';',  h: 'य',  sh: 'रू', code: 'Semicolon' },
-                { k: "'",  h: 'श',  sh: 'ष्', code: 'Quote' }
+                { k: "'",  h: 'श',  sh: 'ष्', code: 'Quote' },
+                { k: 'Enter', h: '⏎ Enter', label: true, w: 'w-enter' }
             ],
             // Row 4: Bottom Alpha
             [
+                { k: 'ShiftLeft', h: '⇧ Shift', label: true, w: 'w-shift-l' },
                 { k: 'z',  h: '्र', sh: 'र्', code: 'KeyZ' },
                 { k: 'x',  h: 'ग',  sh: 'घ',  code: 'KeyX' },
                 { k: 'c',  h: 'ब',  sh: 'भ',  code: 'KeyC' },
@@ -2364,7 +2358,16 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
                 { k: 'm',  h: 'उ',  sh: 'ड',  code: 'KeyM' },
                 { k: ',',  h: 'ए',  sh: 'ढ',  code: 'Comma' },
                 { k: '.',  h: 'ण',  sh: 'झ',  code: 'Period' },
-                { k: '/',  h: 'ध',  sh: 'घ्', code: 'Slash' }
+                { k: '/',  h: 'ध',  sh: 'घ्', code: 'Slash' },
+                { k: 'ShiftRight', h: '⇧ Shift', label: true, w: 'w-shift-r' }
+            ],
+            // Row 5: Space bar row (keybr-style)
+            [
+                { k: 'ControlLeft', h: 'Ctrl', label: true, w: 'w-ctrl' },
+                { k: 'AltLeft', h: 'Alt', label: true, w: 'w-alt' },
+                { k: ' ', h: 'Space', label: true, w: 'w-space' },
+                { k: 'AltRight', h: 'Alt', label: true, w: 'w-alt' },
+                { k: 'ControlRight', h: 'Ctrl', label: true, w: 'w-ctrl' }
             ]
         ];
 
@@ -3298,7 +3301,7 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
 
                     keyEl.addEventListener('mousedown', (e) => {
                         e.preventDefault();
-                        handleKeystroke(item.k);
+                        if (!item.label || item.k === ' ') handleKeystroke(item.k);
                         el.hiddenInput.focus({preventScroll:true});
                     });
 
@@ -4434,6 +4437,7 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
             sessionErrors = 0;
             sessionStartTime = null;
             lastKeystrokeTime = null;
+            { const ht=document.getElementById('canvas-hint-text'); if(ht) ht.textContent='Start typing'; }
 
             updateDisplay();
             updateAlphabetStrip();
@@ -4458,7 +4462,7 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
             if(dailyPractice.day!==day)dailyPractice={day,seconds:0};
             if(activityAt!==null && now-activityAt<=5000)dailyPractice.seconds+=(now-activityAt)/1000;
             activityAt=now;
-            if (!sessionStartTime) sessionStartTime = now;
+            if (!sessionStartTime) { sessionStartTime = now; const ht=document.getElementById('canvas-hint-text'); if(ht) ht.textContent='Typing\u2026'; }
 
             totalTypedCount++;
 
