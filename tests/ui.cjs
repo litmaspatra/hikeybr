@@ -160,13 +160,18 @@ const path = require('node:path');
     await page.keyboard.press('Backspace');
     assert.equal(await page.locator('#alt-tester-input').inputValue(), 'Drn~', 'backspace trims the committed line');
 
-    // 3c. DevLys 010 is a bundled font option and per-cluster highlighting splits text at graphemes.
+    // 3c. Only legacy Remington fonts are offered (Unicode fonts dropped: their
+    //     matras/half letters could not highlight per keystroke). Per-byte
+    //     highlighting reassembles the lesson byte stream in any listed font.
     const fontOptions = await page.$$eval('#display-font-select option', os => os.map(o => o.value));
     assert.ok(fontOptions.includes('devlys010'), 'DevLys 010 is offered');
-    assert.ok(!fontOptions.includes('devlys040'), 'DevLys 040 preview removed');
+    assert.ok(fontOptions.includes('devlys040'), 'DevLys 040 is offered');
+    assert.ok(fontOptions.includes('devlys040bold'), 'DevLys 040 Bold is offered');
+    assert.ok(fontOptions.includes('krutidev021') && fontOptions.includes('krutidev070'), 'extra KrutiDev styles are offered');
+    for (const removed of ['noto', 'serif', 'mangal']) assert.ok(!fontOptions.includes(removed), removed + ' removed from the picker');
     await page.evaluate(() => {
         const s = document.getElementById('display-font-select');
-        s.value = 'noto';
+        s.value = 'devlys040';
         s.dispatchEvent(new Event('change'));
     });
     await page.waitForTimeout(150);
@@ -175,7 +180,7 @@ const path = require('node:path');
         current: document.getElementById('text-current').textContent,
         remaining: document.getElementById('text-remaining').textContent
     }));
-    assert.equal(parts.correct + parts.current + parts.remaining, await page.evaluate(() => HiKeybr.currentLessonText), 'unicode spans reassemble the lesson text');
+    assert.equal(parts.correct + parts.current + parts.remaining, await page.evaluate(() => HiKeybr.unicodeToKrutiDev(HiKeybr.currentLessonText)), 'legacy-font spans reassemble the lesson byte stream');
 
     // 4. Speed controls: Settings dropdown and lesson slider offer and accept the same values.
     const optionValues = await page.$$eval('#settings-speed-goal option', os => os.map(o => o.value));

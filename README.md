@@ -11,7 +11,7 @@
 - **Keybr.com Inspired Interface**: Clean dark/navy/amber/light themes, active letter mastery cards, live keystroke analytics, and an interactive virtual Remington keyboard.
 - **Strict Error Blocking**: Wrong keystrokes do not advance the cursor. The cursor shakes red, sounds an error chime, records an accuracy penalty, and waits for the correct key.
 - **Authentic KrutiDev 010 Engine**:
-  - Embedded **KrutiDev 010** font renders complete Hindi words cleanly without broken OpenType ligatures.
+  - Six bundled **Remington legacy fonts** (KrutiDev 010 / 021 Italic / 070 Bold, DevLys 010 / 040 / 040 Bold) render every keystroke as its own glyph, so matras and half letters highlight individually - no broken OpenType ligatures. Unicode display fonts were removed for exactly that reason.
   - **Half-Letter Highlighting**: When typing composite letters (e.g., `श` typed as `'` + `k`), typing `'` highlights **only the half-letter `श्`** in green, and `k` completes the full consonant.
   - **Chhoti `ि` Matra (`f`)**: Typed before the consonant, matching authentic Remington GAIL typewriter rules.
   - **Reph `र्` (`Shift + Z`)**: Typed after the consonant, moving above automatically.

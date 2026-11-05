@@ -27,6 +27,38 @@
             font-display: swap;
         }
 
+        /* Extra Remington legacy fonts: each keystroke is its own glyph, so
+           matras and half letters highlight individually (unlike Unicode fonts).
+           Same KrutiDev 010 byte encoding, different visual designs. */
+        @font-face {
+            font-family: 'DevLys040';
+            src: url('./fonts/DevLys-040.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'DevLys040Bold';
+            src: url('./fonts/DevLys-040-Bold.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'KrutiDev021';
+            src: url('./fonts/KrutiDev-021-Italic.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'KrutiDev070';
+            src: url('./fonts/KrutiDev-070-Bold.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
         /* ═══════════════════════════════════════════════════════════
            THEMES & CSS VARIABLES (Keybr.com Inspired Palette)
            ═══════════════════════════════════════════════════════════ */
@@ -1395,7 +1427,7 @@
 .text-stream-container{max-height:none!important;overflow:visible!important;font-size:clamp(1.7rem,3.4vw,2.6rem)!important;line-height:1.9!important;padding:0!important;text-align:left;word-break:normal;overflow-wrap:break-word;color:var(--text-faint)}
 .text-current{text-decoration:none!important;background:var(--accent-glow);border-radius:3px;box-shadow:0 2px 0 var(--accent)}
 .text-current.space-cursor{box-shadow:0 2px 0 var(--accent)}
-.book-mode .target-card,.book-mode .alt-helper-bar{display:none!important}
+.book-mode .target-card,.book-mode .alt-helper-bar,.book-mode .alphabet-strip{display:none!important}
 .lesson-settings{margin:6px 0 10px;font-size:.85rem}
 .lesson-settings>summary{cursor:pointer;color:var(--text-dim);width:max-content;padding:6px 12px;border:1px solid var(--border);border-radius:8px;list-style:none;user-select:none}
 .lesson-settings>summary::-webkit-details-marker{display:none}
@@ -1895,15 +1927,16 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
                     <div class="settings-row">
                         <div class="settings-info">
                             <strong>Hindi lesson font</strong>
-                            <p id="font-status">All fonts use the same Remington input. Unicode is display-only, not Inscript.</p>
+                            <p id="font-status">Every font is a Remington legacy font: each keystroke is its own glyph, so matras and half letters highlight one by one.</p>
                         </div>
                         <div class="settings-ctrl">
                             <select class="ctrl-select" id="display-font-select">
                                 <option value="krutidev">KrutiDev 010 (embedded)</option>
                                 <option value="devlys010">DevLys 010 (embedded)</option>
-                                <option value="noto">Noto Sans Devanagari (Unicode)</option>
-                                <option value="serif">Noto Serif Devanagari (Unicode)</option>
-                                <option value="mangal">Mangal (installed font required)</option>
+                                <option value="devlys040">DevLys 040</option>
+                                <option value="devlys040bold">DevLys 040 Bold</option>
+                                <option value="krutidev021">KrutiDev 021 Italic</option>
+                                <option value="krutidev070">KrutiDev 070 Bold</option>
                             </select>
                         </div>
                     </div>
@@ -1911,7 +1944,7 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
                     <div class="settings-row">
                         <div class="settings-info">
                             <strong>Lesson font style</strong>
-                            <p>Keeps the Remington KrutiDev font so Hindi glyphs stay correct.</p>
+                            <p>Weight and spacing of the selected Remington lesson font.</p>
                         </div>
                         <div class="settings-ctrl">
                             <select class="ctrl-select" id="lesson-style-select">
@@ -2339,7 +2372,7 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
         let pendingLessonEvents = [], goalFlashedDay = '';
         let lessonKeyTimes = {}, lessonActiveSeconds = 0, activityAt = null;
         let previousAttemptWrong=false, measurementEvents = [], displayFont = 'krutidev', altEntryStartedAt = null;
-        const FONT_REGISTRY = {krutidev:{label:'KrutiDev 010',encoding:'krutidev',family:'KrutiDev010'},devlys010:{label:'DevLys 010',encoding:'krutidev-compatible',family:'DevLys010Web'},noto:{label:'Noto Sans Hindi',encoding:'unicode',family:'Noto Sans Devanagari'},serif:{label:'Noto Serif Hindi',encoding:'unicode',family:'Noto Serif Devanagari'},mangal:{label:'Mangal (installed)',encoding:'unicode',family:'Mangal'}};
+        const FONT_REGISTRY = {krutidev:{label:'KrutiDev 010',encoding:'krutidev',family:'KrutiDev010'},devlys010:{label:'DevLys 010',encoding:'krutidev-compatible',family:'DevLys010Web'},devlys040:{label:'DevLys 040',encoding:'krutidev-compatible',family:'DevLys040'},devlys040bold:{label:'DevLys 040 Bold',encoding:'krutidev-compatible',family:'DevLys040Bold'},krutidev021:{label:'KrutiDev 021 Italic',encoding:'krutidev',family:'KrutiDev021'},krutidev070:{label:'KrutiDev 070 Bold',encoding:'krutidev',family:'KrutiDev070'}};
         let audioCtx = null;
         let altCodeBuffer = '';
         let altCodeActive = false;
@@ -2587,7 +2620,6 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
                 lessonStyle = ['classic','bold','spaced','large'].includes(data.lessonStyle) ? data.lessonStyle : 'classic';
                 keyFont = ['sans','serif','system'].includes(data.keyFont) ? data.keyFont : 'sans';
                 displayFont = FONT_REGISTRY[data.displayFont] ? data.displayFont : 'krutidev';
-                if(['mangal'].includes(displayFont)){const requested=displayFont;displayFont='krutidev';setTimeout(()=>selectDisplayFont(requested),0);}
                 applyDisplayPreferences();
                 if (data.theme) {
                     currentTheme = data.theme;
@@ -4816,19 +4848,11 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
         window.addEventListener('keyup',e=>{if(e.key==='Alt'||e.code==='AltLeft'||e.code==='AltRight')commitLabAltCode();});
         el.clearAltTestBtn.onclick=()=>{labBuffer='';labDigits='';labText='';el.altTesterInput.value='';const parts=[];if(labTarget.gail)parts.push(labTarget.gail);if(labTarget.code)parts.push('Alt+'+labTarget.code);el.altTestResult.textContent='Target '+labTarget.glyph+': '+parts.join(' or ');el.altTesterInput.focus({preventScroll:true});};
 
-        async function selectDisplayFont(requested) {
+        function selectDisplayFont(requested) {
             const font=FONT_REGISTRY[requested];
-            if(['mangal'].includes(requested)){
-                try{
-                    const face=new FontFace(font.family,`local("${font.family}")`);
-                    await face.load();document.fonts.add(face);
-                }catch(error){
-                    document.getElementById('font-status').textContent=font.label+' is not installed. No font file is bundled; choose a web font or install a licensed copy.';
-                    document.getElementById('display-font-select').value=displayFont;return false;
-                }
-            }
+            if(!font)return false;
             displayFont=requested;saveStorage();updateDisplay();
-            document.getElementById('font-status').textContent=font.label+' · '+font.encoding+' display · Remington input unchanged'+(requested==='devlys010'?' · Bundled copy; matches the standard exam DevLys 010.':'');
+            document.getElementById('font-status').textContent=font.label+' · Remington legacy encoding · every keystroke highlights its own glyph'+(requested==='devlys010'?' · Bundled copy; matches the standard exam DevLys 010.':requested==='devlys040'?' · Matches the standard exam DevLys 040.':'');
             return true;
         }
         document.getElementById('display-font-select').addEventListener('change',e=>selectDisplayFont(e.target.value));
