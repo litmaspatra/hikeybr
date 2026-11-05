@@ -76,6 +76,68 @@ const path = require('node:path');
     await page.keyboard.up('Alt');
     assert.equal(await page.evaluate(() => HiKeybr.cursorIndex), 3, 'Alt+0235 commits ह्र');
 
+    // 3d. Windows-style Alt entry: the OS composes Alt+numpad itself, swallows
+    //     the Alt keyup, and pushes the composed symbol into the field. The
+    //     buffered code must still commit exactly once, and the OS symbol must
+    //     not register as a keystroke.
+    await page.evaluate(() => {
+        const t = document.getElementById('custom-text');
+        t.value = 'क्त क्त क्त';
+        t.dispatchEvent(new Event('change'));
+    });
+    await page.click('#typing-canvas');
+    // Variant 1: Alt keyup never arrives; a fresh Alt press flushes the buffer.
+    await page.evaluate(() => {
+        const hi = document.getElementById('hidden-input');
+        const kd = (key, code, altKey) => hi.dispatchEvent(new KeyboardEvent('keydown', { key, code, altKey, bubbles: true, cancelable: true }));
+        kd('Alt', 'AltLeft', false);
+        for (const d of ['0', '2', '2', '8']) kd(d, 'Numpad' + d, true);
+        kd('Alt', 'AltLeft', false); // user presses Alt again after the lost keyup
+        window.dispatchEvent(new KeyboardEvent('keyup', { key: 'Alt', code: 'AltLeft', bubbles: true }));
+    });
+    assert.equal(await page.evaluate(() => HiKeybr.cursorIndex), 2, 'lost Alt keyup: fresh Alt press commits क्त');
+    assert.equal(await page.evaluate(() => HiKeybr.sessionErrors), 0, 'no errors from lost-keyup entry');
+
+    // Variant 2: the OS-composed symbol arrives (as a keydown) instead of the Alt keyup.
+    await page.keyboard.press('Space');
+    await page.keyboard.down('Alt');
+    for (const k of ['Numpad0', 'Numpad2', 'Numpad2', 'Numpad8']) await page.keyboard.press(k);
+    await page.evaluate(() => {
+        document.getElementById('hidden-input').dispatchEvent(new KeyboardEvent('keydown', { key: 'Ø', bubbles: true, cancelable: true }));
+    });
+    assert.equal(await page.evaluate(() => HiKeybr.cursorIndex), 5, 'OS symbol keydown commits क्त without an Alt keyup');
+    await page.keyboard.up('Alt'); // a late keyup must not double-commit
+    assert.equal(await page.evaluate(() => HiKeybr.cursorIndex), 5, 'late Alt keyup does not double-commit');
+    assert.equal(await page.evaluate(() => HiKeybr.sessionErrors), 0, 'OS symbol is not counted as an error');
+
+    // Variant 3: the Alt keyup fires first, then the OS symbol arrives late.
+    await page.keyboard.press('Space');
+    await page.keyboard.down('Alt');
+    for (const k of ['Numpad0', 'Numpad2', 'Numpad2', 'Numpad8']) await page.keyboard.press(k);
+    await page.keyboard.up('Alt');
+    assert.equal(await page.evaluate(() => HiKeybr.cursorIndex), 8, 'Alt keyup commits क्त');
+    await page.evaluate(() => {
+        const hi = document.getElementById('hidden-input');
+        hi.dispatchEvent(new KeyboardEvent('keydown', { key: 'Ø', bubbles: true, cancelable: true }));
+        hi.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+    assert.equal(await page.evaluate(() => HiKeybr.cursorIndex), 8, 'late OS symbol is swallowed after a keyup commit');
+    assert.equal(await page.evaluate(() => HiKeybr.sessionErrors), 0, 'late OS symbol adds no error');
+    assert.equal(await page.evaluate(() => HiKeybr.sessionCorrect), 5, '3 Alt glyphs + 2 spaces, each glyph one input unit');
+
+    // 3e. Lab sandbox: same Windows-style entry (OS symbol instead of Alt keyup).
+    await page.click('.nav-tab[data-target="altlab"]');
+    await page.click('#alt-tester-input');
+    await page.keyboard.down('Alt');
+    for (const k of ['Numpad0', 'Numpad2', 'Numpad2', 'Numpad8']) await page.keyboard.press(k);
+    await page.evaluate(() => {
+        document.getElementById('alt-tester-input').dispatchEvent(new KeyboardEvent('keydown', { key: 'Ø', bubbles: true, cancelable: true }));
+    });
+    assert.equal(await page.locator('#alt-tester-input').inputValue(), 'क्त', 'lab commits the buffered code on the OS symbol');
+    assert.ok((await page.locator('#alt-test-result').textContent()).includes('Alt+0228'), 'lab reports the Alt code used');
+    await page.keyboard.up('Alt');
+    assert.equal(await page.locator('#alt-tester-input').inputValue(), 'क्त', 'late Alt keyup does not double-commit in the lab');
+
     // 3c. DevLys 010 is a bundled font option and per-cluster highlighting splits text at graphemes.
     const fontOptions = await page.$$eval('#display-font-select option', os => os.map(o => o.value));
     assert.ok(fontOptions.includes('devlys010'), 'DevLys 010 is offered');

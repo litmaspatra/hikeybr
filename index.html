@@ -1841,6 +1841,7 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
         // 1. COMPLETE REMINGTON GAIL PROGRESSION & MAPPINGS
         // ─────────────────────────────────────────────────────────────
         const NUMPAD_DIGIT_MAP = { Numpad0:'0', Numpad1:'1', Numpad2:'2', Numpad3:'3', Numpad4:'4', Numpad5:'5', Numpad6:'6', Numpad7:'7', Numpad8:'8', Numpad9:'9', Digit0:'0', Digit1:'1', Digit2:'2', Digit3:'3', Digit4:'4', Digit5:'5', Digit6:'6', Digit7:'7', Digit8:'8', Digit9:'9' };
+        const MODIFIER_KEYS = ['Shift', 'Control', 'Alt', 'Meta', 'CapsLock'];
 
         const KEY_PROGRESSION = [
             // Home Row
@@ -3891,18 +3892,38 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
             }
         });
 
-        el.hiddenInput.addEventListener('input', () => { el.hiddenInput.value = ''; });
+        el.hiddenInput.addEventListener('input', () => {
+            // Windows can deliver the OS-composed Alt-code symbol as a bare
+            // insertion with no keydown and no Alt keyup: commit the buffer.
+            if (altCodeActive) commitPracticeAltCode();
+            el.hiddenInput.value = '';
+        });
         el.hiddenInput.addEventListener('focus', () => el.canvas.classList.add('active-focus'));
         el.hiddenInput.addEventListener('blur', () => el.canvas.classList.remove('active-focus'));
 
         // Keystroke Dispatcher on hiddenInput
         el.hiddenInput.addEventListener('keydown', (e) => {
+            // A fresh Alt press while a code is still pending means the previous
+            // Alt release was swallowed by the OS: flush the old entry first.
+            if (e.key === 'Alt' && altCodeActive) commitPracticeAltCode();
+
             // Alt + Numpad entry
             if (e.altKey && NUMPAD_DIGIT_MAP[e.code]) {
                 e.preventDefault();
                 if(!altCodeActive)altEntryStartedAt=Date.now();
                 altCodeActive = true;
                 altCodeBuffer += NUMPAD_DIGIT_MAP[e.code];
+                return;
+            }
+
+            // A non-modifier key arriving while an Alt code is pending means
+            // Windows swallowed the Alt keyup: commit the buffered code first.
+            if (altCodeActive && !MODIFIER_KEYS.includes(e.key)) commitPracticeAltCode();
+
+            // Swallow the OS-composed Alt-code symbol itself (always non-ASCII
+            // for KrutiDev codes); the buffered code above already handled it.
+            if (e.key.length === 1 && e.key.charCodeAt(0) > 127 && !e.ctrlKey && !e.metaKey) {
+                e.preventDefault();
                 return;
             }
 
@@ -3961,50 +3982,58 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
             el.hiddenInput.value = '';
         });
 
-        // Keyup for Alt-code release
-        window.addEventListener('keyup', (e) => {
-            if (e.key === 'Alt' && altCodeActive) {
-                const code = altCodeBuffer;
-                // Alt+numpad is one committed text action, not 4/5 fast synthetic keys.
-                // Its duration includes the whole entry and preceding recognition time.
-                altCodeBuffer = '';
-                altCodeActive = false;
-                altEntryStartedAt=null;
+        // Commit a buffered Alt code as one input unit. Windows composes
+        // Alt+numpad codes at the OS level: it can swallow the Alt keyup and
+        // push the composed (non-ASCII) symbol into the field instead, so the
+        // keyup below is only one of several commit signals (see the keydown
+        // and input handlers on hiddenInput).
+        function commitPracticeAltCode() {
+            if (!altCodeActive) return;
+            const code = altCodeBuffer;
+            // Alt+numpad is one committed text action, not 4/5 fast synthetic keys.
+            // Its duration includes the whole entry and preceding recognition time.
+            altCodeBuffer = '';
+            altCodeActive = false;
+            altEntryStartedAt=null;
 
-                const char = KRUTIDEV_ALT_CODES[code];
-                if (char) {
-                    const krutiSeq = unicodeToKrutiDev(char);
-                    // One Alt-code glyph is ONE input unit (see Settings > How
-                    // measurements work). Run each expected byte through the
-                    // normal path so the cursor, error blocking, display and
-                    // sounds stay correct, then merge the synthetic per-byte
-                    // measurements and counters into a single unit. The first
-                    // byte's interval reaches back to the previous committed
-                    // key, so it already spans the whole Alt entry.
-                    const startCursor = cursorIndex;
-                    const typedBefore = totalTypedCount, correctBefore = sessionCorrect;
-                    for (const k of krutiSeq) {
-                        if (cursorIndex >= targetKrutiText.length) break;
-                        const matched = k === targetKrutiText.charAt(cursorIndex);
-                        handleKeystroke(k);
-                        if (!matched) break; // one wrong Alt glyph = one error; cursor stays blocked
-                    }
-                    const addedTyped = totalTypedCount - typedBefore, addedCorrect = sessionCorrect - correctBefore;
-                    if (addedTyped > 1) totalTypedCount -= addedTyped - 1;
-                    if (addedCorrect > 1) sessionCorrect -= addedCorrect - 1;
-                    const committed = cursorIndex - startCursor;
-                    if (committed > 1 && committed === krutiSeq.length) {
-                        const added = measurementEvents.splice(measurementEvents.length - committed, committed);
-                        const wholeMs = added.reduce((sum, ev) => sum + ev.ms, 0);
-                        measurementEvents.push({ key: krutiSeq, ms: wholeMs, typo: added[0].typo });
-                        if (wholeMs > 0) {
-                            const lastBuf = targetKeyBuffer[targetKeyBuffer.length - 1];
-                            if (lastBuf && lastBuf.isCorrect && !lastBuf.wpm && Date.now() - lastBuf.timestamp < 100) lastBuf.wpm = 12000 / wholeMs;
-                        }
-                    }
-                    el.hiddenInput.value = '';
+            const char = KRUTIDEV_ALT_CODES[code];
+            if (char) {
+                const krutiSeq = unicodeToKrutiDev(char);
+                // One Alt-code glyph is ONE input unit (see Settings > How
+                // measurements work). Run each expected byte through the
+                // normal path so the cursor, error blocking, display and
+                // sounds stay correct, then merge the synthetic per-byte
+                // measurements and counters into a single unit. The first
+                // byte's interval reaches back to the previous committed
+                // key, so it already spans the whole Alt entry.
+                const startCursor = cursorIndex;
+                const typedBefore = totalTypedCount, correctBefore = sessionCorrect;
+                for (const k of krutiSeq) {
+                    if (cursorIndex >= targetKrutiText.length) break;
+                    const matched = k === targetKrutiText.charAt(cursorIndex);
+                    handleKeystroke(k);
+                    if (!matched) break; // one wrong Alt glyph = one error; cursor stays blocked
                 }
+                const addedTyped = totalTypedCount - typedBefore, addedCorrect = sessionCorrect - correctBefore;
+                if (addedTyped > 1) totalTypedCount -= addedTyped - 1;
+                if (addedCorrect > 1) sessionCorrect -= addedCorrect - 1;
+                const committed = cursorIndex - startCursor;
+                if (committed > 1 && committed === krutiSeq.length) {
+                    const added = measurementEvents.splice(measurementEvents.length - committed, committed);
+                    const wholeMs = added.reduce((sum, ev) => sum + ev.ms, 0);
+                    measurementEvents.push({ key: krutiSeq, ms: wholeMs, typo: added[0].typo });
+                    if (wholeMs > 0) {
+                        const lastBuf = targetKeyBuffer[targetKeyBuffer.length - 1];
+                        if (lastBuf && lastBuf.isCorrect && !lastBuf.wpm && Date.now() - lastBuf.timestamp < 100) lastBuf.wpm = 12000 / wholeMs;
+                    }
+                }
+                el.hiddenInput.value = '';
             }
+        }
+
+        // Keyup for Alt-code release (unreliable on Windows; see above).
+        window.addEventListener('keyup', (e) => {
+            if (e.key === 'Alt' || e.code === 'AltLeft' || e.code === 'AltRight') commitPracticeAltCode();
         });
 
         window.addEventListener('blur',pauseLesson);
@@ -4159,17 +4188,29 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
             el.altTesterInput.value=glyph;el.altTestResult.textContent=glyph===labTarget.glyph?'Typed correctly: '+glyph+' via '+method+'.':'Typed '+glyph+'; target is '+labTarget.glyph+'.';
             labBuffer='';labDigits='';
         }
+        function commitLabAltCode(){
+            if(!labDigits)return;
+            const code=labDigits;labDigits='';
+            const glyph=KRUTIDEV_ALT_CODES[code];
+            if(glyph)labResult(glyph,'Alt+'+code);
+            else el.altTestResult.textContent='Unknown Alt code '+code;
+        }
         el.altTesterInput.addEventListener('paste',()=>{labBuffer='';labDigits='';el.altTestResult.textContent='Preview only. Type the sequence or Alt code to verify your input.';});
         el.altTesterInput.addEventListener('input',()=>{
-            // The OS can force a cp1252 symbol into the field on Alt release;
-            // the lab is a controlled input, so restore the verified buffer.
-            setTimeout(()=>{if(el.altTesterInput.value!==labBuffer)el.altTesterInput.value=labBuffer;},0);
-            el.altTestResult.textContent=labDigits?('Alt+'+labDigits+'… release Alt to commit'):'Keep typing with physical keys.';
+            // Windows can swallow the Alt keyup and force the composed cp1252
+            // symbol into the field on Alt release; that insertion is the
+            // commit signal. Otherwise restore the verified buffer.
+            if(labDigits){commitLabAltCode();return;}
+            setTimeout(()=>{if(!labDigits&&el.altTesterInput.value!==labBuffer)el.altTesterInput.value=labBuffer;},0);
+            el.altTestResult.textContent='Keep typing with physical keys.';
         });
         el.altTesterInput.addEventListener('keydown',e=>{
             if(e.ctrlKey||e.metaKey)return;
             if(e.altKey&&NUMPAD_DIGIT_MAP[e.code]){e.preventDefault();labDigits+=NUMPAD_DIGIT_MAP[e.code];el.altTestResult.textContent='Alt+'+labDigits;return;}
+            if(e.key==='Alt'&&labDigits)commitLabAltCode();
             if(e.key==='Alt'||e.key==='Shift')return;
+            if(labDigits&&!MODIFIER_KEYS.includes(e.key))commitLabAltCode();
+            if(e.key.length===1&&e.key.charCodeAt(0)>127){e.preventDefault();return;} // swallow the OS-composed symbol
             if(e.key==='Backspace'){e.preventDefault();labBuffer=labBuffer.slice(0,-1);el.altTesterInput.value=labBuffer;return;}
             if(e.key.length!==1)return;
             e.preventDefault();labBuffer+=e.key;el.altTesterInput.value=labBuffer;
@@ -4178,7 +4219,8 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
             if(!labTarget.gail.startsWith(labBuffer)){el.altTestResult.textContent='Try again: '+labTarget.gail+' (case-sensitive).';labBuffer='';}
             else el.altTestResult.textContent='Sequence '+labBuffer+'…';
         });
-        el.altTesterInput.addEventListener('keyup',e=>{if(e.key==='Alt'&&labDigits){const glyph=KRUTIDEV_ALT_CODES[labDigits];if(glyph)labResult(glyph,'Alt+'+labDigits);else{el.altTestResult.textContent='Unknown Alt code '+labDigits;labDigits='';}}});
+        // Keyup for Alt-code release (unreliable on Windows; see commitLabAltCode callers).
+        window.addEventListener('keyup',e=>{if(e.key==='Alt'||e.code==='AltLeft'||e.code==='AltRight')commitLabAltCode();});
         el.clearAltTestBtn.onclick=()=>{labBuffer='';labDigits='';el.altTesterInput.value='';const parts=[];if(labTarget.gail)parts.push(labTarget.gail);if(labTarget.code)parts.push('Alt+'+labTarget.code);el.altTestResult.textContent='Target '+labTarget.glyph+': '+parts.join(' or ');el.altTesterInput.focus({preventScroll:true});};
 
         async function selectDisplayFont(requested) {
