@@ -1100,6 +1100,12 @@
         /* Alt pill keeps its slot; only visibility toggles, never layout */
         .alt-helper-pill { display: flex; visibility: hidden; }
         .alt-helper-pill.active { visibility: visible; }
+
+        /* ═══ ROUND 3 (2026-11-05): narrower centered column, 3-line stream ═══ */
+        @media (min-width: 1000px) {
+            main { max-width: 900px; }
+        }
+        .kruti-stream { height: 4.95em !important; max-height: 4.95em !important; overflow-y: auto !important; }
     </style>
     <link rel="stylesheet" href="theme.css">
 </head>
