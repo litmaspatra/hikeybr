@@ -1432,6 +1432,9 @@
 .text-current{text-decoration:none!important;background:var(--accent-glow);border-radius:3px;box-shadow:0 2px 0 var(--accent)}
 .text-current.space-cursor{box-shadow:0 2px 0 var(--accent)}
 .book-mode .target-card,.book-mode .alt-helper-bar,.book-mode .alphabet-strip{display:none!important}
+#stat-card-book{display:none}
+.book-mode #stat-card-keys{display:none}
+.book-mode #stat-card-book{display:flex}
 .lesson-settings{margin:6px 0 10px;font-size:.85rem}
 .lesson-settings>summary{cursor:pointer;color:var(--text-dim);width:max-content;padding:6px 12px;border:1px solid var(--border);border-radius:8px;list-style:none;user-select:none}
 .lesson-settings>summary::-webkit-details-marker{display:none}
@@ -1859,9 +1862,14 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
                     <div class="s-value" id="metric-score">0</div>
                     <span class="s-sub" id="metric-score-best">best: 0</span>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" id="stat-card-keys">
                     <span class="s-label">Keys Unlocked</span>
                     <div class="s-value"><span id="metric-unlocked">4</span><span class="s-unit">/ <span id="metric-total-keys">70</span></span></div>
+                </div>
+                <div class="stat-card" id="stat-card-book">
+                    <span class="s-label" id="metric-book-label">Book Progress</span>
+                    <div class="s-value"><span id="metric-book-para">&#8211;</span><span class="s-unit">/ <span id="metric-book-total">&#8211;</span> paras</span></div>
+                    <span class="s-sub" id="metric-book-title"></span>
                 </div>
             </div>
 
@@ -4166,6 +4174,7 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
             lastLessonParaStart=pos;
             const st=document.getElementById('word-pool-status');
             if(st)st.textContent=`${book.title} · ${book.author} · paragraph ${pos+1}${n>1?'–'+(pos+n):''} of ${paras.length.toLocaleString()}`;
+            updateBookStatCard(pos);
             return out.join(' ');
         }
         let lastLessonParaStart=0;
@@ -4244,11 +4253,26 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
             const smp=document.getElementById('lp-sample');
             smp.textContent=(currentLessonText||'').split(' ').slice(0,8).join(' ')+' …';
         }
+        // Books/custom mode shows book progress in place of the guided-only
+        // "Keys Unlocked" stat. Guided stats stay untouched in words mode.
+        function updateBookStatCard(paraPos,paraSpan){
+            const paraEl=document.getElementById('metric-book-para');if(!paraEl)return;
+            const b=textSource==='words'?null:findBook(textSource);
+            if(!b)return;
+            const paras=bookParagraphs(b),total=paras.length;
+            let pos=(typeof paraPos==='number')?paraPos:(Number.isInteger(bookPos[b.id])?bookPos[b.id]:0);
+            if(total)pos=((pos%total)+total)%total;
+            paraEl.textContent=total?String(pos+1):'\u2013';
+            document.getElementById('metric-book-total').textContent=total?total.toLocaleString():'\u2013';
+            document.getElementById('metric-book-label').textContent=b.id==='custom'?'Custom Text Progress':'Book Progress';
+            document.getElementById('metric-book-title').textContent=b.id==='custom'?'your custom text':`${b.title} - ${b.author}`;
+        }
         function updateTextSourceNote(){
             const note=document.getElementById('text-source-note');if(!note)return;
             const b=textSource==='words'?null:findBook(textSource);
             document.documentElement.classList.toggle('book-mode',!!b);
             note.textContent=b?(b.id==='custom'?'Custom text: lessons follow your text in order. Key unlocking is paused.':`${b.title} by ${b.author} (d. ${b.died}, public domain). Practice mode: lessons follow the text in order, key unlocking is paused. Source: ${b.source}`):'Guided lessons: every lesson is built from the keys you have unlocked.';
+            updateBookStatCard();
         }
         function generateLessonText() {
             if(textSource!=='words'){const book=findBook(textSource);if(book){const t=bookLessonText(book,parseInt(el.wordsSelect.value,10)||25);if(t)return t;}textSource='words';syncSettingsUI();}
