@@ -8,3 +8,6 @@ desktop.ini
 *.tmp
 *~
 *.backup.html
+
+# Node
+node_modules/

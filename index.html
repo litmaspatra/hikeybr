@@ -1675,15 +1675,24 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
                             <p style="font-size: 0.78rem; color: var(--text-dim);">Minimum lesson speed required before unlocking the next letter.</p>
                         </div>
                         <select class="ctrl-select" id="settings-speed-goal">
+                            <option value="10">10 WPM</option>
                             <option value="15">15 WPM (Beginner)</option>
                             <option value="20">20 WPM (Intermediate)</option>
                             <option value="25" selected>25 WPM</option>
                             <option value="30">30 WPM</option>
                             <option value="35">35 WPM (Advanced)</option>
                             <option value="40">40 WPM (Master)</option>
+                            <option value="45">45 WPM</option>
                             <option value="50">50 WPM (Pro)</option>
+                            <option value="55">55 WPM</option>
                             <option value="60">60 WPM (Expert)</option>
+                            <option value="65">65 WPM</option>
+                            <option value="70">70 WPM</option>
+                            <option value="75">75 WPM</option>
                             <option value="80">80 WPM (Champion)</option>
+                            <option value="85">85 WPM</option>
+                            <option value="90">90 WPM</option>
+                            <option value="95">95 WPM</option>
                             <option value="100">100 WPM (Ultimate)</option>
                         </select>
                     </div>
@@ -2153,20 +2162,50 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
             targetKeyBuffer = [];
         }
 
+        function showStorageWarning(payload) {
+            let banner = document.getElementById('storage-warning');
+            if (!payload) { if (banner) banner.remove(); return; }
+            if (banner) return;
+            banner = document.createElement('div');
+            banner.id = 'storage-warning';
+            banner.style.cssText = 'position:fixed;bottom:12px;left:50%;transform:translateX(-50%);background:#7f1d1d;color:#fff;padding:10px 14px;border-radius:8px;z-index:9999;font-size:.85rem;display:flex;gap:12px;align-items:center;max-width:92%;box-shadow:0 4px 16px rgba(0,0,0,.35)';
+            const msg = document.createElement('span');
+            msg.textContent = 'Progress could not be saved in this browser (storage full or blocked). It will be lost on reload.';
+            const exportBtn = document.createElement('button');
+            exportBtn.type = 'button';
+            exportBtn.textContent = 'Export progress';
+            exportBtn.style.cssText = 'background:#fff;color:#7f1d1d;border:0;border-radius:6px;padding:5px 12px;cursor:pointer;font:inherit;white-space:nowrap';
+            exportBtn.onclick = () => {
+                try {
+                    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+                    const a = document.createElement('a');
+                    a.href = URL.createObjectURL(blob);
+                    a.download = 'hikeybr-progress-backup.json';
+                    a.click();
+                    setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+                } catch (_) {}
+            };
+            banner.append(msg, exportBtn);
+            document.body.appendChild(banner);
+        }
+
         function saveStorage() {
+            const payload = {
+                unlockedIndex, highestUnlocked, hiddenWords,
+                targetSpeedGoal, textSource, bookPos, opts, wordsPerLesson:el.wordsSelect&&el.wordsSelect.value,
+                totalTypedCount,
+                totalErrorsCount,
+                keyStats, lessonHistory, keyLearning, dailyPractice, accuracyStreak, dailyGoalMinutes, lessonStyle, keyFont, displayFont, measurementVersion:2,
+                theme: currentTheme,
+                soundEnabled,
+                showFingerHint
+            };
             try {
-                const payload = {
-                    unlockedIndex, highestUnlocked, hiddenWords,
-                    targetSpeedGoal, textSource, bookPos, opts, wordsPerLesson:el.wordsSelect&&el.wordsSelect.value,
-                    totalTypedCount,
-                    totalErrorsCount,
-                    keyStats, lessonHistory, keyLearning, dailyPractice, accuracyStreak, dailyGoalMinutes, lessonStyle, keyFont, displayFont, measurementVersion:2,
-                    theme: currentTheme,
-                    soundEnabled,
-                    showFingerHint
-                };
                 localStorage.setItem('hikeybr_store_v3', JSON.stringify(payload));
-            } catch (e) {}
+                showStorageWarning(null);
+            } catch (e) {
+                showStorageWarning(payload);
+            }
         }
 
         function loadStorage() {
@@ -2795,9 +2834,11 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
         // Readiness banks a robust completed-lesson mean, not an EMA dragged by old lessons.
         // Ten clean timings in one accurate lesson prevent a lucky individual hit unlocking.
         function keyAboveTarget(item){
+            // Strict mode only: every earlier key must have a recent measured
+            // speed at the target. No measurement yet, or only an old banked
+            // best, is not evidence of being above target.
             const st=keyStats[item.k]||{},ms=12000/targetSpeedGoal;
-            if(!st.accurateBest&&!st.ttt)return true; // no timing data yet: not evidence of being slow
-            return (st.accurateBest&&st.accurateBest<=ms)||(st.ttt&&st.ttt<=ms);
+            return (st.modelSamples||0)>=6 && !!st.modelTtt && st.modelTtt<=ms;
         }
         function previousKeysAboveTarget(){return KEY_PROGRESSION.slice(0,unlockedIndex).every(keyAboveTarget);}
         function currentUnlockState() {
@@ -2820,7 +2861,7 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
             if (!currentItem) return;
 
             el.leadChar.textContent = currentItem.h;
-            el.leadKey.textContent = currentItem.alt ? `Alt Code: ${currentItem.alt}` : (currentItem.conjunct ? (currentItem.k === '#' ? 'Key: Shift + 3' : `Key: ${currentItem.h}`) : `Key: ${currentItem.k.toUpperCase()}`);
+            el.leadKey.textContent = currentItem.alt ? (()=>{const row=ALT_CODES_CATALOG.find(x=>x.code===currentItem.alt);return row?`Alt + ${currentItem.alt} or type: ${row.gail}`:`Alt Code: ${currentItem.alt}`;})() : (currentItem.conjunct ? (currentItem.k === '#' ? 'Key: Shift + 3' : `Key: ${currentItem.h}`) : `Key: ${currentItem.k.toUpperCase()}`);
             el.leadFinger.style.display = showFingerHint ? 'block' : 'none';
             el.leadFinger.textContent = currentItem.alt ? `👉 ${currentItem.finger}` : `👉 ${currentItem.finger} finger`;
             el.leadGoalSpeed.textContent = `${targetSpeedGoal} WPM`;
@@ -2953,10 +2994,18 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
         function commitKeyMeasurements() {
             KEY_PROGRESSION.slice(0,highestUnlocked+1).forEach(item=>{
                 const sequence=(!item.conjunct&&!item.alt&&item.k.length===1)?item.k:unicodeToKrutiDev(item.h), times=[];
-                for(let end=sequence.length-1;end<measurementEvents.length;end++){
-                    const group=measurementEvents.slice(end-sequence.length+1,end+1);
-                    if(group.map(e=>e.key).join('')===sequence && group.every(e=>e.ms>0&&!e.typo)){
-                        times.push(group.reduce((sum,e)=>sum+e.ms,0));
+                // Match either per-byte events or one merged multi-byte event
+                // (an Alt-code glyph committed as a single input unit).
+                for(let end=0;end<measurementEvents.length;end++){
+                    let acc='';
+                    for(let start=end;start>=0;start--){
+                        acc=measurementEvents[start].key+acc;
+                        if(acc===sequence){
+                            const group=measurementEvents.slice(start,end+1);
+                            if(group.every(e=>e.ms>0&&!e.typo))times.push(group.reduce((sum,e)=>sum+e.ms,0));
+                            break;
+                        }
+                        if(acc.length>sequence.length)break;
                     }
                 }
                 if(!times.length)return;
@@ -3679,7 +3728,7 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
 
         document.addEventListener('keydown', (e) => {
             const tag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
-            if (tag !== 'select' && tag !== 'button' && tag !== 'input' && !e.ctrlKey && !e.metaKey) {
+            if (tag !== 'select' && tag !== 'button' && tag !== 'input' && tag !== 'textarea' && !e.ctrlKey && !e.metaKey) {
                 el.hiddenInput.focus();
             }
         });
@@ -3766,8 +3815,33 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
                 const char = KRUTIDEV_ALT_CODES[code];
                 if (char) {
                     const krutiSeq = unicodeToKrutiDev(char);
+                    // One Alt-code glyph is ONE input unit (see Settings > How
+                    // measurements work). Run each expected byte through the
+                    // normal path so the cursor, error blocking, display and
+                    // sounds stay correct, then merge the synthetic per-byte
+                    // measurements and counters into a single unit. The first
+                    // byte's interval reaches back to the previous committed
+                    // key, so it already spans the whole Alt entry.
+                    const startCursor = cursorIndex;
+                    const typedBefore = totalTypedCount, correctBefore = sessionCorrect;
                     for (const k of krutiSeq) {
+                        if (cursorIndex >= targetKrutiText.length) break;
+                        const matched = k === targetKrutiText.charAt(cursorIndex);
                         handleKeystroke(k);
+                        if (!matched) break; // one wrong Alt glyph = one error; cursor stays blocked
+                    }
+                    const addedTyped = totalTypedCount - typedBefore, addedCorrect = sessionCorrect - correctBefore;
+                    if (addedTyped > 1) totalTypedCount -= addedTyped - 1;
+                    if (addedCorrect > 1) sessionCorrect -= addedCorrect - 1;
+                    const committed = cursorIndex - startCursor;
+                    if (committed > 1 && committed === krutiSeq.length) {
+                        const added = measurementEvents.splice(measurementEvents.length - committed, committed);
+                        const wholeMs = added.reduce((sum, ev) => sum + ev.ms, 0);
+                        measurementEvents.push({ key: krutiSeq, ms: wholeMs, typo: added[0].typo });
+                        if (wholeMs > 0) {
+                            const lastBuf = targetKeyBuffer[targetKeyBuffer.length - 1];
+                            if (lastBuf && lastBuf.isCorrect && !lastBuf.wpm && Date.now() - lastBuf.timestamp < 100) lastBuf.wpm = 12000 / wholeMs;
+                        }
                     }
                 }
             }

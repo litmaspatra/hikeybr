@@ -8,6 +8,7 @@ const path=require('node:path');
  const errors=[];page.on('pageerror',e=>errors.push(e.message));
  const url='file://'+path.resolve(__dirname,'../index.html');
  const fresh=async(seed)=>{await page.goto(url);await page.evaluate(seed=>{localStorage.clear();if(seed)localStorage.setItem('hikeybr_store_v3',JSON.stringify(seed));},seed);await page.reload();};
+ const setJump=v=>page.evaluate(v=>{const s=document.getElementById('jump-select');s.value=v;s.dispatchEvent(new Event('change'));},v);
  const complete=async(ms=250,errorRate=0)=>page.evaluate(({ms,errorRate})=>{
   const realNow=Date.now;let now=realNow();Date.now=()=>now;
   const before=HiKeybr.unlockedIndex,seq=HiKeybr.targetKrutiText;
@@ -30,14 +31,14 @@ const path=require('node:path');
  assert.equal(r.after,4,'mixed starters should permit first unlock');
  await page.evaluate(()=>HiKeybr.regenerateLesson());assert.ok(await page.evaluate(()=>HiKeybr.targetKrutiText.includes('s')));
  r=await complete();assert.equal(r.after,5,'next key must unlock alone');
- await page.selectOption('#jump-select','0');
+ await setJump('0');
  r=await complete();assert.equal(r.after,0,'review must not advance progression');assert.equal(r.saved.highestUnlocked,5);
  assert.equal(await page.locator('#metric-unlocked').textContent(),'6');
- await page.selectOption('#jump-select','auto');assert.equal(await page.evaluate(()=>HiKeybr.unlockedIndex),5);
- await page.selectOption('#jump-select','0');await page.reload();assert.equal(await page.evaluate(()=>HiKeybr.unlockedIndex),5,'reload resumes auto');
+ await setJump('auto');assert.equal(await page.evaluate(()=>HiKeybr.unlockedIndex),5);
+ await setJump('0');await page.reload();assert.equal(await page.evaluate(()=>HiKeybr.unlockedIndex),5,'reload resumes auto');
  await fresh({unlockedIndex:0,highestUnlocked:3});assert.equal(await page.evaluate(()=>HiKeybr.unlockedIndex),3,'repair old starter save');
- await page.selectOption('#jump-select','0');assert.ok(await page.evaluate(()=>HiKeybr.targetKrutiText.includes('d')));
- await page.selectOption('#jump-select','auto');
+ await setJump('0');assert.ok(await page.evaluate(()=>HiKeybr.targetKrutiText.includes('d')));
+ await setJump('auto');
  // All 70 progression levels, including rare Alt-code fallback lessons.
  for(let lesson=0;lesson<90;lesson++){
   const level=await page.evaluate(()=>HiKeybr.unlockedIndex);if(lesson%10===0)console.log('lesson',lesson,'level',level);if(level===69)break;

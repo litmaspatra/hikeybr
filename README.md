@@ -16,8 +16,8 @@
   - **Chhoti `ि` Matra (`f`)**: Typed before the consonant, matching authentic Remington GAIL typewriter rules.
   - **Reph `र्` (`Shift + Z`)**: Typed after the consonant, moving above automatically.
 - **25 Words per Lesson**: Keybr standard phonotactic drills generated strictly from currently unlocked keys.
-- **Speed-Maintenance Progression**: Keys unlock only after sustaining target speed (e.g. 25 WPM) with $\ge 90\%$ accuracy across a 15-hit rolling window.
-- **Alt-Codes Lab & Interactive Reference**: Built-in reference and sandbox for Hindi special conjuncts (e.g., `Alt + 0204` for `क्त`, with equivalent laptop GAIL sequences like `d = r`).
+- **Speed-Maintenance Progression**: Keys unlock at the end of a lesson after banking 10 clean timings at the target speed (e.g. 25 WPM) with at least 95% lesson accuracy.
+- **Alt-Codes Lab & Interactive Reference**: Built-in reference and sandbox for Hindi special conjuncts (e.g., `Alt + 0204` for `क्त`, or the equivalent Remington sequence `Dr`: Shift+D then `r`).
 
 ---
 
@@ -74,3 +74,17 @@ HiKeybr is a standalone, single-page application with zero build tools or server
 
 ## Text sources
 Lesson settings (top of the Practice tab) include a text source: adaptive Hindi words (unlocks keys) or public-domain books and poems (Premchand, Kabir, Rahim, Tulsidas) from Hindi Wikisource, stored in `books.js`. Book lessons are free practice and do not unlock keys. Only texts whose authors died more than 60 years ago are included.
+
+---
+
+## 🧪 Running the tests
+
+The progression and UI tests use [Playwright](https://playwright.dev) (Chromium).
+
+```bash
+npm install
+npx playwright install chromium
+npm test
+```
+
+`npm test` runs `tests/progression.cjs` (unlock gates, review isolation, saved-progress recovery, all 70 levels) and `tests/ui.cjs` (real key events, custom text, Alt codes, settings sync, reload persistence). The same tests run in GitHub Actions on every push (`.github/workflows/tests.yml`).
