@@ -7,6 +7,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preload" href="./fonts/DevLys-040.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="preload" href="./fonts/DevLys-040-Bold.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="preload" href="./fonts/KrutiDev-021-Italic.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="preload" href="./fonts/KrutiDev-070-Bold.ttf" as="font" type="font/ttf" crossorigin>
     <style>
         /* ═══════════════════════════════════════════════════════════
            AUTHENTIC KRUTIDEV 010 FONT (Base64 + Local Fallback)
@@ -1647,15 +1651,29 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
 
         /* Typing text: exactly three lines visible; cursor auto-scrolls inside */
         .text-stream-container {
-            height: 4.9em !important;
-            max-height: 4.9em !important;
+            height: calc(var(--practice-lines, 3) * 1.6334em) !important;
+            max-height: calc(var(--practice-lines, 3) * 1.6334em) !important;
             min-height: 0 !important;
             overflow-y: auto !important;
             overflow-x: hidden !important;
             line-height: 1.6 !important;
-            font-size: clamp(1.6rem, 2.6vw, 2rem) !important;
+            font-size: var(--practice-fs, clamp(1.6rem, 2.6vw, 2rem)) !important;
         }
-        :root[data-lesson-style="spaced"] .text-stream-container { height: 6.2em !important; max-height: 6.2em !important; }
+        :root[data-lesson-style="spaced"] .text-stream-container { height: calc(var(--practice-lines, 3) * 2.0667em) !important; max-height: calc(var(--practice-lines, 3) * 2.0667em) !important; }
+
+        /* Real-keyboard proportions: every row fills the frame, keys sized in
+           standard unit ratios, spacebar ~6.25u wide instead of soaking the row. */
+        @media (min-width: 651px) {
+            .k-key { flex: 1 1 0; min-width: 0; }
+            .k-key.w-backspace { flex: 2 1 0; min-width: 0; }
+            .k-key.w-tab { flex: 1.5 1 0; min-width: 0; }
+            .k-key.w-caps { flex: 1.8 1 0; min-width: 0; }
+            .k-key.w-enter { flex: 2.3 1 0; min-width: 0; }
+            .k-key.w-shift-l, .k-key.w-shift-r { flex: 2.3 1 0; min-width: 0; }
+            .k-key.w-ctrl, .k-key.w-alt { flex: 1.4 1 0; min-width: 0; }
+            .k-key.w-space { flex: 6.5 1 0; min-width: 0; max-width: none; }
+            .k-spacer { flex: 1.9 1 0; visibility: hidden; }
+        }
         @media (max-height: 740px) {
             .text-stream-container { font-size: clamp(1.3rem, 2vw, 1.55rem) !important; }
         }
@@ -1771,6 +1789,8 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
 
                     <h4>Text appearance</h4>
                     <div class="ls-row"><label for="opt-font">Font</label><select class="ctrl-select" id="opt-font"></select></div>
+                    <div class="ls-row"><label for="opt-text-size">Paragraph text size</label><input type="range" id="opt-text-size" min="24" max="44" step="1" value="32"><span class="ls-val" id="opt-text-size-val">32px</span></div>
+                    <div class="ls-row"><label for="opt-lines">Paragraph lines</label><select class="ctrl-select" id="opt-lines"><option value="2">2 lines</option><option value="3" selected>3 lines</option><option value="4">4 lines</option></select></div>
                     <div class="ls-row"><label>Play sounds</label><span class="ls-radios" id="opt-sounds"><label><input type="radio" name="snd" value="none"> No sounds</label><label><input type="radio" name="snd" value="error"> Error sounds only</label><label><input type="radio" name="snd" value="key"> Key sounds only</label><label><input type="radio" name="snd" value="all"> All sounds</label></span></div>
                     <div class="ls-row"><label for="opt-volume">Volume</label><input type="range" id="opt-volume" min="0" max="100" step="5" value="70"><span class="ls-val" id="opt-volume-val">70%</span></div>
                     <div class="ls-row"><label for="opt-theme">Sound theme</label><select class="ctrl-select" id="opt-theme"><option value="mechanical">Mechanical keyboard</option><option value="typewriter">Typewriter</option><option value="soft">Soft</option><option value="click">Click</option><option value="retro">Retro beep</option><option value="thock">Thock</option></select></div>
@@ -2364,13 +2384,15 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
                 { k: '/',  h: 'ध',  sh: 'घ्', code: 'Slash' },
                 { k: 'ShiftRight', h: '⇧ Shift', label: true, w: 'w-shift-r' }
             ],
-            // Row 5: Space bar row (keybr-style)
+            // Row 5: Space bar row (keybr-style); spacers keep real-keyboard proportions
             [
+                { sp: 1.9 },
                 { k: 'ControlLeft', h: 'Ctrl', label: true, w: 'w-ctrl' },
                 { k: 'AltLeft', h: 'Alt', label: true, w: 'w-alt' },
                 { k: ' ', h: 'Space', label: true, w: 'w-space' },
                 { k: 'AltRight', h: 'Alt', label: true, w: 'w-alt' },
-                { k: 'ControlRight', h: 'Ctrl', label: true, w: 'w-ctrl' }
+                { k: 'ControlRight', h: 'Ctrl', label: true, w: 'w-ctrl' },
+                { sp: 1.9 }
             ]
         ];
 
@@ -2504,7 +2526,7 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
         let targetKeyBuffer = []; // Rolling sliding window of recent hits on target key
         let targetSpeedGoal = 25; // WPM required to advance
         let textSource='words', bookPos={};
-        const DEFAULT_OPTS={strict:false,repeat:1,punct:0,removePunct:false,stopOnError:true,spaceSkips:false,soundMode:'all',volume:70,soundTheme:'mechanical',lastBook:'',customText:''};
+        const DEFAULT_OPTS={strict:false,repeat:1,punct:0,removePunct:false,stopOnError:true,spaceSkips:false,soundMode:'all',volume:70,soundTheme:'mechanical',lastBook:'',customText:'',textSize:32,practiceLines:3};
         let opts=Object.assign({},DEFAULT_OPTS);
         let currentLessonText = ''; // Continuous string of ~25 words
         let targetKrutiText = ''; // Keystroke sequence in KrutiDev 010 mapping
@@ -2528,6 +2550,20 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
         let pendingLessonEvents = [], goalFlashedDay = '';
         let lessonKeyTimes = {}, lessonActiveSeconds = 0, activityAt = null;
         let previousAttemptWrong=false, measurementEvents = [], displayFont = 'krutidev', altEntryStartedAt = null;
+        // Gate font switches on real load so legacy-encoded text never flashes
+        // as Latin gibberish while a .ttf is still downloading.
+        const FONT_LOAD_PROMISES = {};
+        function ensureFontLoaded(key) {
+            const f = FONT_REGISTRY[key];
+            if (!f || f.family === 'KrutiDev010' || f.family === 'DevLys010Web' || !document.fonts || !document.fonts.load) return Promise.resolve();
+            if (!FONT_LOAD_PROMISES[key]) {
+                FONT_LOAD_PROMISES[key] = Promise.all([
+                    document.fonts.load('32px "' + f.family + '"'),
+                    document.fonts.load('700 32px "' + f.family + '"')
+                ]).catch(() => {});
+            }
+            return FONT_LOAD_PROMISES[key];
+        }
         const FONT_REGISTRY = {krutidev:{label:'KrutiDev 010',encoding:'krutidev',family:'KrutiDev010'},devlys010:{label:'DevLys 010',encoding:'krutidev-compatible',family:'DevLys010Web'},devlys040:{label:'DevLys 040',encoding:'krutidev-compatible',family:'DevLys040'},devlys040bold:{label:'DevLys 040 Bold',encoding:'krutidev-compatible',family:'DevLys040Bold'},krutidev021:{label:'KrutiDev 021 Italic',encoding:'krutidev',family:'KrutiDev021'},krutidev070:{label:'KrutiDev 070 Bold',encoding:'krutidev',family:'KrutiDev070'}};
         let audioCtx = null;
         let altCodeBuffer = '';
@@ -3287,6 +3323,13 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
                 rowEl.className = 'k-row';
 
                 row.forEach(item => {
+                    if (item.sp) {
+                        const spacerEl = document.createElement('div');
+                        spacerEl.className = 'k-spacer';
+                        spacerEl.style.flexGrow = String(item.sp);
+                        rowEl.appendChild(spacerEl);
+                        return;
+                    }
                     const keyEl = document.createElement('div');
                     const classes = ['k-key'];
                     if (item.w) classes.push(item.w);
@@ -3542,6 +3585,11 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
             el.progressionSummary.textContent = `${highestUnlocked+1} keys available · ${reviewMode ? "reviewing key "+(unlockedIndex+1) : "automatic progression"}`;
         }
 
+        function applyPracticeTextPrefs() {
+            const st = document.documentElement.style;
+            st.setProperty('--practice-fs', (opts.textSize || 32) + 'px');
+            st.setProperty('--practice-lines', String(opts.practiceLines || 3));
+        }
         function applyDisplayPreferences() {
             document.getElementById('display-font-select').value = displayFont;
             document.documentElement.dataset.lessonStyle = lessonStyle;
@@ -4152,6 +4200,9 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
             const of=$('opt-font');
             if(of&&!of.options.length){Object.entries(FONT_REGISTRY).forEach(([k,f])=>of.appendChild(new Option(f.label,k)));}
             if(of)of.value=displayFont;
+            const ots=$('opt-text-size');if(ots){ots.value=opts.textSize||32;$('opt-text-size-val').textContent=(opts.textSize||32)+'px';}
+            const ol=$('opt-lines');if(ol)ol.value=String(opts.practiceLines||3);
+            applyPracticeTextPrefs();
             updateTextSourceNote();updateBookPanel();
         }
         function updateBookPanel(){
@@ -4881,7 +4932,13 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
         $id('opt-volume').oninput=e=>{opts.volume=parseInt(e.target.value,10);$id('opt-volume-val').textContent=opts.volume+'%';};
         $id('opt-volume').onchange=()=>{saveStorage();sound.click();};
         $id('opt-theme').onchange=e=>{opts.soundTheme=e.target.value;applyOpts(false);sound.click();};
-        $id('opt-font').onchange=e=>{displayFont=e.target.value;if(document.getElementById('display-font-select'))document.getElementById('display-font-select').value=displayFont;saveStorage();applyDisplayPreferences();regenerateLesson();};
+        $id('opt-font').onchange=async e=>{
+            const requested=e.target.value;
+            await ensureFontLoaded(requested);
+            displayFont=requested;if(document.getElementById('display-font-select'))document.getElementById('display-font-select').value=displayFont;saveStorage();applyDisplayPreferences();regenerateLesson();
+        };
+        $id('opt-text-size').oninput=e=>{opts.textSize=parseInt(e.target.value,10)||32;$id('opt-text-size-val').textContent=opts.textSize+'px';applyPracticeTextPrefs();saveStorage();};
+        $id('opt-lines').onchange=e=>{opts.practiceLines=parseInt(e.target.value,10)||3;applyPracticeTextPrefs();saveStorage();};
         $id('custom-text').onchange=e=>{opts.customText=e.target.value;Object.keys(bookWordCache).forEach(k=>{if(k.startsWith('custom'))delete bookWordCache[k];});
             textSource=opts.customText.trim()?'custom':'words';forceTab=opts.customText.trim()?null:'custom';applyOpts(true);};
         el.speedGoalSelect.addEventListener('input',e=>{const v=parseInt(e.target.value,10);const l=$id('speed-goal-val');if(l)l.textContent=v.toFixed(1)+' wpm';});
@@ -5001,9 +5058,10 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
         window.addEventListener('keyup',e=>{if(e.key==='Alt'||e.code==='AltLeft'||e.code==='AltRight')commitLabAltCode();});
         el.clearAltTestBtn.onclick=()=>{labBuffer='';labDigits='';labText='';el.altTesterInput.value='';const parts=[];if(labTarget.gail)parts.push(labTarget.gail);if(labTarget.code)parts.push('Alt+'+labTarget.code);el.altTestResult.textContent='Target '+labTarget.glyph+': '+parts.join(' or ');el.altTesterInput.focus({preventScroll:true});};
 
-        function selectDisplayFont(requested) {
+        async function selectDisplayFont(requested) {
             const font=FONT_REGISTRY[requested];
             if(!font)return false;
+            await ensureFontLoaded(requested);
             displayFont=requested;saveStorage();updateDisplay();
             document.getElementById('font-status').textContent=font.label+' · Remington legacy encoding · every keystroke highlights its own glyph'+(requested==='devlys010'?' · Bundled copy; matches the standard exam DevLys 010.':requested==='devlys040'?' · Matches the standard exam DevLys 040.':'');
             return true;
@@ -5057,6 +5115,7 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
         // ─────────────────────────────────────────────────────────────
         renderVirtualKeyboard();
         renderAltCodesCards();
+        Object.keys(FONT_REGISTRY).forEach(ensureFontLoaded);
         loadStorage();
         applyDisplayPreferences();
         populateTextSources();
