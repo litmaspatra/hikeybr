@@ -1678,13 +1678,17 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
             .k-key.w-space { flex: 6.5 1 0; min-width: 0; max-width: none; }
             .k-spacer { flex: 1.9 1 0; visibility: hidden; }
         }
+        /* Books/Custom never show the lesson-event flash (guided-only stats),
+           so don't reserve its one-line slot there - it would be dead space. */
+        html.book-mode #practice-event { display: none !important; }
+
         /* The Paragraph text size setting (--practice-fs) wins on every screen;
            the compact clamps below are only fallbacks before settings load. */
         @media (max-height: 740px) {
             .text-stream-container { font-size: var(--practice-fs, clamp(1.3rem, 2vw, 1.55rem)) !important; }
         }
         @media (max-width: 650px) {
-            .text-stream-container { font-size: var(--practice-fs, 1.3rem) !important; height: 4.9em !important; max-height: 4.9em !important; }
+            .text-stream-container { font-size: min(var(--practice-fs, 1.3rem), 1.75rem) !important; height: 4.9em !important; max-height: 4.9em !important; }
         }
 
         /* Keep the whole practice view inside one 1366x768-class viewport */
