@@ -1042,6 +1042,50 @@
         .k-key {
             clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
         }
+        /* ═══════════════════════════════════════════════════════════
+           RACE PANEL (keymash-style bots + personal-best ghost)
+           ═══════════════════════════════════════════════════════════ */
+        .race-panel {
+            background: var(--surface-card);
+            border: 2px solid var(--border);
+            padding: 10px 16px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+        }
+        .race-row { display: flex; align-items: center; gap: 10px; font-size: 0.72rem; }
+        .race-name { width: 150px; flex: none; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text-dim); font-weight: 600; }
+        .race-row.you .race-name { color: var(--gold); }
+        .race-row.ghost { opacity: 0.65; }
+        .race-track { position: relative; flex: 1; height: 16px; background: var(--bg); border: 1px solid var(--border); overflow: hidden; }
+        .race-fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0%; background: var(--accent); opacity: 0.28; transition: width 0.2s linear; }
+        .race-row.you .race-fill { background: var(--gold); opacity: 0.35; }
+        .race-marker { position: absolute; top: -3px; left: -7px; font-size: 0.9rem; transition: left 0.2s linear; pointer-events: none; }
+        .race-pct { width: 44px; flex: none; text-align: right; font-family: 'JetBrains Mono', monospace; font-size: 0.66rem; color: var(--text-faint); }
+
+        /* Results standings (race outcome table) */
+        .race-standings {
+            margin: 14px 0 4px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            padding: 10px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            font-size: 0.78rem;
+        }
+        .standing-row { display: flex; justify-content: space-between; gap: 12px; color: var(--text-dim); }
+        .standing-row.you { color: var(--gold); font-weight: 700; }
+
+        /* English mode: Latin text in mono instead of KrutiDev */
+        body.lang-en .kruti-stream, body.lang-en .kruti-stream span {
+            font-family: 'JetBrains Mono', monospace !important;
+            letter-spacing: 0.01em;
+        }
+        body.lang-en #live-hint-char { font-family: 'JetBrains Mono', monospace !important; }
+        body.lang-en .alt-helper-pill { display: none !important; }
+
         ::selection { background: var(--accent); color: var(--bg); }
 
         /* keymash-style typing: no speed/accuracy HUD while typing;
@@ -1061,7 +1105,7 @@
         <a href="hikeymash.html" class="brand" id="logo-btn">
             <div class="brand-icon">सा</div>
             <div class="brand-title">HiKey<span>mash</span></div>
-            <div class="brand-badge">साहित्य Typing</div>
+            <div class="brand-badge" id="brand-badge">साहित्य Typing</div>
         </a>
 
         <nav>
@@ -1074,6 +1118,9 @@
         </nav>
 
         <div class="header-actions">
+            <button class="btn-icon active" id="lang-btn" title="Switch to English">
+                <span id="lang-btn-label">EN</span>
+            </button>
             <button class="btn-icon active" id="sound-btn" title="ध्वनि टॉगल करें (Sound)">
                 <span id="sound-icon">🔊</span>
             </button>
@@ -1094,15 +1141,15 @@
         <!-- Mode Bar: snippets arrive randomly from every category (no picker) -->
         <div class="mash-bar">
             <div class="filter-group">
-                <span class="filter-label">🎲 यादृच्छिक उद्धरण — सभी विधाएँ (गद्य, काव्य, दोहे, कथा)</span>
+                <span class="filter-label" id="filter-label">🎲 यादृच्छिक उद्धरण — सभी विधाएँ (गद्य, काव्य, दोहे, कथा)</span>
             </div>
 
             <div class="action-btns">
                 <button class="mash-btn" id="restart-btn" title="पुनः प्रारंभ करें (Esc)">
-                    <span>🔁 पुनः प्रयास</span>
+                    <span id="restart-label">🔁 पुनः प्रयास</span>
                 </button>
                 <button class="mash-btn primary" id="next-btn" title="अगला उद्धरण (Tab)">
-                    <span>⏭️ अगला उद्धरण</span>
+                    <span id="next-label">⏭️ अगला उद्धरण</span>
                 </button>
             </div>
         </div>
@@ -1118,6 +1165,9 @@
                 <span id="snippet-word-count">0 शब्द</span> &bull; <span id="snippet-char-count">0 अक्षर</span>
             </div>
         </div>
+
+        <!-- Live Race Panel: keymash-style bots + personal-best ghost -->
+        <div class="race-panel" id="race-panel"></div>
 
         <!-- Live HUD Dashboard (Speedometer, Accuracy, Timer, Progress) -->
         <div class="hud-strip">
@@ -1147,8 +1197,8 @@
         <!-- Typing Canvas: KrutiDev Ligature-Safe Stream -->
         <div class="typing-canvas" id="typing-canvas">
             <div class="canvas-top-tag">
-                <div><span class="pulse-dot"></span><span>क्लिक करें या टाइप करना शुरू करें (Remington GAIL)</span></div>
-                <div style="font-family:'JetBrains Mono'; font-size:0.6rem;">Tab = अगला उद्धरण | Esc = पुनः प्रारंभ</div>
+                <div><span class="pulse-dot"></span><span id="canvas-tag-text">क्लिक करें या टाइप करना शुरू करें (Remington GAIL)</span></div>
+                <div style="font-family:'JetBrains Mono'; font-size:0.6rem;" id="canvas-tag-keys">Tab = अगला उद्धरण | Esc = पुनः प्रारंभ</div>
             </div>
 
             <!-- Authentic KrutiDev 010 Stream Container -->
@@ -1161,7 +1211,7 @@
 
         <!-- Realtime Live Keystroke Hint Strip -->
         <div class="live-hint-strip" id="live-hint-strip">
-            <span>अगली कुंजी: Press <kbd class="live-hint-key" id="live-hint-key">D</kbd> for <span id="live-hint-char" style="font-family:'Noto Sans Devanagari'; font-size:1.05rem; color:var(--gold);">क</span></span>
+            <span><span id="live-hint-prefix">अगली कुंजी: Press</span> <kbd class="live-hint-key" id="live-hint-key">D</kbd> <span id="live-hint-for">for</span> <span id="live-hint-char" style="font-family:'Noto Sans Devanagari'; font-size:1.05rem; color:var(--gold);">क</span></span>
             <span id="live-hint-detail" style="font-size:0.72rem; color:var(--text-faint);"></span>
         </div>
 
@@ -1192,30 +1242,32 @@
 
             <div class="results-grid">
                 <div class="r-stat primary">
-                    <span class="r-label">शुद्ध गति (Net WPM)</span>
+                    <span class="r-label" id="res-label-wpm">शुद्ध गति (Net WPM)</span>
                     <div class="r-val" id="res-wpm">0</div>
                 </div>
                 <div class="r-stat success">
-                    <span class="r-label">सटीकता (Accuracy)</span>
+                    <span class="r-label" id="res-label-acc">सटीकता (Accuracy)</span>
                     <div class="r-val" id="res-acc">100%</div>
                 </div>
                 <div class="r-stat">
-                    <span class="r-label">समय (Time)</span>
+                    <span class="r-label" id="res-label-time">समय (Time)</span>
                     <div class="r-val" id="res-time">0s</div>
                 </div>
                 <div class="r-stat">
-                    <span class="r-label">कुल कीस्ट्रोक</span>
+                    <span class="r-label" id="res-label-chars">कुल कीस्ट्रोक</span>
                     <div class="r-val" id="res-chars">0</div>
                 </div>
                 <div class="r-stat">
-                    <span class="r-label">त्रुटियाँ (Errors)</span>
+                    <span class="r-label" id="res-label-errors">त्रुटियाँ (Errors)</span>
                     <div class="r-val" id="res-errors" style="color:var(--error);">0</div>
                 </div>
                 <div class="r-stat">
-                    <span class="r-label">कच्ची गति (Raw WPM)</span>
+                    <span class="r-label" id="res-label-raw">कच्ची गति (Raw WPM)</span>
                     <div class="r-val" id="res-raw">0</div>
                 </div>
             </div>
+
+            <div class="race-standings" id="race-standings" style="display:none;"></div>
 
             <div class="quote-citation" id="res-quote-box">
                 <p id="res-quote-title"><strong>📖 रचना:</strong> —</p>
@@ -1224,16 +1276,16 @@
 
             <div class="results-actions">
                 <button class="mash-btn primary" id="modal-next-btn">
-                    <span>⏭️ अगला उद्धरण (Enter)</span>
+                    <span id="modal-next-label">⏭️ अगला उद्धरण (Enter)</span>
                 </button>
                 <button class="mash-btn" id="modal-retry-btn">
-                    <span>🔁 पुनः प्रयास</span>
+                    <span id="modal-retry-label">🔁 पुनः प्रयास</span>
                 </button>
                 <button class="mash-btn" id="modal-copy-btn">
-                    <span>📋 स्कोर कॉपी करें</span>
+                    <span id="modal-copy-label">📋 स्कोर कॉपी करें</span>
                 </button>
                 <a href="index.html" class="mash-btn" style="text-decoration:none;">
-                    <span>⌨️ HiKeybr ट्यूटर</span>
+                    <span id="modal-tutor-label">⌨️ HiKeybr ट्यूटर</span>
                 </a>
             </div>
         </div>
@@ -1245,7 +1297,7 @@
          FOOTER
          ═══════════════════════════════════════════════════════════ -->
     <footer>
-        HiKeymash &mdash; Hindi Literature Remington GAIL Typing Arcade &bull; Powered by <a href="index.html">HiKeybr</a>
+        <span id="footer-text">HiKeymash &mdash; Hindi Literature Remington GAIL Typing Arcade &bull; Powered by</span> <a href="index.html">HiKeybr</a>
     </footer>
 
     <!-- ═══════════════════════════════════════════════════════════
@@ -1919,6 +1971,186 @@
         // ─────────────────────────────────────────────────────────────
         // 3. STATE & DOM CACHE
         // ─────────────────────────────────────────────────────────────
+        // ─────────────────────────────────────────────────────────────
+        // 2B. ENGLISH LITERATURE LIBRARY (public-domain quotes)
+        // ─────────────────────────────────────────────────────────────
+        const ENGLISH_SNIPPETS = [
+            { id: 'en_tale', title: 'A Tale of Two Cities', author: 'Charles Dickens', category: 'prose', genre: 'Novel', difficulty: 'moderate',
+              text: 'It was the best of times, it was the worst of times, it was the age of wisdom, it was the age of foolishness.' },
+            { id: 'en_pride', title: 'Pride and Prejudice', author: 'Jane Austen', category: 'prose', genre: 'Novel', difficulty: 'moderate',
+              text: 'It is a truth universally acknowledged, that a single man in possession of a good fortune, must be in want of a wife.' },
+            { id: 'en_hamlet', title: 'Hamlet', author: 'William Shakespeare', category: 'poetry', genre: 'Play', difficulty: 'moderate',
+              text: 'To be, or not to be, that is the question: whether it is nobler in the mind to suffer the slings and arrows of outrageous fortune.' },
+            { id: 'en_twain', title: 'Mark Twain (attributed)', author: 'Mark Twain', category: 'quote', genre: 'Wit', difficulty: 'easy',
+              text: 'The secret of getting ahead is getting started. The secret of getting started is breaking your complex tasks into small, manageable tasks.' },
+            { id: 'en_anna', title: 'Anna Karenina', author: 'Leo Tolstoy', category: 'prose', genre: 'Novel', difficulty: 'easy',
+              text: 'All happy families are alike; each unhappy family is unhappy in its own way.' },
+            { id: 'en_frost', title: 'The Road Not Taken', author: 'Robert Frost', category: 'poetry', genre: 'Poem', difficulty: 'easy',
+              text: 'Two roads diverged in a wood, and I took the one less traveled by, and that has made all the difference.' },
+            { id: 'en_jane', title: 'Jane Eyre', author: 'Charlotte Bronte', category: 'prose', genre: 'Novel', difficulty: 'moderate',
+              text: 'I am no bird; and no net ensnares me: I am a free human being with an independent will.' },
+            { id: 'en_dorian', title: 'The Picture of Dorian Gray', author: 'Oscar Wilde', category: 'quote', genre: 'Wit', difficulty: 'easy',
+              text: 'Nowadays people know the price of everything and the value of nothing.' },
+            { id: 'en_carol', title: 'A Christmas Carol', author: 'Charles Dickens', category: 'prose', genre: 'Novel', difficulty: 'easy',
+              text: 'I will honour Christmas in my heart, and try to keep it all the year.' },
+            { id: 'en_whitman', title: 'Song of Myself', author: 'Walt Whitman', category: 'poetry', genre: 'Poem', difficulty: 'easy',
+              text: 'I celebrate myself, and sing myself, and what I assume you shall assume.' },
+            { id: 'en_moby', title: 'Moby Dick', author: 'Herman Melville', category: 'prose', genre: 'Novel', difficulty: 'moderate',
+              text: 'Call me Ishmael. Some years ago, having little or no money in my purse, I thought I would sail about a little and see the watery part of the world.' },
+            { id: 'en_alice', title: 'Alice in Wonderland', author: 'Lewis Carroll', category: 'prose', genre: 'Novel', difficulty: 'moderate',
+              text: 'Curiouser and curiouser! cried Alice. She was so much surprised that for the moment she quite forgot how to speak good English.' },
+            { id: 'en_holmes', title: 'The Sign of the Four', author: 'Arthur Conan Doyle', category: 'quote', genre: 'Mystery', difficulty: 'easy',
+              text: 'When you have eliminated the impossible, whatever remains, however improbable, must be the truth.' },
+            { id: 'en_keats', title: 'Endymion', author: 'John Keats', category: 'poetry', genre: 'Poem', difficulty: 'easy',
+              text: 'A thing of beauty is a joy for ever: its loveliness increases; it will never pass into nothingness.' },
+            { id: 'en_gandhi', title: 'Mahatma Gandhi (attributed)', author: 'Mahatma Gandhi', category: 'quote', genre: 'Wisdom', difficulty: 'easy',
+              text: 'An eye for an eye only ends up making the whole world blind.' },
+            { id: 'en_dream', title: 'A Midsummer Nights Dream', author: 'William Shakespeare', category: 'poetry', genre: 'Play', difficulty: 'easy',
+              text: 'The course of true love never did run smooth.' }
+        ];
+
+        // ─────────────────────────────────────────────────────────────
+        // 2C. ENGLISH QWERTY VIRTUAL KEYBOARD + UI STRINGS + HELPERS
+        // ─────────────────────────────────────────────────────────────
+        const KB_MATRIX_EN = [
+            [
+                { k: '`', h: '`', sh: '~', code: 'Backquote' },
+                { k: '1', h: '1', sh: '!', code: 'Digit1' },
+                { k: '2', h: '2', sh: '@', code: 'Digit2' },
+                { k: '3', h: '3', sh: '#', code: 'Digit3' },
+                { k: '4', h: '4', sh: '$', code: 'Digit4' },
+                { k: '5', h: '5', sh: '%', code: 'Digit5' },
+                { k: '6', h: '6', sh: '^', code: 'Digit6' },
+                { k: '7', h: '7', sh: '&', code: 'Digit7' },
+                { k: '8', h: '8', sh: '*', code: 'Digit8' },
+                { k: '9', h: '9', sh: '(', code: 'Digit9' },
+                { k: '0', h: '0', sh: ')', code: 'Digit0' },
+                { k: '-', h: '-', sh: '_', code: 'Minus' },
+                { k: '=', h: '=', sh: '+', code: 'Equal' }
+            ],
+            [
+                { k: 'q', h: 'Q', sh: '', code: 'KeyQ' },
+                { k: 'w', h: 'W', sh: '', code: 'KeyW' },
+                { k: 'e', h: 'E', sh: '', code: 'KeyE' },
+                { k: 'r', h: 'R', sh: '', code: 'KeyR' },
+                { k: 't', h: 'T', sh: '', code: 'KeyT' },
+                { k: 'y', h: 'Y', sh: '', code: 'KeyY' },
+                { k: 'u', h: 'U', sh: '', code: 'KeyU' },
+                { k: 'i', h: 'I', sh: '', code: 'KeyI' },
+                { k: 'o', h: 'O', sh: '', code: 'KeyO' },
+                { k: 'p', h: 'P', sh: '', code: 'KeyP' },
+                { k: '[', h: '[', sh: '{', code: 'BracketLeft' },
+                { k: ']', h: ']', sh: '}', code: 'BracketRight' },
+                { k: '\\', h: '\\', sh: '|', code: 'Backslash' }
+            ],
+            [
+                { k: 'a', h: 'A', sh: '', code: 'KeyA' },
+                { k: 's', h: 'S', sh: '', code: 'KeyS' },
+                { k: 'd', h: 'D', sh: '', code: 'KeyD' },
+                { k: 'f', h: 'F', sh: '', code: 'KeyF' },
+                { k: 'g', h: 'G', sh: '', code: 'KeyG' },
+                { k: 'h', h: 'H', sh: '', code: 'KeyH' },
+                { k: 'j', h: 'J', sh: '', code: 'KeyJ' },
+                { k: 'k', h: 'K', sh: '', code: 'KeyK' },
+                { k: 'l', h: 'L', sh: '', code: 'KeyL' },
+                { k: ';', h: ';', sh: ':', code: 'Semicolon' },
+                { k: "'", h: "'", sh: '"', code: 'Quote' }
+            ],
+            [
+                { k: 'z', h: 'Z', sh: '', code: 'KeyZ' },
+                { k: 'x', h: 'X', sh: '', code: 'KeyX' },
+                { k: 'c', h: 'C', sh: '', code: 'KeyC' },
+                { k: 'v', h: 'V', sh: '', code: 'KeyV' },
+                { k: 'b', h: 'B', sh: '', code: 'KeyB' },
+                { k: 'n', h: 'N', sh: '', code: 'KeyN' },
+                { k: 'm', h: 'M', sh: '', code: 'KeyM' },
+                { k: ',', h: ',', sh: '<', code: 'Comma' },
+                { k: '.', h: '.', sh: '>', code: 'Period' },
+                { k: '/', h: '/', sh: '?', code: 'Slash' }
+            ]
+        ];
+
+        const EN_SHIFT_TO_BASE = { '~':'`', '!':'1', '@':'2', '#':'3', '$':'4', '%':'5', '^':'6', '&':'7', '*':'8', '(':'9', ')':'0', '_':'-', '+':'=', '{':'[', '}':']', '|':'\\', ':':';', '"':"'", '<':',', '>':'.', '?':'/' };
+
+        const MODIFIER_KEYS = ['Shift', 'Control', 'Alt', 'Meta', 'CapsLock'];
+
+        function getEnglishHint(ch) {
+            if (ch === ' ') return { keyLabel: 'Space', hindiChar: '\u2423', detail: '', physicalKey: ' ', isShifted: false };
+            if (ch >= 'A' && ch <= 'Z') return { keyLabel: 'Shift + ' + ch, hindiChar: ch, detail: '', physicalKey: ch.toLowerCase(), isShifted: true };
+            if (EN_SHIFT_TO_BASE[ch]) return { keyLabel: 'Shift + ' + EN_SHIFT_TO_BASE[ch].toUpperCase(), hindiChar: ch, detail: '', physicalKey: EN_SHIFT_TO_BASE[ch], isShifted: true };
+            return { keyLabel: ch.toUpperCase(), hindiChar: ch, detail: '', physicalKey: ch, isShifted: false };
+        }
+
+        // UI strings per language (hikeymash is bilingual: Hindi + English)
+        const UI = {
+            hi: {
+                badge: 'साहित्य Typing',
+                bannerTitle: '❓ रचना व लेखक गुप्त हैं',
+                bannerSub: 'टाइप करते हुए अनुमान लगाएँ — परिणाम में खुलासा!',
+                langBtn: 'EN',
+                langBtnTitle: 'Switch to English',
+                filterLabel: '🎲 यादृच्छिक उद्धरण — सभी विधाएँ (गद्य, काव्य, दोहे, कथा)',
+                restart: '🔁 पुनः प्रयास',
+                restartTitle: 'पुनः प्रारंभ करें (Esc)',
+                next: '⏭️ अगला उद्धरण',
+                nextTitle: 'अगला उद्धरण (Tab)',
+                canvasTag: 'क्लिक करें या टाइप करना शुरू करें (Remington GAIL)',
+                canvasKeys: 'Tab = अगला उद्धरण | Esc = पुनः प्रारंभ',
+                hintPrefix: 'अगली कुंजी: Press',
+                hintFor: 'for',
+                footer: 'HiKeymash &mdash; हिंदी साहित्य रेमिंगटन GAIL टाइपिंग आर्केड &bull; Powered by',
+                words: 'शब्द',
+                chars: 'अक्षर',
+                genreDefault: 'साहित्य',
+                you: 'आप (You)',
+                ghost: 'घोस्ट (Ghost)',
+                newPb: 'नया रिकॉर्ड!',
+                done: 'पूर्ण',
+                workLabel: '📖 रचना:',
+                authorLabel: '✍️ लेखक:',
+                copiedLabel: '✅ स्कोर कॉपी हो गया!',
+                resLabels: { wpm: 'शुद्ध गति (Net WPM)', acc: 'सटीकता (Accuracy)', time: 'समय (Time)', chars: 'कुल कीस्ट्रोक', errors: 'त्रुटियाँ (Errors)', raw: 'कच्ची गति (Raw WPM)' },
+                modalNext: '⏭️ अगला उद्धरण (Enter)',
+                modalRetry: '🔁 पुनः प्रयास',
+                modalCopy: '📋 स्कोर कॉपी करें',
+                modalTutor: '⌨️ HiKeybr ट्यूटर'
+            },
+            en: {
+                badge: 'Literature Typing',
+                bannerTitle: '❓ Title and author hidden',
+                bannerSub: 'Guess the work while you type - revealed in the results!',
+                langBtn: 'हिंदी',
+                langBtnTitle: 'हिंदी में बदलें (Switch to Hindi)',
+                filterLabel: '🎲 Random quotes - all genres (prose, poetry, wit)',
+                restart: '🔁 Retry',
+                restartTitle: 'Restart (Esc)',
+                next: '⏭️ Next Quote',
+                nextTitle: 'Next quote (Tab)',
+                canvasTag: 'Click or start typing (English QWERTY)',
+                canvasKeys: 'Tab = next quote | Esc = restart',
+                hintPrefix: 'Next key: Press',
+                hintFor: 'for',
+                footer: 'HiKeymash &mdash; English &amp; Hindi Literature Typing Arcade &bull; Powered by',
+                words: 'words',
+                chars: 'chars',
+                genreDefault: 'Literature',
+                you: 'You',
+                ghost: 'Ghost',
+                newPb: 'New Record!',
+                done: 'done',
+                workLabel: '📖 Work:',
+                authorLabel: '✍️ Author:',
+                copiedLabel: '✅ Score Copied!',
+                resLabels: { wpm: 'Net WPM', acc: 'Accuracy', time: 'Time', chars: 'Keystrokes', errors: 'Errors', raw: 'Raw WPM' },
+                modalNext: '⏭️ Next Quote (Enter)',
+                modalRetry: '🔁 Retry',
+                modalCopy: '📋 Copy Score',
+                modalTutor: '⌨️ HiKeybr Tutor'
+            }
+        };
+
+        let currentLang = 'hi';
+
         let currentCategory = 'all';
         let currentSnippet = null;
         let targetKrutiText = '';
@@ -2005,7 +2237,30 @@
             resQuoteAuthor: document.getElementById('res-quote-author'),
             modalNextBtn: document.getElementById('modal-next-btn'),
             modalRetryBtn: document.getElementById('modal-retry-btn'),
-            modalCopyBtn: document.getElementById('modal-copy-btn')
+            modalCopyBtn: document.getElementById('modal-copy-btn'),
+            brandBadge: document.getElementById('brand-badge'),
+            langBtn: document.getElementById('lang-btn'),
+            langBtnLabel: document.getElementById('lang-btn-label'),
+            filterLabel: document.getElementById('filter-label'),
+            restartLabel: document.getElementById('restart-label'),
+            nextLabel: document.getElementById('next-label'),
+            canvasTagText: document.getElementById('canvas-tag-text'),
+            canvasTagKeys: document.getElementById('canvas-tag-keys'),
+            liveHintPrefix: document.getElementById('live-hint-prefix'),
+            liveHintFor: document.getElementById('live-hint-for'),
+            footerText: document.getElementById('footer-text'),
+            resLabelWpm: document.getElementById('res-label-wpm'),
+            resLabelAcc: document.getElementById('res-label-acc'),
+            resLabelTime: document.getElementById('res-label-time'),
+            resLabelChars: document.getElementById('res-label-chars'),
+            resLabelErrors: document.getElementById('res-label-errors'),
+            resLabelRaw: document.getElementById('res-label-raw'),
+            modalNextLabel: document.getElementById('modal-next-label'),
+            modalRetryLabel: document.getElementById('modal-retry-label'),
+            modalCopyLabel: document.getElementById('modal-copy-label'),
+            modalTutorLabel: document.getElementById('modal-tutor-label'),
+            racePanel: document.getElementById('race-panel'),
+            raceStandings: document.getElementById('race-standings')
         };
 
         const keyDOMMap = new Map();
@@ -2043,11 +2298,11 @@
         // ─────────────────────────────────────────────────────────────
         // 5. VIRTUAL KEYBOARD RENDERING & HIGHLIGHTS
         // ─────────────────────────────────────────────────────────────
-        function renderVirtualKeyboard() {
+        function renderVirtualKeyboard(matrix) {
             el.keyboardFrame.innerHTML = '';
             keyDOMMap.clear();
 
-            KB_MATRIX.forEach(row => {
+            (matrix || KB_MATRIX).forEach(row => {
                 const rowEl = document.createElement('div');
                 rowEl.className = 'k-row';
 
@@ -2056,7 +2311,7 @@
                     keyEl.className = 'k-key';
 
                     const shiftHtml = item.sh ? ('<span class="hi-shift">' + item.sh + '</span>') : '';
-                    const enLabel = (item.k.length === 1 && item.k !== ' ') ? item.k.toUpperCase() : '';
+                    const enLabel = (item.k.length === 1 && item.k !== ' ' && item.h !== item.k.toUpperCase()) ? item.k.toUpperCase() : '';
                     keyEl.innerHTML = shiftHtml + '<span class="hi-main">' + item.h + '</span><span class="en-sub">' + enLabel + '</span>';
 
                     keyEl.addEventListener('mousedown', (e) => {
@@ -2100,7 +2355,7 @@
         // 6. SNIPPET PICKER & INITIALIZER
         // ─────────────────────────────────────────────────────────────
         function pickSnippet(cat = currentCategory, excludeId = null) {
-            let pool = LITERATURE_SNIPPETS;
+            let pool = currentLang === 'en' ? ENGLISH_SNIPPETS : LITERATURE_SNIPPETS;
             if (cat !== 'all') {
                 pool = LITERATURE_SNIPPETS.filter(s => s.category === cat);
             }
@@ -2130,14 +2385,14 @@
 
             // Title and author stay hidden while typing (guess-the-title);
             // they are revealed on the results screen. Genre is the only hint.
-            el.snippetGenre.textContent = snippet.genre || 'साहित्य';
+            el.snippetGenre.textContent = snippet.genre || UI[currentLang].genreDefault;
 
             const rawWords = snippet.text.trim().split(/\s+/);
-            el.snippetWordCount.textContent = rawWords.length + ' शब्द';
-            el.snippetCharCount.textContent = snippet.text.length + ' अक्षर';
+            el.snippetWordCount.textContent = rawWords.length + ' ' + UI[currentLang].words;
+            el.snippetCharCount.textContent = snippet.text.length + ' ' + UI[currentLang].chars;
 
             // Convert Unicode literature text into KrutiDev 010 keystroke target
-            targetKrutiText = unicodeToKrutiDev(snippet.text.trim());
+            targetKrutiText = currentLang === 'en' ? snippet.text.trim() : unicodeToKrutiDev(snippet.text.trim());
 
             // Reset HUD
             el.metricWpm.textContent = '0';
@@ -2146,6 +2401,7 @@
             el.metricProg.textContent = '0';
             el.progressBarFill.style.width = '0%';
 
+            resetRace();
             updateDisplay();
             el.resultsModal.classList.remove('open');
             document.body.classList.remove('showing-results');
@@ -2172,28 +2428,37 @@
 
                 // Hint strip & Keyboard highlights
                 const expected = currChar;
-                const prev = cursorIndex > 0 ? targetKrutiText.charAt(cursorIndex - 1) : null;
-                const hint = getKrutiKeystrokeHint(expected, prev);
-
-                el.liveHintKey.textContent = hint.keyLabel;
-                el.liveHintChar.textContent = hint.hindiChar;
-                el.liveHintDetail.textContent = hint.detail ? ('(' + hint.detail + ')') : '';
-
-                updateKeyboardHighlights({
-                    targetKey: hint.physicalKey,
-                    isShifted: hint.isShifted
-                });
-
-                // Alt Code helper pill
-                const altCode = GLYPH_TO_ALT_CODE[hint.hindiChar];
-                if (altCode) {
-                    const catalogRow = ALT_CODES_CATALOG.find(x => x.glyph === hint.hindiChar);
-                    el.altHelperPill.classList.add('active');
-                    el.altHelperGlyph.textContent = hint.hindiChar;
-                    el.altHelperCode.textContent = 'Alt + ' + altCode;
-                    el.altHelperGail.textContent = catalogRow ? catalogRow.gail : ('Alt + ' + altCode + ' on Numpad');
-                } else {
+                if (currentLang === 'en') {
+                    const hintEn = getEnglishHint(expected);
+                    el.liveHintKey.textContent = hintEn.keyLabel;
+                    el.liveHintChar.textContent = hintEn.hindiChar;
+                    el.liveHintDetail.textContent = hintEn.detail || '';
+                    updateKeyboardHighlights({ targetKey: hintEn.physicalKey, isShifted: hintEn.isShifted });
                     el.altHelperPill.classList.remove('active');
+                } else {
+                    const prev = cursorIndex > 0 ? targetKrutiText.charAt(cursorIndex - 1) : null;
+                    const hint = getKrutiKeystrokeHint(expected, prev);
+
+                    el.liveHintKey.textContent = hint.keyLabel;
+                    el.liveHintChar.textContent = hint.hindiChar;
+                    el.liveHintDetail.textContent = hint.detail ? ('(' + hint.detail + ')') : '';
+
+                    updateKeyboardHighlights({
+                        targetKey: hint.physicalKey,
+                        isShifted: hint.isShifted
+                    });
+
+                    // Alt Code helper pill
+                    const altCode = GLYPH_TO_ALT_CODE[hint.hindiChar];
+                    if (altCode) {
+                        const catalogRow = ALT_CODES_CATALOG.find(x => x.glyph === hint.hindiChar);
+                        el.altHelperPill.classList.add('active');
+                        el.altHelperGlyph.textContent = hint.hindiChar;
+                        el.altHelperCode.textContent = 'Alt + ' + altCode;
+                        el.altHelperGail.textContent = catalogRow ? catalogRow.gail : ('Alt + ' + altCode + ' on Numpad');
+                    } else {
+                        el.altHelperPill.classList.remove('active');
+                    }
                 }
             } else {
                 // Completed snippet!
@@ -2227,6 +2492,8 @@
             const progPct = targetKrutiText.length > 0 ? Math.round((cursorIndex / targetKrutiText.length) * 100) : 0;
             el.metricProg.textContent = Math.min(100, progPct);
             el.progressBarFill.style.width = Math.min(100, progPct) + '%';
+
+            updateRace();
         }
 
         // ─────────────────────────────────────────────────────────────
@@ -2319,7 +2586,31 @@
                 sub = 'आपने मानक परीक्षा गति को पार कर लिया है!';
             }
 
-            el.resRankBadge.textContent = rankBadge;
+            if (currentLang === 'en') {
+                rankBadge = '\u270D\uFE0F Practicing Typist';
+                title = 'Good effort!';
+                sub = 'Regular practice brings big gains in speed and accuracy.';
+                if (netWpm >= 60) {
+                    rankBadge = '\u26A1 Word Legend (Legendary)';
+                    title = 'Phenomenal typing!';
+                    sub = 'Your speed and accuracy are truly exceptional.';
+                } else if (netWpm >= 45) {
+                    rankBadge = '\uD83C\uDFC6 Master Typist (Master)';
+                    title = 'Outstanding performance!';
+                    sub = 'You type at an advanced, exam-ready level.';
+                } else if (netWpm >= 30) {
+                    rankBadge = '\uD83C\uDF1F Skilled Writer (Expert)';
+                    title = 'Very well done!';
+                    sub = 'You are comfortably above standard test speed.';
+                }
+            }
+
+            const pbKey = 'hikeymash-pb-' + currentLang;
+            const prevPb = parseInt(localStorage.getItem(pbKey) || '0', 10);
+            const isNewPb = netWpm > 0 && netWpm > prevPb;
+            if (isNewPb) localStorage.setItem(pbKey, String(netWpm));
+
+            el.resRankBadge.textContent = isNewPb ? (rankBadge + ' \uD83C\uDFC6 ' + UI[currentLang].newPb) : rankBadge;
             el.resTitle.textContent = title;
             el.resSub.textContent = sub;
             el.resWpm.textContent = netWpm;
@@ -2329,12 +2620,152 @@
             el.resErrors.textContent = errorKeystrokes;
             el.resRaw.textContent = rawWpm;
 
-            el.resQuoteTitle.innerHTML = '<strong>📖 रचना:</strong> ' + currentSnippet.title;
-            el.resQuoteAuthor.innerHTML = '<strong>✍️ लेखक:</strong> ' + currentSnippet.author + ' (' + (currentSnippet.genre || 'साहित्य') + ')';
+            el.resQuoteTitle.innerHTML = '<strong>' + UI[currentLang].workLabel + '</strong> ' + currentSnippet.title;
+            el.resQuoteAuthor.innerHTML = '<strong>' + UI[currentLang].authorLabel + '</strong> ' + currentSnippet.author + ' (' + (currentSnippet.genre || UI[currentLang].genreDefault) + ')';
+
+            const youRacer = raceRacers.find(r => r.isPlayer);
+            if (youRacer && !youRacer.finished) { youRacer.finished = true; youRacer.finishTime = seconds; }
+            renderStandings(netWpm, seconds);
+            updateRace();
 
             document.body.classList.add('showing-results');
             el.resultsModal.classList.add('open');
             setTimeout(() => el.modalNextBtn.focus(), 100);
+        }
+
+
+        // ─────────────────────────────────────────────────────────────
+        // 9B. RACE MODE: BOTS + PERSONAL-BEST GHOST (keymash-style)
+        // ─────────────────────────────────────────────────────────────
+        const BOT_NAMES = {
+            hi: ['\u0906\u0930\u0935', '\u092E\u0940\u0930\u093E', '\u0935\u093F\u0935\u0947\u0915', '\u0905\u0902\u091C\u0932\u093F', '\u0930\u094B\u0939\u0928', '\u0938\u093F\u092F\u093E'],
+            en: ['Emma', 'Jack', 'Sophia', 'Liam', 'Olivia', 'Noah']
+        };
+        let raceRacers = [];
+        let raceLastTick = 0;
+
+        function getPb() {
+            return parseInt(localStorage.getItem('hikeymash-pb-' + currentLang) || '0', 10);
+        }
+
+        function resetRace() {
+            if (!el.racePanel) return;
+            const U = UI[currentLang];
+            raceRacers = [];
+            raceRacers.push({ id: 'you', name: U.you, emoji: '\uD83C\uDFCE\uFE0F', isPlayer: true, wpm: 0, progress: 0, finished: false, finishTime: 0 });
+            const names = BOT_NAMES[currentLang].slice();
+            for (let i = names.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                const t = names[i]; names[i] = names[j]; names[j] = t;
+            }
+            names.slice(0, 3).forEach((n, i) => {
+                raceRacers.push({ id: 'bot' + i, name: n, emoji: '\uD83D\uDE97', wpm: Math.round(16 + Math.random() * 42), progress: 0, finished: false, finishTime: 0 });
+            });
+            const pb = getPb();
+            if (pb > 0) {
+                raceRacers.push({ id: 'ghost', name: U.ghost + ' (' + pb + ' wpm)', emoji: '\uD83D\uDC7B', isGhost: true, wpm: pb, progress: 0, finished: false, finishTime: 0 });
+            }
+            raceLastTick = 0;
+            el.racePanel.innerHTML = '';
+            raceRacers.forEach(r => {
+                const row = document.createElement('div');
+                row.className = 'race-row ' + (r.isPlayer ? 'you' : (r.isGhost ? 'ghost' : 'bot'));
+                row.innerHTML = '<span class="race-name">' + r.emoji + ' ' + r.name + '</span>' +
+                    '<div class="race-track"><div class="race-fill"></div><span class="race-marker">' + r.emoji + '</span></div>' +
+                    '<span class="race-pct">0%</span>';
+                el.racePanel.appendChild(row);
+                r._fill = row.querySelector('.race-fill');
+                r._marker = row.querySelector('.race-marker');
+                r._pct = row.querySelector('.race-pct');
+            });
+            updateRace();
+        }
+
+        function updateRace() {
+            if (!raceRacers.length || !el.racePanel) return;
+            const total = targetKrutiText.length || 1;
+            const now = Date.now();
+            const dt = raceLastTick ? (now - raceLastTick) / 1000 : 0;
+            raceLastTick = now;
+            raceRacers.forEach(r => {
+                if (r.isPlayer) {
+                    r.progress = cursorIndex;
+                } else if (!r.finished && sessionStartTime && !isFinished && dt > 0) {
+                    const jitter = 0.8 + Math.random() * 0.4;
+                    r.progress += r.wpm * 5 * (dt / 60) * jitter;
+                    if (r.progress >= total) { r.progress = total; r.finished = true; r.finishTime = elapsedSeconds; }
+                }
+                const pct = Math.min(100, (r.progress / total) * 100);
+                if (r._fill) r._fill.style.width = pct + '%';
+                if (r._marker) r._marker.style.left = 'calc(' + pct + '% - 7px)';
+                if (r._pct) r._pct.textContent = Math.round(pct) + '%';
+            });
+        }
+
+        function renderStandings(playerWpm, playerSeconds) {
+            if (!el.raceStandings) return;
+            const total = targetKrutiText.length || 1;
+            const rows = raceRacers.slice().sort((a, b) => {
+                if (a.finished && b.finished) return a.finishTime - b.finishTime;
+                if (a.finished) return -1;
+                if (b.finished) return 1;
+                return b.progress - a.progress;
+            });
+            const U = UI[currentLang];
+            let html = '';
+            rows.forEach((r, i) => {
+                const medal = i === 0 ? '\uD83E\uDD47' : (i === 1 ? '\uD83E\uDD48' : (i === 2 ? '\uD83E\uDD49' : (i + 1) + '.'));
+                const stat = r.finished
+                    ? (r.isPlayer ? playerWpm : r.wpm) + ' wpm \u2022 ' + r.finishTime + 's'
+                    : Math.round((r.progress / total) * 100) + '% ' + U.done;
+                html += '<div class="standing-row' + (r.isPlayer ? ' you' : '') + '">' +
+                    '<span>' + medal + ' ' + r.emoji + ' ' + r.name + '</span><span>' + stat + '</span></div>';
+            });
+            el.raceStandings.innerHTML = html;
+            el.raceStandings.style.display = 'flex';
+        }
+
+        // ─────────────────────────────────────────────────────────────
+        // 9C. LANGUAGE SWITCHING (Hindi Remington <-> English QWERTY)
+        // ─────────────────────────────────────────────────────────────
+        function applyLang() {
+            const U = UI[currentLang];
+            document.documentElement.lang = currentLang === 'en' ? 'en' : 'hi';
+            document.body.classList.toggle('lang-en', currentLang === 'en');
+            if (el.brandBadge) el.brandBadge.textContent = U.badge;
+            if (el.snippetTitle) el.snippetTitle.textContent = U.bannerTitle;
+            if (el.snippetAuthor) el.snippetAuthor.textContent = U.bannerSub;
+            if (el.langBtnLabel) el.langBtnLabel.textContent = U.langBtn;
+            if (el.langBtn) el.langBtn.title = U.langBtnTitle;
+            if (el.filterLabel) el.filterLabel.textContent = U.filterLabel;
+            if (el.restartLabel) el.restartLabel.textContent = U.restart;
+            if (el.restartBtn) el.restartBtn.title = U.restartTitle;
+            if (el.nextLabel) el.nextLabel.textContent = U.next;
+            if (el.nextBtn) el.nextBtn.title = U.nextTitle;
+            if (el.canvasTagText) el.canvasTagText.textContent = U.canvasTag;
+            if (el.canvasTagKeys) el.canvasTagKeys.textContent = U.canvasKeys;
+            if (el.liveHintPrefix) el.liveHintPrefix.textContent = U.hintPrefix;
+            if (el.liveHintFor) el.liveHintFor.textContent = U.hintFor;
+            if (el.footerText) el.footerText.innerHTML = U.footer;
+            if (el.resLabelWpm) el.resLabelWpm.textContent = U.resLabels.wpm;
+            if (el.resLabelAcc) el.resLabelAcc.textContent = U.resLabels.acc;
+            if (el.resLabelTime) el.resLabelTime.textContent = U.resLabels.time;
+            if (el.resLabelChars) el.resLabelChars.textContent = U.resLabels.chars;
+            if (el.resLabelErrors) el.resLabelErrors.textContent = U.resLabels.errors;
+            if (el.resLabelRaw) el.resLabelRaw.textContent = U.resLabels.raw;
+            if (el.modalNextLabel) el.modalNextLabel.textContent = U.modalNext;
+            if (el.modalRetryLabel) el.modalRetryLabel.textContent = U.modalRetry;
+            if (el.modalCopyLabel) el.modalCopyLabel.textContent = U.modalCopy;
+            if (el.modalTutorLabel) el.modalTutorLabel.textContent = U.modalTutor;
+        }
+
+        function setLang(lang) {
+            if (lang === currentLang) return;
+            currentLang = lang;
+            try { localStorage.setItem('hikeymash-lang', lang); } catch (e) {}
+            applyLang();
+            renderVirtualKeyboard(currentLang === 'en' ? KB_MATRIX_EN : KB_MATRIX);
+            loadSnippet(pickSnippet('all'));
         }
 
         // ─────────────────────────────────────────────────────────────
@@ -2378,7 +2809,7 @@
             }
 
             // Alt + Numpad entry
-            if (e.altKey && NUMPAD_DIGIT_MAP[e.code]) {
+            if (currentLang !== 'en' && e.altKey && NUMPAD_DIGIT_MAP[e.code]) {
                 e.preventDefault();
                 altCodeActive = true;
                 altCodeBuffer += NUMPAD_DIGIT_MAP[e.code];
@@ -2386,7 +2817,7 @@
             }
 
             if (altCodeActive && !MODIFIER_KEYS.includes(e.key)) commitMashAltCode();
-            if (e.key.length === 1 && e.key.charCodeAt(0) > 127 && !e.ctrlKey && !e.metaKey) {
+            if (currentLang !== 'en' && e.key.length === 1 && e.key.charCodeAt(0) > 127 && !e.ctrlKey && !e.metaKey) {
                 e.preventDefault();
                 if (Date.now() < altEchoUntil) { altEchoUntil = 0; return; } // OS echo, drop it
                 if (altCodeActive) { commitMashAltCode(); return; }
@@ -2460,16 +2891,19 @@
         });
 
         el.modalCopyBtn.addEventListener('click', () => {
-            const shareText = '⚡ HiKeymash साहित्य टाइपिंग परिणाम:\n' +
-                '📖 रचना: ' + currentSnippet.title + ' (' + currentSnippet.author + ')\n' +
-                '🚀 गति: ' + el.resWpm.textContent + ' WPM\n' +
-                '🎯 सटीकता: ' + el.resAcc.textContent + '\n' +
-                '⏱️ समय: ' + el.resTime.textContent + '\n\n' +
-                'हिंदी रेमिंगटन GAIL टाइपिंग अभ्यास करें: ' + window.location.href;
+            const U = UI[currentLang];
+            const shareText = currentLang === 'en'
+                ? '\u26A1 HiKeymash Literature Typing Result:\n\uD83D\uDCD6 Work: ' + currentSnippet.title + ' (' + currentSnippet.author + ')\n\uD83D\uDE80 Speed: ' + el.resWpm.textContent + ' WPM\n\uD83C\uDFAF Accuracy: ' + el.resAcc.textContent + '\n\u23F1\uFE0F Time: ' + el.resTime.textContent + '\n\nPractice Hindi Remington GAIL and English typing: ' + window.location.href
+                : '\u26A1 HiKeymash \u0938\u093E\u0939\u093F\u0924\u094D\u092F \u091F\u093E\u0907\u092A\u093F\u0902\u0917 \u092A\u0930\u093F\u0923\u093E\u092E:\n\uD83D\uDCD6 \u0930\u091A\u0928\u093E: ' + currentSnippet.title + ' (' + currentSnippet.author + ')\n\uD83D\uDE80 \u0917\u0924\u093F: ' + el.resWpm.textContent + ' WPM\n\uD83C\uDFAF \u0938\u091F\u0940\u0915\u0924\u093E: ' + el.resAcc.textContent + '\n\u23F1\uFE0F \u0938\u092E\u092F: ' + el.resTime.textContent + '\n\n\u0939\u093F\u0902\u0926\u0940 \u0930\u0947\u092E\u093F\u0902\u0917\u091F\u0928 GAIL \u091F\u093E\u0907\u092A\u093F\u0902\u0917 \u0905\u092D\u094D\u092F\u093E\u0938 \u0915\u0930\u0947\u0902: ' + window.location.href;
             navigator.clipboard.writeText(shareText).then(() => {
-                el.modalCopyBtn.textContent = '✅ स्कोर कॉपी हो गया!';
-                setTimeout(() => el.modalCopyBtn.innerHTML = '<span>📋 स्कोर कॉपी करें</span>', 2000);
+                el.modalCopyBtn.textContent = U.copiedLabel;
+                setTimeout(() => { el.modalCopyBtn.innerHTML = '<span id="modal-copy-label">' + U.modalCopy + '</span>'; }, 2000);
             });
+        });
+
+        // Language Toggle (Hindi Remington <-> English QWERTY)
+        el.langBtn.addEventListener('click', () => {
+            setLang(currentLang === 'en' ? 'hi' : 'en');
         });
 
         // Sound Toggle
@@ -2518,7 +2952,9 @@
             })
         };
 
-        renderVirtualKeyboard();
+        try { currentLang = localStorage.getItem('hikeymash-lang') === 'en' ? 'en' : 'hi'; } catch (e) { currentLang = 'hi'; }
+        applyLang();
+        renderVirtualKeyboard(currentLang === 'en' ? KB_MATRIX_EN : KB_MATRIX);
         loadSnippet(pickSnippet('all'));
 
     })();
