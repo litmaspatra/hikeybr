@@ -1651,15 +1651,15 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
 
         /* Typing text: exactly three lines visible; cursor auto-scrolls inside */
         .text-stream-container {
-            height: calc(var(--practice-lines, 3) * 1.6334em) !important;
-            max-height: calc(var(--practice-lines, 3) * 1.6334em) !important;
+            height: calc(3 * 1.6334em) !important;
+            max-height: calc(3 * 1.6334em) !important;
             min-height: 0 !important;
             overflow-y: auto !important;
             overflow-x: hidden !important;
             line-height: 1.6 !important;
             font-size: var(--practice-fs, clamp(1.6rem, 2.6vw, 2rem)) !important;
         }
-        :root[data-lesson-style="spaced"] .text-stream-container { height: calc(var(--practice-lines, 3) * 2.0667em) !important; max-height: calc(var(--practice-lines, 3) * 2.0667em) !important; }
+        :root[data-lesson-style="spaced"] .text-stream-container { height: calc(3 * 2.0667em) !important; max-height: calc(3 * 2.0667em) !important; }
 
         /* Never show legacy-encoded text before its font is ready (reload with
            a saved DevLys/KrutiDev variant would otherwise flash Latin glyphs). */
@@ -1795,7 +1795,6 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
                     <h4>Text appearance</h4>
                     <div class="ls-row"><label for="opt-font">Font</label><select class="ctrl-select" id="opt-font"></select></div>
                     <div class="ls-row"><label for="opt-text-size">Paragraph text size</label><input type="range" id="opt-text-size" min="24" max="44" step="1" value="32"><span class="ls-val" id="opt-text-size-val">32px</span></div>
-                    <div class="ls-row"><label for="opt-lines">Paragraph lines</label><select class="ctrl-select" id="opt-lines"><option value="2">2 lines</option><option value="3" selected>3 lines</option><option value="4">4 lines</option></select></div>
                     <div class="ls-row"><label>Play sounds</label><span class="ls-radios" id="opt-sounds"><label><input type="radio" name="snd" value="none"> No sounds</label><label><input type="radio" name="snd" value="error"> Error sounds only</label><label><input type="radio" name="snd" value="key"> Key sounds only</label><label><input type="radio" name="snd" value="all"> All sounds</label></span></div>
                     <div class="ls-row"><label for="opt-volume">Volume</label><input type="range" id="opt-volume" min="0" max="100" step="5" value="70"><span class="ls-val" id="opt-volume-val">70%</span></div>
                     <div class="ls-row"><label for="opt-theme">Sound theme</label><select class="ctrl-select" id="opt-theme"><option value="mechanical">Mechanical keyboard</option><option value="typewriter">Typewriter</option><option value="soft">Soft</option><option value="click">Click</option><option value="retro">Retro beep</option><option value="thock">Thock</option></select></div>
@@ -2531,7 +2530,7 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
         let targetKeyBuffer = []; // Rolling sliding window of recent hits on target key
         let targetSpeedGoal = 25; // WPM required to advance
         let textSource='words', bookPos={};
-        const DEFAULT_OPTS={strict:false,repeat:1,punct:0,removePunct:false,stopOnError:true,spaceSkips:false,soundMode:'all',volume:70,soundTheme:'mechanical',lastBook:'',customText:'',textSize:32,practiceLines:3};
+        const DEFAULT_OPTS={strict:false,repeat:1,punct:0,removePunct:false,stopOnError:true,spaceSkips:false,soundMode:'all',volume:70,soundTheme:'mechanical',lastBook:'',customText:'',textSize:32};
         let opts=Object.assign({},DEFAULT_OPTS);
         let currentLessonText = ''; // Continuous string of ~25 words
         let targetKrutiText = ''; // Keystroke sequence in KrutiDev 010 mapping
@@ -2771,6 +2770,7 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
                 hiddenWords=Array.isArray(data.hiddenWords)?data.hiddenWords:[];
                 bookPos=(data.bookPos&&typeof data.bookPos==='object')?data.bookPos:{};
                 if(data.opts&&typeof data.opts==='object')opts=Object.assign({},DEFAULT_OPTS,data.opts);
+                delete opts.practiceLines; // Remove the retired paragraph-lines setting from existing saves.
                 textSource=(typeof data.textSource==='string'&&(data.textSource==='words'||(data.textSource==='custom'&&opts.customText.trim())||findBook(data.textSource)))?data.textSource:'words';
                 if(el.wordsSelect&&data.wordsPerLesson&&[...el.wordsSelect.options].some(o=>o.value===String(data.wordsPerLesson)))el.wordsSelect.value=String(data.wordsPerLesson);
                 if (typeof data.targetSpeedGoal === 'number') {
@@ -3591,9 +3591,7 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
         }
 
         function applyPracticeTextPrefs() {
-            const st = document.documentElement.style;
-            st.setProperty('--practice-fs', (opts.textSize || 32) + 'px');
-            st.setProperty('--practice-lines', String(opts.practiceLines || 3));
+            document.documentElement.style.setProperty('--practice-fs', (opts.textSize || 32) + 'px');
         }
         function applyDisplayPreferences() {
             document.getElementById('display-font-select').value = displayFont;
@@ -4206,7 +4204,6 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
             if(of&&!of.options.length){Object.entries(FONT_REGISTRY).forEach(([k,f])=>of.appendChild(new Option(f.label,k)));}
             if(of)of.value=displayFont;
             const ots=$('opt-text-size');if(ots){ots.value=opts.textSize||32;$('opt-text-size-val').textContent=(opts.textSize||32)+'px';}
-            const ol=$('opt-lines');if(ol)ol.value=String(opts.practiceLines||3);
             applyPracticeTextPrefs();
             updateTextSourceNote();updateBookPanel();
         }
@@ -4944,7 +4941,6 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
             displayFont=requested;if(document.getElementById('display-font-select'))document.getElementById('display-font-select').value=displayFont;saveStorage();applyDisplayPreferences();regenerateLesson();
         };
         $id('opt-text-size').oninput=e=>{opts.textSize=parseInt(e.target.value,10)||32;$id('opt-text-size-val').textContent=opts.textSize+'px';applyPracticeTextPrefs();saveStorage();};
-        $id('opt-lines').onchange=e=>{opts.practiceLines=parseInt(e.target.value,10)||3;applyPracticeTextPrefs();saveStorage();};
         $id('custom-text').onchange=e=>{opts.customText=e.target.value;Object.keys(bookWordCache).forEach(k=>{if(k.startsWith('custom'))delete bookWordCache[k];});
             textSource=opts.customText.trim()?'custom':'words';forceTab=opts.customText.trim()?null:'custom';applyOpts(true);};
         el.speedGoalSelect.addEventListener('input',e=>{const v=parseInt(e.target.value,10);const l=$id('speed-goal-val');if(l)l.textContent=v.toFixed(1)+' wpm';});
