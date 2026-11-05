@@ -206,6 +206,24 @@ const path = require('node:path');
     const download = await downloadPromise;
     assert.ok(download.suggestedFilename().endsWith('.json'), 'export downloads progress JSON');
 
+    // 8. Remington punctuation converts to authentic KrutiDev bytes (books/custom text).
+    const punctConv = await page.evaluate(() => HiKeybr.unicodeToKrutiDev(',?.;-:!'));
+    assert.equal(punctConv, ']\\-(&%!', 'comma=]  ?=\\  .=-  ;=(  -=&  :=%  !=!');
+    assert.equal(await page.evaluate(() => HiKeybr.unicodeToKrutiDev('ए')), ',', "the ',' KEY still types ए");
+    assert.equal(await page.evaluate(() => HiKeybr.unicodeToKrutiDev('घ')), '?k', "the '?' byte still types घ");
+    assert.equal(await page.evaluate(() => HiKeybr.unicodeToKrutiDev('।')), 'A', 'danda = Shift+A');
+
+    // 9. Custom text with punctuation expects the Remington keys ] and \.
+    await fresh();
+    await page.click('#lesson-settings > summary');
+    await page.click('.ls-tab[data-lstab="custom"]');
+    await page.evaluate(() => {
+        const t = document.getElementById('custom-text');
+        t.value = 'राम, क्या?';
+        t.dispatchEvent(new Event('change'));
+    });
+    assert.equal(await page.evaluate(() => HiKeybr.targetKrutiText), 'jke] D;k\\', 'custom text punctuation uses Remington keys');
+
     assert.deepEqual(errors, [], 'no page errors: ' + errors.join(' | '));
     console.log('PASS: real key events, custom text focus, Alt-code unit scoring, speed control sync, reload persistence, strict unlock, save-failure warning.');
     await browser.close();

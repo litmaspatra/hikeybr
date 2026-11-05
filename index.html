@@ -2406,6 +2406,24 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
         function unicodeToKrutiDev(text) {
             let s = text;
 
+            // 0. Punctuation -> authentic KrutiDev bytes. On the Remington GAIL
+            // layout the English punctuation keys type Hindi letters (',' key = ए,
+            // '?' key = घ्, '.' key = ण्), so the real punctuation glyphs live on
+            // other keys: comma = ] key, '?' = \ key, full stop = - key,
+            // ';' = Shift+9, '-'/'–'/'—' = Shift+7, ':' = Shift+5 (visarga-shaped
+            // glyph), '!' = Shift+1. KrutiDev has no ( ) [ ] { } glyphs, so those
+            // are dropped from the text instead of rendering as wrong letters.
+            s = s.replace(/"([^"]*)"/g, '‘$1’');
+            const PUNCT_TO_KRUTI = {
+                ',': ']', '?': '\\', '.': '-', ';': '(', '!': '!',
+                ':': '%', '-': '&', '–': '&', '—': '&',
+                '“': '^', '”': '*', '‘': '^', '’': '*',
+                '"': '*', "'": '*',
+                '(': '', ')': '', '[': '', ']': '', '{': '', '}': '',
+                '॥': 'AA', '…': '---', '॰': ''
+            };
+            s = s.replace(/[,\.?;:!()\[\]{}\-–—…॰॥"'“”‘’]/g, ch => PUNCT_TO_KRUTI[ch] || '');
+
             // 1. Reph reordering: र् + consonant (+ matras) -> consonant (+ matras) + Z
             s = s.replace(/\u0930\u094D([\u0915-\u0939](\u093E|\u093F|\u0940|\u0941|\u0942|\u0947|\u0948|\u094B|\u094C|\u0902)?)/g, '$1Z');
 
@@ -2566,6 +2584,13 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
             "^": { hi: '‘', name: 'Opening single quote', detail: 'Shift + 6', key: '6', shift: true },
             "*": { hi: '’', name: 'Closing single quote', detail: 'Shift + 8', key: '8', shift: true },
             ":": { hi: 'रू', name: 'Roo', detail: 'Shift + ;', key: ';', shift: true },
+            // Remington punctuation keys: the English punctuation keys type Hindi letters in KrutiDev
+            "]": { hi: ',', name: 'Comma (Alpviram)', detail: "Press ] for a comma — the ',' key types ए", key: ']', shift: false },
+            "\\": { hi: '?', name: 'Question mark (Prashn-chinha)', detail: "Press \\ for '?' — the '?' key types घ्", key: '\\', shift: false },
+            "-": { hi: '.', name: 'Full stop', detail: "Press - for '.' — the '.' key types ण्", key: '-', shift: false },
+            "&": { hi: '-', name: 'Hyphen / dash', detail: 'Shift + 7', key: '7', shift: true },
+            "(": { hi: ';', name: 'Semicolon', detail: 'Shift + 9', key: '9', shift: true },
+            "A": { hi: '।', name: 'Danda (Purn Viram)', detail: 'Shift + A', key: 'a', shift: true },
             "1": { hi: '१', name: 'Digit 1', detail: 'Left Pinky', key: '1', shift: false },
             "2": { hi: '२', name: 'Digit 2', detail: 'Left Ring', key: '2', shift: false },
             "3": { hi: '३', name: 'Digit 3', detail: 'Left Middle', key: '3', shift: false },

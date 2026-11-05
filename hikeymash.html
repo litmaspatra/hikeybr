@@ -500,7 +500,7 @@
         }
 
         /* ═══════════════════════════════════════════════════════════
-           TYPING CANVAS & DUAL LITERATURE VIEW
+           TYPING CANVAS
            ═══════════════════════════════════════════════════════════ */
         .typing-canvas {
             background: var(--surface-card);
@@ -544,35 +544,6 @@
         @keyframes pulseDot {
             0%, 100% { transform: scale(1); opacity: 1; }
             50% { transform: scale(1.4); opacity: 0.5; }
-        }
-
-        /* Dual-view original Hindi literature text */
-        .literature-preview {
-            font-family: 'Noto Sans Devanagari', sans-serif;
-            font-size: 0.95rem;
-            line-height: 1.6;
-            color: var(--text-dim);
-            padding: 6px 10px;
-            background: rgba(0,0,0,0.2);
-            border-radius: 8px;
-            border-left: 3px solid var(--gold);
-            user-select: none;
-            max-height: 52px;
-            overflow-y: auto;
-            scroll-behavior: smooth;
-        }
-
-        .literature-preview .w-done {
-            color: var(--correct);
-            opacity: 0.7;
-        }
-
-        .literature-preview .w-curr {
-            color: var(--gold);
-            font-weight: 800;
-            background: rgba(245, 158, 11, 0.15);
-            padding: 0 4px;
-            border-radius: 3px;
         }
 
         /* Continuous KrutiDev Stream Container */
@@ -832,30 +803,36 @@
         }
 
         /* ═══════════════════════════════════════════════════════════
-           KEYMASH RESULTS MODAL
+           KEYMASH-STYLE INLINE RESULTS
            ═══════════════════════════════════════════════════════════ */
         .modal-overlay {
             display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.72);
-            backdrop-filter: blur(6px);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
+            width: 100%;
             animation: fadeIn 0.2s ease-out;
         }
 
         .modal-overlay.open {
-            display: flex;
+            display: block;
+        }
+
+        /* keymash-style: the results panel replaces the typing area inline */
+        body.showing-results .typing-canvas,
+        body.showing-results .live-hint-strip,
+        body.showing-results .alt-helper-pill,
+        body.showing-results .keyboard-frame,
+        body.showing-results .hud-strip,
+        body.showing-results .progress-bar-container,
+        body.showing-results .snippet-banner {
+            display: none;
         }
 
         .results-card {
             background: var(--surface-card);
             border: 1.5px solid var(--border);
             border-radius: 16px;
-            max-width: 540px;
-            width: 92%;
+            max-width: 720px;
+            width: 100%;
+            margin: 0 auto;
             padding: 24px;
             display: flex;
             flex-direction: column;
@@ -1077,15 +1054,12 @@
             <div class="progress-bar-fill" id="progress-bar-fill"></div>
         </div>
 
-        <!-- Typing Canvas: Dual Literature & KrutiDev Ligature-Safe View -->
+        <!-- Typing Canvas: KrutiDev Ligature-Safe Stream -->
         <div class="typing-canvas" id="typing-canvas">
             <div class="canvas-top-tag">
                 <div><span class="pulse-dot"></span><span>क्लिक करें या टाइप करना शुरू करें (Remington GAIL)</span></div>
                 <div style="font-family:'JetBrains Mono'; font-size:0.6rem;">Tab + Enter = अगला उद्धरण | Esc = पुनः प्रारंभ</div>
             </div>
-
-            <!-- Original Literature Devanagari Reference Preview -->
-            <div class="literature-preview" id="literature-preview"></div>
 
             <!-- Authentic KrutiDev 010 Stream Container -->
             <div class="kruti-stream" id="kruti-stream">
@@ -1115,10 +1089,8 @@
         <!-- Virtual Keyboard (Remington GAIL Layout) -->
         <div class="keyboard-frame" id="keyboard-frame"></div>
 
-    </main>
-
     <!-- ═══════════════════════════════════════════════════════════
-         RESULTS MODAL (End of Literature Snippet Test)
+         KEYMASH-STYLE INLINE RESULTS (End of Literature Snippet Test)
          ═══════════════════════════════════════════════════════════ -->
     <div class="modal-overlay" id="results-modal">
         <div class="results-card">
@@ -1176,6 +1148,8 @@
             </div>
         </div>
     </div>
+
+    </main>
 
     <!-- ═══════════════════════════════════════════════════════════
          FOOTER
@@ -1365,6 +1339,13 @@
             "^": { hi: '‘', name: 'Opening single quote', detail: 'Shift + 6', key: '6', shift: true },
             "*": { hi: '’', name: 'Closing single quote', detail: 'Shift + 8', key: '8', shift: true },
             ":": { hi: 'रू', name: 'Roo', detail: 'Shift + ;', key: ';', shift: true },
+            // Remington punctuation keys: the English punctuation keys type Hindi letters in KrutiDev
+            "]": { hi: ',', name: 'Comma (Alpviram)', detail: "Press ] for a comma — the ',' key types ए", key: ']', shift: false },
+            "\\": { hi: '?', name: 'Question mark (Prashn-chinha)', detail: "Press \\ for '?' — the '?' key types घ्", key: '\\', shift: false },
+            "-": { hi: '.', name: 'Full stop', detail: "Press - for '.' — the '.' key types ण्", key: '-', shift: false },
+            "&": { hi: '-', name: 'Hyphen / dash', detail: 'Shift + 7', key: '7', shift: true },
+            "(": { hi: ';', name: 'Semicolon', detail: 'Shift + 9', key: '9', shift: true },
+            "A": { hi: '।', name: 'Danda (Purn Viram)', detail: 'Shift + A', key: 'a', shift: true },
             "1": { hi: '१', name: 'Digit 1', detail: 'Left Pinky', key: '1', shift: false },
             "2": { hi: '२', name: 'Digit 2', detail: 'Left Ring', key: '2', shift: false },
             "3": { hi: '३', name: 'Digit 3', detail: 'Left Middle', key: '3', shift: false },
@@ -1379,6 +1360,24 @@
 
         function unicodeToKrutiDev(text) {
             let s = text;
+
+            // 0. Punctuation -> authentic KrutiDev bytes. On the Remington GAIL
+            // layout the English punctuation keys type Hindi letters (',' key = ए,
+            // '?' key = घ्, '.' key = ण्), so the real punctuation glyphs live on
+            // other keys: comma = ] key, '?' = \ key, full stop = - key,
+            // ';' = Shift+9, '-'/'–'/'—' = Shift+7, ':' = Shift+5 (visarga-shaped
+            // glyph), '!' = Shift+1. KrutiDev has no ( ) [ ] { } glyphs, so those
+            // are dropped from the text instead of rendering as wrong letters.
+            s = s.replace(/"([^"]*)"/g, '‘$1’');
+            const PUNCT_TO_KRUTI = {
+                ',': ']', '?': '\\', '.': '-', ';': '(', '!': '!',
+                ':': '%', '-': '&', '–': '&', '—': '&',
+                '“': '^', '”': '*', '‘': '^', '’': '*',
+                '"': '*', "'": '*',
+                '(': '', ')': '', '[': '', ']': '', '{': '', '}': '',
+                '॥': 'AA', '…': '---', '॰': ''
+            };
+            s = s.replace(/[,\.?;:!()\[\]{}\-–—…॰॥"'“”‘’]/g, ch => PUNCT_TO_KRUTI[ch] || '');
 
             // 1. Reph reordering: र् + consonant (+ matras) -> consonant (+ matras) + Z
             s = s.replace(/\u0930\u094D([\u0915-\u0939](\u093E|\u093F|\u0940|\u0941|\u0942|\u0947|\u0948|\u094B|\u094C|\u0902)?)/g, '$1Z');
@@ -1829,7 +1828,6 @@
         // ─────────────────────────────────────────────────────────────
         let currentCategory = 'all';
         let currentSnippet = null;
-        let originalWords = [];
         let targetKrutiText = '';
         let cursorIndex = 0;
         let sessionStartTime = null;
@@ -1850,7 +1848,6 @@
             canvas: document.getElementById('typing-canvas'),
             hiddenInput: document.getElementById('hidden-input'),
             krutiStream: document.getElementById('kruti-stream'),
-            literaturePreview: document.getElementById('literature-preview'),
             textCorrect: document.getElementById('text-correct'),
             textError: document.getElementById('text-error'),
             textCurrent: document.getElementById('text-current'),
@@ -2022,15 +2019,11 @@
             el.snippetGenre.textContent = snippet.genre || 'साहित्य';
 
             const rawWords = snippet.text.trim().split(/\s+/);
-            originalWords = rawWords;
             el.snippetWordCount.textContent = rawWords.length + ' शब्द';
             el.snippetCharCount.textContent = snippet.text.length + ' अक्षर';
 
             // Convert Unicode literature text into KrutiDev 010 keystroke target
             targetKrutiText = unicodeToKrutiDev(snippet.text.trim());
-
-            // Build Dual Literature Preview
-            renderLiteraturePreview();
 
             // Reset HUD
             el.metricWpm.textContent = '0';
@@ -2041,35 +2034,8 @@
 
             updateDisplay();
             el.resultsModal.classList.remove('open');
+            document.body.classList.remove('showing-results');
             setTimeout(() => el.hiddenInput.focus(), 60);
-        }
-
-        function renderLiteraturePreview() {
-            el.literaturePreview.innerHTML = '';
-            originalWords.forEach((wd, i) => {
-                const sp = document.createElement('span');
-                sp.id = 'lit-w-' + i;
-                sp.textContent = wd + ' ';
-                el.literaturePreview.appendChild(sp);
-            });
-        }
-
-        function updateLiteraturePreviewHighlight() {
-            // Estimate current word index based on spaces typed in Kruti text
-            const typedKruti = targetKrutiText.substring(0, cursorIndex);
-            const spacesTyped = (typedKruti.match(/ /g) || []).length;
-
-            originalWords.forEach((_, i) => {
-                const sp = document.getElementById('lit-w-' + i);
-                if (!sp) return;
-                sp.className = '';
-                if (i < spacesTyped) {
-                    sp.classList.add('w-done');
-                } else if (i === spacesTyped) {
-                    sp.classList.add('w-curr');
-                    sp.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
-                }
-            });
         }
 
         // ─────────────────────────────────────────────────────────────
@@ -2125,7 +2091,6 @@
                 finishTest();
             }
 
-            updateLiteraturePreviewHighlight();
         }
 
         function updateHUD() {
@@ -2253,6 +2218,7 @@
             el.resQuoteTitle.innerHTML = '<strong>📖 रचना:</strong> ' + currentSnippet.title;
             el.resQuoteAuthor.innerHTML = '<strong>✍️ लेखक:</strong> ' + currentSnippet.author + ' (' + (currentSnippet.genre || 'साहित्य') + ')';
 
+            document.body.classList.add('showing-results');
             el.resultsModal.classList.add('open');
             setTimeout(() => el.modalNextBtn.focus(), 100);
         }
