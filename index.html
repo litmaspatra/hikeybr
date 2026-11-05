@@ -6,7 +6,7 @@
     <title>HiKeybr — Hindi Remington (GAIL) Adaptive Typing Tutor</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         /* ═══════════════════════════════════════════════════════════
            AUTHENTIC KRUTIDEV 010 FONT (Base64 + Local Fallback)
@@ -31,111 +31,181 @@
            THEMES & CSS VARIABLES (Keybr.com Inspired Palette)
            ═══════════════════════════════════════════════════════════ */
         :root[data-theme="dark"] {
-            --bg: #1c1c1f;
-            --surface: #26262b;
-            --surface-hover: #2f2f36;
-            --surface-card: #222227;
-            --border: #383842;
-            --border-subtle: #2d2d35;
-            --text: #f0f0f5;
-            --text-dim: #9e9ea8;
-            --text-faint: #60606c;
-            --accent: #ff6b00;
-            --accent-glow: rgba(255, 107, 0, 0.35);
-            --accent-soft: rgba(255, 107, 0, 0.12);
-            --correct: #4ade80;
-            --correct-glow: rgba(74, 222, 128, 0.25);
-            --error: #ef4444;
-            --error-bg: rgba(239, 68, 68, 0.22);
-            --key-bg: #222227;
-            --key-border: #3c3c46;
-            --key-bottom: #121215;
-            --key-active: #ff6b00;
-            --key-unlocked: #223429;
-            --key-unlocked-border: #2e593d;
-            --chip-bg: #2a221b;
-            --chip-border: #ff6b00;
+            --bg: #10140f;
+            --surface: #181e17;
+            --surface-hover: #20281e;
+            --surface-card: #141a13;
+            --border: #2e3a2c;
+            --border-subtle: #232b21;
+            --text: #f2ede0;
+            --text-dim: #aaa491;
+            --text-faint: #6b6a5e;
+            --accent: #f0a62c;
+            --accent-glow: rgba(240, 166, 44, 0.35);
+            --accent-soft: rgba(240, 166, 44, 0.13);
+            --correct: #5fce8a;
+            --correct-glow: rgba(95, 206, 138, 0.25);
+            --error: #e5544b;
+            --error-bg: rgba(229, 84, 75, 0.22);
+            --key-bg: #161c15;
+            --key-border: #33402f;
+            --key-bottom: #0a0d09;
+            --key-active: #f0a62c;
+            --key-unlocked: #22311f;
+            --key-unlocked-border: #3d5c33;
+            --chip-bg: #26260f;
+            --chip-border: #f0a62c;
         }
 
         :root[data-theme="navy"] {
-            --bg: #0b1120;
-            --surface: #151f33;
-            --surface-hover: #1c2a45;
-            --surface-card: #101828;
-            --border: #233554;
-            --border-subtle: #192740;
-            --text: #f8fafc;
-            --text-dim: #94a3b8;
-            --text-faint: #475569;
-            --accent: #38bdf8;
-            --accent-glow: rgba(56, 189, 248, 0.35);
-            --accent-soft: rgba(56, 189, 248, 0.12);
-            --correct: #34d399;
-            --correct-glow: rgba(52, 211, 153, 0.25);
-            --error: #f87171;
-            --error-bg: rgba(248, 113, 113, 0.22);
-            --key-bg: #121c2f;
-            --key-border: #263a5c;
-            --key-bottom: #090e1a;
-            --key-active: #0284c7;
-            --key-unlocked: #13332e;
-            --key-unlocked-border: #1b5b4e;
-            --chip-bg: #12283d;
-            --chip-border: #38bdf8;
+            --bg: #062028;
+            --surface: #0b2d38;
+            --surface-hover: #0f3a47;
+            --surface-card: #082630;
+            --border: #1c4a58;
+            --border-subtle: #123845;
+            --text: #eaf7f4;
+            --text-dim: #93c4c0;
+            --text-faint: #4a7a7c;
+            --accent: #2dd4bf;
+            --accent-glow: rgba(45, 212, 191, 0.35);
+            --accent-soft: rgba(45, 212, 191, 0.12);
+            --correct: #6ee7a0;
+            --correct-glow: rgba(110, 231, 160, 0.25);
+            --error: #fb7185;
+            --error-bg: rgba(251, 113, 133, 0.22);
+            --key-bg: #0a2933;
+            --key-border: #205264;
+            --key-bottom: #04141b;
+            --key-active: #14b8a6;
+            --key-unlocked: #0f3d36;
+            --key-unlocked-border: #1b6b5e;
+            --chip-bg: #0a3a3a;
+            --chip-border: #2dd4bf;
         }
 
         :root[data-theme="amber"] {
-            --bg: #181512;
-            --surface: #241f1a;
-            --surface-hover: #2e2822;
-            --surface-card: #1e1a15;
-            --border: #3d342c;
-            --border-subtle: #2d2620;
-            --text: #faf5ee;
-            --text-dim: #b5a898;
-            --text-faint: #695e52;
-            --accent: #f59e0b;
-            --accent-glow: rgba(245, 158, 11, 0.35);
-            --accent-soft: rgba(245, 158, 11, 0.12);
-            --correct: #84cc16;
-            --correct-glow: rgba(132, 204, 22, 0.25);
-            --error: #f43f5e;
-            --error-bg: rgba(244, 63, 94, 0.22);
-            --key-bg: #201b16;
-            --key-border: #443a30;
-            --key-bottom: #0e0c0a;
-            --key-active: #d97706;
-            --key-unlocked: #2b2e18;
-            --key-unlocked-border: #485422;
-            --chip-bg: #332616;
-            --chip-border: #f59e0b;
+            --bg: #1e1409;
+            --surface: #2a1d0f;
+            --surface-hover: #352615;
+            --surface-card: #241809;
+            --border: #4c3a22;
+            --border-subtle: #382a18;
+            --text: #f6ecd8;
+            --text-dim: #c4af8d;
+            --text-faint: #7a6a4e;
+            --accent: #e0512e;
+            --accent-glow: rgba(224, 81, 46, 0.35);
+            --accent-soft: rgba(224, 81, 46, 0.13);
+            --correct: #9ab84a;
+            --correct-glow: rgba(154, 184, 74, 0.25);
+            --error: #f26d6d;
+            --error-bg: rgba(242, 109, 109, 0.22);
+            --key-bg: #271b0d;
+            --key-border: #554027;
+            --key-bottom: #100a04;
+            --key-active: #e0512e;
+            --key-unlocked: #2f3315;
+            --key-unlocked-border: #556224;
+            --chip-bg: #38160c;
+            --chip-border: #e0512e;
         }
 
         :root[data-theme="light"] {
-            --bg: #f5f5f7;
-            --surface: #ffffff;
-            --surface-hover: #ebebef;
-            --surface-card: #ffffff;
-            --border: #d2d2d8;
-            --border-subtle: #e5e5ea;
-            --text: #1d1d1f;
-            --text-dim: #6e6e73;
-            --text-faint: #98989d;
-            --accent: #ff6b00;
-            --accent-glow: rgba(255, 107, 0, 0.25);
-            --accent-soft: rgba(255, 107, 0, 0.08);
-            --correct: #16a34a;
-            --correct-glow: rgba(22, 163, 74, 0.2);
-            --error: #dc2626;
-            --error-bg: rgba(220, 38, 38, 0.14);
-            --key-bg: #ffffff;
-            --key-border: #d2d2d8;
-            --key-bottom: #bcbcc2;
-            --key-active: #ff6b00;
-            --key-unlocked: #eaf5ed;
-            --key-unlocked-border: #a7d9b4;
-            --chip-bg: #fff5ee;
-            --chip-border: #ff6b00;
+            --bg: #efe6d0;
+            --surface: #f8f2e2;
+            --surface-hover: #eee5cd;
+            --surface-card: #f6efdc;
+            --border: #d3c4a3;
+            --border-subtle: #e2d7bd;
+            --text: #241f14;
+            --text-dim: #6d6248;
+            --text-faint: #a2967a;
+            --accent: #2b3fbf;
+            --accent-glow: rgba(43, 63, 191, 0.25);
+            --accent-soft: rgba(43, 63, 191, 0.09);
+            --correct: #2e8b57;
+            --correct-glow: rgba(46, 139, 87, 0.2);
+            --error: #c22f2f;
+            --error-bg: rgba(194, 47, 47, 0.14);
+            --key-bg: #fdf9ec;
+            --key-border: #d3c4a3;
+            --key-bottom: #b3a27c;
+            --key-active: #2b3fbf;
+            --key-unlocked: #e2ecd4;
+            --key-unlocked-border: #9cc18b;
+            --chip-bg: #e7e2f2;
+            --chip-border: #2b3fbf;
+        }
+
+        /* ───────────────────────────────────────────────────────────
+           ANGULAR SHAPE LANGUAGE
+           Zero rounded corners; major surfaces get chamfered
+           (clipped) corners. Deliberately not keybr's soft look.
+           ─────────────────────────────────────────────────────────── */
+        *, *::before, *::after { border-radius: 0 !important; }
+        button, .btn, .ctrl-select, select, input[type="text"], input[type="number"], textarea,
+        .nav-tab, .ls-tab, .alt-card, .target-card, .metric-chip, .target-char-pill,
+        #lesson-result, .workspace-bar, .brand-icon, .ls-check, .goal-track, .progress-track {
+            clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+        }
+        .key, .kb-key {
+            clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+        }
+        ::selection { background: var(--accent); color: var(--bg); }
+
+        :root[data-theme="sunshine"] {
+            --bg: #f3c93c;
+            --surface: #f9da6b;
+            --surface-hover: #f7d152;
+            --surface-card: #f6d45a;
+            --border: #c99e1f;
+            --border-subtle: #e0b733;
+            --text: #38270a;
+            --text-dim: #715815;
+            --text-faint: #a3812b;
+            --accent: #7c2d12;
+            --accent-glow: rgba(124, 45, 18, 0.3);
+            --accent-soft: rgba(124, 45, 18, 0.1);
+            --correct: #2f7d32;
+            --correct-glow: rgba(47, 125, 50, 0.25);
+            --error: #b3261e;
+            --error-bg: rgba(179, 38, 30, 0.16);
+            --key-bg: #fbe384;
+            --key-border: #cfa62a;
+            --key-bottom: #a87f14;
+            --key-active: #7c2d12;
+            --key-unlocked: #e9e6b0;
+            --key-unlocked-border: #a8b56a;
+            --chip-bg: #f0c0a8;
+            --chip-border: #7c2d12;
+        }
+
+        :root[data-theme="forest"] {
+            --bg: #0b1a10;
+            --surface: #122619;
+            --surface-hover: #173020;
+            --surface-card: #0f2114;
+            --border: #265032;
+            --border-subtle: #1a3a24;
+            --text: #e9f4e4;
+            --text-dim: #a3c3a6;
+            --text-faint: #5d8a61;
+            --accent: #a3e635;
+            --accent-glow: rgba(163, 230, 53, 0.32);
+            --accent-soft: rgba(163, 230, 53, 0.12);
+            --correct: #4ade80;
+            --correct-glow: rgba(74, 222, 128, 0.25);
+            --error: #f87171;
+            --error-bg: rgba(248, 113, 113, 0.22);
+            --key-bg: #102315;
+            --key-border: #2c5c39;
+            --key-bottom: #071008;
+            --key-active: #a3e635;
+            --key-unlocked: #1b3a22;
+            --key-unlocked-border: #31663f;
+            --chip-bg: #24380f;
+            --chip-border: #a3e635;
         }
 
         /* ═══════════════════════════════════════════════════════════
@@ -150,7 +220,7 @@
         body {
             background-color: var(--bg);
             color: var(--text);
-            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Space Grotesk', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -1660,13 +1730,13 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <div>
                             <strong style="font-size: 0.9rem;">Color Theme</strong>
-                            <p style="font-size: 0.78rem; color: var(--text-dim);">Choose a calm dark palette, paper, forest or sunshine yellow.</p>
+                            <p style="font-size: 0.78rem; color: var(--text-dim);">Six angular palettes: Ink, Peacock, Letterpress, Paper, Marigold, Forest.</p>
                         </div>
                         <select class="ctrl-select" id="theme-select">
-                            <option value="dark">Keybr Dark (Default)</option>
-                            <option value="navy">Midnight Navy</option>
-                            <option value="amber">Warm Amber</option>
-                            <option value="light">Paper Light</option><option value="sunshine">Sunshine Yellow</option><option value="forest">Forest Green</option>
+                            <option value="dark">Ink (Default)</option>
+                            <option value="navy">Peacock</option>
+                            <option value="amber">Letterpress</option>
+                            <option value="light">Paper</option><option value="sunshine">Marigold</option><option value="forest">Forest</option>
                         </select>
                     </div>
 
@@ -4058,7 +4128,7 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
         }
 
         // Theme Toggle
-        const themes = ['dark', 'navy', 'amber', 'light'];
+        const themes = ['dark', 'navy', 'amber', 'light', 'sunshine', 'forest'];
         el.themeBtn.addEventListener('click', () => {
             const nextIdx = (themes.indexOf(currentTheme) + 1) % themes.length;
             currentTheme = themes[nextIdx];
