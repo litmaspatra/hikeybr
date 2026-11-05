@@ -1461,6 +1461,9 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
             <button class="nav-tab" data-target="settings">
                 <span>⚙️ Settings</span>
             </button>
+            <a href="hikeymash.html" class="nav-tab" style="text-decoration:none;" title="Keymash Hindi Literature Typing">
+                <span>📜 HiKeymash</span>
+            </a>
         </nav>
 
         <div class="header-actions">
@@ -2407,7 +2410,7 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
             s = s.replace(/\u0930\u094D([\u0915-\u0939](\u093E|\u093F|\u0940|\u0941|\u0942|\u0947|\u0948|\u094B|\u094C|\u0902)?)/g, '$1Z');
 
             // 2. Chhoti 'i' matra reordering: consonant + \u093F (ि) -> f + consonant
-            s = s.replace(/([\u0915-\u0939]\u094D)?([\u0915-\u0939])\u093F/g, (match, half, cons) => {
+            s = s.replace(/([\u0915-\u0939]\u094D)?([\u0915-\u0939]\u093C?)\u093F/g, (match, half, cons) => {
                 return 'f' + (half || '') + cons;
             });
 
@@ -2551,6 +2554,8 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
             "w": { hi: 'ू', name: 'Badi Oo matra', detail: 'Left Ring', key: 'w', shift: false },
             "a": { hi: 'ं', name: 'Anusvara', detail: 'Left Pinky', key: 'a', shift: false },
             "S": { hi: 'ै', name: 'Ai matra', detail: 'Shift + S', key: 's', shift: true },
+            "N": { hi: 'छ', name: 'Chha', detail: 'Shift + N', key: 'n', shift: true },
+            ">": { hi: 'झ', name: 'Jha', detail: 'Shift + .', key: '.', shift: true },
             "=": { hi: 'त्र', name: 'Tra', detail: 'Right Pinky', key: '=', shift: false },
             "K": { hi: 'ज्ञ', name: 'Gya', detail: 'Shift + K', key: 'k', shift: true },
             "J": { hi: 'श्र', name: 'Shra', detail: 'Shift + J', key: 'j', shift: true },
@@ -4041,12 +4046,12 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
                 document.getElementById('continue-btn').onclick=()=>{regenerateLesson();el.hiddenInput.focus({preventScroll:true});};
         document.addEventListener('keydown',e=>{if(e.key==='Enter'&&lessonCompleted&&document.getElementById('panel-practice').classList.contains('active')){e.preventDefault();document.getElementById('continue-btn').click();}});
         // Navigation Tabs switching
-        document.querySelectorAll('.nav-tab').forEach(tab => {
+        document.querySelectorAll('.nav-tab[data-target]').forEach(tab => {
             tab.addEventListener('click', () => {
                 const target = tab.dataset.target;
                 if(target!=='practice')pauseLesson();
 
-                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.nav-tab[data-target]').forEach(t => t.classList.remove('active'));
                 tab.classList.add('active');
 
                 document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
