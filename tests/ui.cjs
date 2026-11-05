@@ -43,18 +43,55 @@ const path = require('node:path');
     assert.ok((await page.evaluate(() => HiKeybr.targetKrutiText)).startsWith('Dr'), 'क्त encodes to Remington Dr');
     await page.click('#typing-canvas');
     await page.keyboard.down('Alt');
-    for (const k of ['Numpad0', 'Numpad2', 'Numpad0', 'Numpad4']) await page.keyboard.press(k);
+    for (const k of ['Numpad0', 'Numpad2', 'Numpad2', 'Numpad8']) await page.keyboard.press(k);
     await page.keyboard.up('Alt');
-    assert.equal(await page.evaluate(() => HiKeybr.cursorIndex), 2, 'Alt+0204 types both bytes of क्त');
+    assert.equal(await page.evaluate(() => HiKeybr.cursorIndex), 2, 'Alt+0228 types both bytes of क्त');
     assert.equal(await page.evaluate(() => HiKeybr.sessionCorrect), 1, 'Alt-code glyph counts as one input unit');
     // A second Alt entry after a real space gets a valid whole-entry timing.
     await page.keyboard.press('Space');
     await page.waitForTimeout(80);
+    // Top-row digits work too (laptops without a numpad).
     await page.keyboard.down('Alt');
-    for (const k of ['Numpad0', 'Numpad2', 'Numpad0', 'Numpad4']) await page.keyboard.press(k);
+    for (const k of ['Digit0', 'Digit2', 'Digit2', 'Digit8']) await page.keyboard.press(k);
     await page.keyboard.up('Alt');
-    assert.equal(await page.evaluate(() => HiKeybr.cursorIndex), 5, 'second क्त + space committed');
+    assert.equal(await page.evaluate(() => HiKeybr.cursorIndex), 5, 'second क्त via top-row digits + space committed');
     assert.equal(await page.evaluate(() => HiKeybr.sessionCorrect), 3, 'each Alt glyph still one unit');
+
+    // 3b. Verified Kruti Dev 010 / DevLys 010 byte table: Alt+0221 must give फ्र (was wrongly 0217).
+    await page.evaluate(() => {
+        const t = document.getElementById('custom-text');
+        t.value = 'फ्र ह्र';
+        t.dispatchEvent(new Event('change'));
+    });
+    assert.ok((await page.evaluate(() => HiKeybr.targetKrutiText)).startsWith(String.fromCharCode(221)), 'फ्र encodes to byte 221');
+    await page.click('#typing-canvas');
+    await page.keyboard.down('Alt');
+    for (const k of ['Numpad0', 'Numpad2', 'Numpad2', 'Numpad1']) await page.keyboard.press(k);
+    await page.keyboard.up('Alt');
+    assert.equal(await page.evaluate(() => HiKeybr.cursorIndex), 1, 'Alt+0221 commits फ्र');
+    await page.keyboard.press('Space');
+    assert.ok((await page.evaluate(() => HiKeybr.targetKrutiText))[2] === String.fromCharCode(235), 'ह्र encodes to byte 235');
+    await page.keyboard.down('Alt');
+    for (const k of ['Numpad0', 'Numpad2', 'Numpad3', 'Numpad5']) await page.keyboard.press(k);
+    await page.keyboard.up('Alt');
+    assert.equal(await page.evaluate(() => HiKeybr.cursorIndex), 3, 'Alt+0235 commits ह्र');
+
+    // 3c. DevLys 010 is a bundled font option and per-cluster highlighting splits text at graphemes.
+    const fontOptions = await page.$$eval('#display-font-select option', os => os.map(o => o.value));
+    assert.ok(fontOptions.includes('devlys010'), 'DevLys 010 is offered');
+    assert.ok(!fontOptions.includes('devlys040'), 'DevLys 040 preview removed');
+    await page.evaluate(() => {
+        const s = document.getElementById('display-font-select');
+        s.value = 'noto';
+        s.dispatchEvent(new Event('change'));
+    });
+    await page.waitForTimeout(150);
+    const parts = await page.evaluate(() => ({
+        correct: document.getElementById('text-correct').textContent,
+        current: document.getElementById('text-current').textContent,
+        remaining: document.getElementById('text-remaining').textContent
+    }));
+    assert.equal(parts.correct + parts.current + parts.remaining, await page.evaluate(() => HiKeybr.currentLessonText), 'unicode spans reassemble the lesson text');
 
     // 4. Speed controls: Settings dropdown and lesson slider offer and accept the same values.
     const optionValues = await page.$$eval('#settings-speed-goal option', os => os.map(o => o.value));
