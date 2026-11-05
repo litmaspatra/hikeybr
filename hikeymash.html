@@ -1078,14 +1078,6 @@
         .standing-row { display: flex; justify-content: space-between; gap: 12px; color: var(--text-dim); }
         .standing-row.you { color: var(--gold); font-weight: 700; }
 
-        /* English mode: Latin text in mono instead of KrutiDev */
-        body.lang-en .kruti-stream, body.lang-en .kruti-stream span {
-            font-family: 'JetBrains Mono', monospace !important;
-            letter-spacing: 0.01em;
-        }
-        body.lang-en #live-hint-char { font-family: 'JetBrains Mono', monospace !important; }
-        body.lang-en .alt-helper-pill { display: none !important; }
-
         ::selection { background: var(--accent); color: var(--bg); }
 
         /* keymash-style typing: no speed/accuracy HUD while typing;
@@ -1157,8 +1149,6 @@
         <!-- Snippet Information Card -->
         <div class="snippet-banner">
             <div class="snippet-info">
-                <span class="snippet-title" id="snippet-title">❓ रचना व लेखक गुप्त हैं</span>
-                <span class="snippet-author" id="snippet-author">टाइप करते हुए अनुमान लगाएँ — परिणाम में खुलासा!</span>
                 <span class="snippet-badge" id="snippet-genre">काव्य</span>
             </div>
             <div class="snippet-words">
@@ -1968,125 +1958,16 @@
             }
         ];
 
-        // ─────────────────────────────────────────────────────────────
-        // 3. STATE & DOM CACHE
-        // ─────────────────────────────────────────────────────────────
-        // ─────────────────────────────────────────────────────────────
-        // 2B. ENGLISH LITERATURE LIBRARY (public-domain quotes)
-        // ─────────────────────────────────────────────────────────────
-        const ENGLISH_SNIPPETS = [
-            { id: 'en_tale', title: 'A Tale of Two Cities', author: 'Charles Dickens', category: 'prose', genre: 'Novel', difficulty: 'moderate',
-              text: 'It was the best of times, it was the worst of times, it was the age of wisdom, it was the age of foolishness.' },
-            { id: 'en_pride', title: 'Pride and Prejudice', author: 'Jane Austen', category: 'prose', genre: 'Novel', difficulty: 'moderate',
-              text: 'It is a truth universally acknowledged, that a single man in possession of a good fortune, must be in want of a wife.' },
-            { id: 'en_hamlet', title: 'Hamlet', author: 'William Shakespeare', category: 'poetry', genre: 'Play', difficulty: 'moderate',
-              text: 'To be, or not to be, that is the question: whether it is nobler in the mind to suffer the slings and arrows of outrageous fortune.' },
-            { id: 'en_twain', title: 'Mark Twain (attributed)', author: 'Mark Twain', category: 'quote', genre: 'Wit', difficulty: 'easy',
-              text: 'The secret of getting ahead is getting started. The secret of getting started is breaking your complex tasks into small, manageable tasks.' },
-            { id: 'en_anna', title: 'Anna Karenina', author: 'Leo Tolstoy', category: 'prose', genre: 'Novel', difficulty: 'easy',
-              text: 'All happy families are alike; each unhappy family is unhappy in its own way.' },
-            { id: 'en_frost', title: 'The Road Not Taken', author: 'Robert Frost', category: 'poetry', genre: 'Poem', difficulty: 'easy',
-              text: 'Two roads diverged in a wood, and I took the one less traveled by, and that has made all the difference.' },
-            { id: 'en_jane', title: 'Jane Eyre', author: 'Charlotte Bronte', category: 'prose', genre: 'Novel', difficulty: 'moderate',
-              text: 'I am no bird; and no net ensnares me: I am a free human being with an independent will.' },
-            { id: 'en_dorian', title: 'The Picture of Dorian Gray', author: 'Oscar Wilde', category: 'quote', genre: 'Wit', difficulty: 'easy',
-              text: 'Nowadays people know the price of everything and the value of nothing.' },
-            { id: 'en_carol', title: 'A Christmas Carol', author: 'Charles Dickens', category: 'prose', genre: 'Novel', difficulty: 'easy',
-              text: 'I will honour Christmas in my heart, and try to keep it all the year.' },
-            { id: 'en_whitman', title: 'Song of Myself', author: 'Walt Whitman', category: 'poetry', genre: 'Poem', difficulty: 'easy',
-              text: 'I celebrate myself, and sing myself, and what I assume you shall assume.' },
-            { id: 'en_moby', title: 'Moby Dick', author: 'Herman Melville', category: 'prose', genre: 'Novel', difficulty: 'moderate',
-              text: 'Call me Ishmael. Some years ago, having little or no money in my purse, I thought I would sail about a little and see the watery part of the world.' },
-            { id: 'en_alice', title: 'Alice in Wonderland', author: 'Lewis Carroll', category: 'prose', genre: 'Novel', difficulty: 'moderate',
-              text: 'Curiouser and curiouser! cried Alice. She was so much surprised that for the moment she quite forgot how to speak good English.' },
-            { id: 'en_holmes', title: 'The Sign of the Four', author: 'Arthur Conan Doyle', category: 'quote', genre: 'Mystery', difficulty: 'easy',
-              text: 'When you have eliminated the impossible, whatever remains, however improbable, must be the truth.' },
-            { id: 'en_keats', title: 'Endymion', author: 'John Keats', category: 'poetry', genre: 'Poem', difficulty: 'easy',
-              text: 'A thing of beauty is a joy for ever: its loveliness increases; it will never pass into nothingness.' },
-            { id: 'en_gandhi', title: 'Mahatma Gandhi (attributed)', author: 'Mahatma Gandhi', category: 'quote', genre: 'Wisdom', difficulty: 'easy',
-              text: 'An eye for an eye only ends up making the whole world blind.' },
-            { id: 'en_dream', title: 'A Midsummer Nights Dream', author: 'William Shakespeare', category: 'poetry', genre: 'Play', difficulty: 'easy',
-              text: 'The course of true love never did run smooth.' }
-        ];
-
-        // ─────────────────────────────────────────────────────────────
-        // 2C. ENGLISH QWERTY VIRTUAL KEYBOARD + UI STRINGS + HELPERS
-        // ─────────────────────────────────────────────────────────────
-        const KB_MATRIX_EN = [
-            [
-                { k: '`', h: '`', sh: '~', code: 'Backquote' },
-                { k: '1', h: '1', sh: '!', code: 'Digit1' },
-                { k: '2', h: '2', sh: '@', code: 'Digit2' },
-                { k: '3', h: '3', sh: '#', code: 'Digit3' },
-                { k: '4', h: '4', sh: '$', code: 'Digit4' },
-                { k: '5', h: '5', sh: '%', code: 'Digit5' },
-                { k: '6', h: '6', sh: '^', code: 'Digit6' },
-                { k: '7', h: '7', sh: '&', code: 'Digit7' },
-                { k: '8', h: '8', sh: '*', code: 'Digit8' },
-                { k: '9', h: '9', sh: '(', code: 'Digit9' },
-                { k: '0', h: '0', sh: ')', code: 'Digit0' },
-                { k: '-', h: '-', sh: '_', code: 'Minus' },
-                { k: '=', h: '=', sh: '+', code: 'Equal' }
-            ],
-            [
-                { k: 'q', h: 'Q', sh: '', code: 'KeyQ' },
-                { k: 'w', h: 'W', sh: '', code: 'KeyW' },
-                { k: 'e', h: 'E', sh: '', code: 'KeyE' },
-                { k: 'r', h: 'R', sh: '', code: 'KeyR' },
-                { k: 't', h: 'T', sh: '', code: 'KeyT' },
-                { k: 'y', h: 'Y', sh: '', code: 'KeyY' },
-                { k: 'u', h: 'U', sh: '', code: 'KeyU' },
-                { k: 'i', h: 'I', sh: '', code: 'KeyI' },
-                { k: 'o', h: 'O', sh: '', code: 'KeyO' },
-                { k: 'p', h: 'P', sh: '', code: 'KeyP' },
-                { k: '[', h: '[', sh: '{', code: 'BracketLeft' },
-                { k: ']', h: ']', sh: '}', code: 'BracketRight' },
-                { k: '\\', h: '\\', sh: '|', code: 'Backslash' }
-            ],
-            [
-                { k: 'a', h: 'A', sh: '', code: 'KeyA' },
-                { k: 's', h: 'S', sh: '', code: 'KeyS' },
-                { k: 'd', h: 'D', sh: '', code: 'KeyD' },
-                { k: 'f', h: 'F', sh: '', code: 'KeyF' },
-                { k: 'g', h: 'G', sh: '', code: 'KeyG' },
-                { k: 'h', h: 'H', sh: '', code: 'KeyH' },
-                { k: 'j', h: 'J', sh: '', code: 'KeyJ' },
-                { k: 'k', h: 'K', sh: '', code: 'KeyK' },
-                { k: 'l', h: 'L', sh: '', code: 'KeyL' },
-                { k: ';', h: ';', sh: ':', code: 'Semicolon' },
-                { k: "'", h: "'", sh: '"', code: 'Quote' }
-            ],
-            [
-                { k: 'z', h: 'Z', sh: '', code: 'KeyZ' },
-                { k: 'x', h: 'X', sh: '', code: 'KeyX' },
-                { k: 'c', h: 'C', sh: '', code: 'KeyC' },
-                { k: 'v', h: 'V', sh: '', code: 'KeyV' },
-                { k: 'b', h: 'B', sh: '', code: 'KeyB' },
-                { k: 'n', h: 'N', sh: '', code: 'KeyN' },
-                { k: 'm', h: 'M', sh: '', code: 'KeyM' },
-                { k: ',', h: ',', sh: '<', code: 'Comma' },
-                { k: '.', h: '.', sh: '>', code: 'Period' },
-                { k: '/', h: '/', sh: '?', code: 'Slash' }
-            ]
-        ];
-
-        const EN_SHIFT_TO_BASE = { '~':'`', '!':'1', '@':'2', '#':'3', '$':'4', '%':'5', '^':'6', '&':'7', '*':'8', '(':'9', ')':'0', '_':'-', '+':'=', '{':'[', '}':']', '|':'\\', ':':';', '"':"'", '<':',', '>':'.', '?':'/' };
-
+        // ───────────────────────────────────────────────────────────
+        // 2C. UI STRINGS (language toggle switches navigation/labels only;
+        //     the typing text is always Hindi Remington GAIL)
+        // ────────────────────────────────────────────────────────────
         const MODIFIER_KEYS = ['Shift', 'Control', 'Alt', 'Meta', 'CapsLock'];
-
-        function getEnglishHint(ch) {
-            if (ch === ' ') return { keyLabel: 'Space', hindiChar: '\u2423', detail: '', physicalKey: ' ', isShifted: false };
-            if (ch >= 'A' && ch <= 'Z') return { keyLabel: 'Shift + ' + ch, hindiChar: ch, detail: '', physicalKey: ch.toLowerCase(), isShifted: true };
-            if (EN_SHIFT_TO_BASE[ch]) return { keyLabel: 'Shift + ' + EN_SHIFT_TO_BASE[ch].toUpperCase(), hindiChar: ch, detail: '', physicalKey: EN_SHIFT_TO_BASE[ch], isShifted: true };
-            return { keyLabel: ch.toUpperCase(), hindiChar: ch, detail: '', physicalKey: ch, isShifted: false };
-        }
 
         // UI strings per language (hikeymash is bilingual: Hindi + English)
         const UI = {
             hi: {
                 badge: 'साहित्य Typing',
-                bannerTitle: '❓ रचना व लेखक गुप्त हैं',
-                bannerSub: 'टाइप करते हुए अनुमान लगाएँ — परिणाम में खुलासा!',
                 langBtn: 'EN',
                 langBtnTitle: 'Switch to English',
                 filterLabel: '🎲 यादृच्छिक उद्धरण — सभी विधाएँ (गद्य, काव्य, दोहे, कथा)',
@@ -2117,20 +1998,18 @@
             },
             en: {
                 badge: 'Literature Typing',
-                bannerTitle: '❓ Title and author hidden',
-                bannerSub: 'Guess the work while you type - revealed in the results!',
                 langBtn: 'हिंदी',
                 langBtnTitle: 'हिंदी में बदलें (Switch to Hindi)',
-                filterLabel: '🎲 Random quotes - all genres (prose, poetry, wit)',
+                filterLabel: '🎲 Random Hindi quotes - all genres (prose, poetry, dohe, tales)',
                 restart: '🔁 Retry',
                 restartTitle: 'Restart (Esc)',
                 next: '⏭️ Next Quote',
                 nextTitle: 'Next quote (Tab)',
-                canvasTag: 'Click or start typing (English QWERTY)',
+                canvasTag: 'Click or start typing (Remington GAIL)',
                 canvasKeys: 'Tab = next quote | Esc = restart',
                 hintPrefix: 'Next key: Press',
                 hintFor: 'for',
-                footer: 'HiKeymash &mdash; English &amp; Hindi Literature Typing Arcade &bull; Powered by',
+                footer: 'HiKeymash &mdash; Hindi Literature Remington GAIL Typing Arcade &bull; Powered by',
                 words: 'words',
                 chars: 'chars',
                 genreDefault: 'Literature',
@@ -2149,6 +2028,9 @@
             }
         };
 
+        // ───────────────────────────────────────────────────────────
+        // 3. STATE & DOM CACHE
+        // ───────────────────────────────────────────────────────────
         let currentLang = 'hi';
 
         let currentCategory = 'all';
@@ -2199,8 +2081,6 @@
             textError: document.getElementById('text-error'),
             textCurrent: document.getElementById('text-current'),
             textRemaining: document.getElementById('text-remaining'),
-            snippetTitle: document.getElementById('snippet-title'),
-            snippetAuthor: document.getElementById('snippet-author'),
             snippetGenre: document.getElementById('snippet-genre'),
             snippetWordCount: document.getElementById('snippet-word-count'),
             snippetCharCount: document.getElementById('snippet-char-count'),
@@ -2355,7 +2235,7 @@
         // 6. SNIPPET PICKER & INITIALIZER
         // ─────────────────────────────────────────────────────────────
         function pickSnippet(cat = currentCategory, excludeId = null) {
-            let pool = currentLang === 'en' ? ENGLISH_SNIPPETS : LITERATURE_SNIPPETS;
+            let pool = LITERATURE_SNIPPETS;
             if (cat !== 'all') {
                 pool = LITERATURE_SNIPPETS.filter(s => s.category === cat);
             }
@@ -2383,8 +2263,8 @@
             totalTyped = 0;
             cursorIndex = 0;
 
-            // Title and author stay hidden while typing (guess-the-title);
-            // they are revealed on the results screen. Genre is the only hint.
+            // keymash-style: no title/author banner while typing - just the text.
+            // The work and author are revealed on the results screen. Genre is the only hint.
             el.snippetGenre.textContent = snippet.genre || UI[currentLang].genreDefault;
 
             const rawWords = snippet.text.trim().split(/\s+/);
@@ -2392,7 +2272,7 @@
             el.snippetCharCount.textContent = snippet.text.length + ' ' + UI[currentLang].chars;
 
             // Convert Unicode literature text into KrutiDev 010 keystroke target
-            targetKrutiText = currentLang === 'en' ? snippet.text.trim() : unicodeToKrutiDev(snippet.text.trim());
+            targetKrutiText = unicodeToKrutiDev(snippet.text.trim());
 
             // Reset HUD
             el.metricWpm.textContent = '0';
@@ -2426,16 +2306,9 @@
                 // Auto scroll cursor
                 el.textCurrent.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
 
-                // Hint strip & Keyboard highlights
+                // Hint strip & Keyboard highlights (always Remington GAIL)
                 const expected = currChar;
-                if (currentLang === 'en') {
-                    const hintEn = getEnglishHint(expected);
-                    el.liveHintKey.textContent = hintEn.keyLabel;
-                    el.liveHintChar.textContent = hintEn.hindiChar;
-                    el.liveHintDetail.textContent = hintEn.detail || '';
-                    updateKeyboardHighlights({ targetKey: hintEn.physicalKey, isShifted: hintEn.isShifted });
-                    el.altHelperPill.classList.remove('active');
-                } else {
+                {
                     const prev = cursorIndex > 0 ? targetKrutiText.charAt(cursorIndex - 1) : null;
                     const hint = getKrutiKeystrokeHint(expected, prev);
 
@@ -2605,7 +2478,7 @@
                 }
             }
 
-            const pbKey = 'hikeymash-pb-' + currentLang;
+            const pbKey = 'hikeymash-pb';
             const prevPb = parseInt(localStorage.getItem(pbKey) || '0', 10);
             const isNewPb = netWpm > 0 && netWpm > prevPb;
             if (isNewPb) localStorage.setItem(pbKey, String(netWpm));
@@ -2645,7 +2518,13 @@
         let raceLastTick = 0;
 
         function getPb() {
-            return parseInt(localStorage.getItem('hikeymash-pb-' + currentLang) || '0', 10);
+            // migrated from the old per-language key (typing was briefly switchable)
+            let pb = parseInt(localStorage.getItem('hikeymash-pb') || '0', 10);
+            if (!pb) {
+                const legacy = parseInt(localStorage.getItem('hikeymash-pb-hi') || '0', 10);
+                if (legacy > 0) { pb = legacy; try { localStorage.setItem('hikeymash-pb', String(legacy)); } catch (e) {} }
+            }
+            return pb;
         }
 
         function resetRace() {
@@ -2726,15 +2605,12 @@
         }
 
         // ─────────────────────────────────────────────────────────────
-        // 9C. LANGUAGE SWITCHING (Hindi Remington <-> English QWERTY)
+        // 9C. LANGUAGE SWITCHING (UI labels only - typing is always Hindi Remington)
         // ─────────────────────────────────────────────────────────────
         function applyLang() {
             const U = UI[currentLang];
             document.documentElement.lang = currentLang === 'en' ? 'en' : 'hi';
-            document.body.classList.toggle('lang-en', currentLang === 'en');
             if (el.brandBadge) el.brandBadge.textContent = U.badge;
-            if (el.snippetTitle) el.snippetTitle.textContent = U.bannerTitle;
-            if (el.snippetAuthor) el.snippetAuthor.textContent = U.bannerSub;
             if (el.langBtnLabel) el.langBtnLabel.textContent = U.langBtn;
             if (el.langBtn) el.langBtn.title = U.langBtnTitle;
             if (el.filterLabel) el.filterLabel.textContent = U.filterLabel;
@@ -2764,7 +2640,8 @@
             currentLang = lang;
             try { localStorage.setItem('hikeymash-lang', lang); } catch (e) {}
             applyLang();
-            renderVirtualKeyboard(currentLang === 'en' ? KB_MATRIX_EN : KB_MATRIX);
+            // typing stays Hindi Remington; only labels change - reload so
+            // word counts, race names and button labels pick up the language
             loadSnippet(pickSnippet('all'));
         }
 
@@ -2809,7 +2686,7 @@
             }
 
             // Alt + Numpad entry
-            if (currentLang !== 'en' && e.altKey && NUMPAD_DIGIT_MAP[e.code]) {
+            if (e.altKey && NUMPAD_DIGIT_MAP[e.code]) {
                 e.preventDefault();
                 altCodeActive = true;
                 altCodeBuffer += NUMPAD_DIGIT_MAP[e.code];
@@ -2817,7 +2694,7 @@
             }
 
             if (altCodeActive && !MODIFIER_KEYS.includes(e.key)) commitMashAltCode();
-            if (currentLang !== 'en' && e.key.length === 1 && e.key.charCodeAt(0) > 127 && !e.ctrlKey && !e.metaKey) {
+            if (e.key.length === 1 && e.key.charCodeAt(0) > 127 && !e.ctrlKey && !e.metaKey) {
                 e.preventDefault();
                 if (Date.now() < altEchoUntil) { altEchoUntil = 0; return; } // OS echo, drop it
                 if (altCodeActive) { commitMashAltCode(); return; }
@@ -2893,7 +2770,7 @@
         el.modalCopyBtn.addEventListener('click', () => {
             const U = UI[currentLang];
             const shareText = currentLang === 'en'
-                ? '\u26A1 HiKeymash Literature Typing Result:\n\uD83D\uDCD6 Work: ' + currentSnippet.title + ' (' + currentSnippet.author + ')\n\uD83D\uDE80 Speed: ' + el.resWpm.textContent + ' WPM\n\uD83C\uDFAF Accuracy: ' + el.resAcc.textContent + '\n\u23F1\uFE0F Time: ' + el.resTime.textContent + '\n\nPractice Hindi Remington GAIL and English typing: ' + window.location.href
+                ? '\u26A1 HiKeymash Literature Typing Result:\n\uD83D\uDCD6 Work: ' + currentSnippet.title + ' (' + currentSnippet.author + ')\n\uD83D\uDE80 Speed: ' + el.resWpm.textContent + ' WPM\n\uD83C\uDFAF Accuracy: ' + el.resAcc.textContent + '\n\u23F1\uFE0F Time: ' + el.resTime.textContent + '\n\nPractice Hindi Remington GAIL typing: ' + window.location.href
                 : '\u26A1 HiKeymash \u0938\u093E\u0939\u093F\u0924\u094D\u092F \u091F\u093E\u0907\u092A\u093F\u0902\u0917 \u092A\u0930\u093F\u0923\u093E\u092E:\n\uD83D\uDCD6 \u0930\u091A\u0928\u093E: ' + currentSnippet.title + ' (' + currentSnippet.author + ')\n\uD83D\uDE80 \u0917\u0924\u093F: ' + el.resWpm.textContent + ' WPM\n\uD83C\uDFAF \u0938\u091F\u0940\u0915\u0924\u093E: ' + el.resAcc.textContent + '\n\u23F1\uFE0F \u0938\u092E\u092F: ' + el.resTime.textContent + '\n\n\u0939\u093F\u0902\u0926\u0940 \u0930\u0947\u092E\u093F\u0902\u0917\u091F\u0928 GAIL \u091F\u093E\u0907\u092A\u093F\u0902\u0917 \u0905\u092D\u094D\u092F\u093E\u0938 \u0915\u0930\u0947\u0902: ' + window.location.href;
             navigator.clipboard.writeText(shareText).then(() => {
                 el.modalCopyBtn.textContent = U.copiedLabel;
@@ -2901,7 +2778,7 @@
             });
         });
 
-        // Language Toggle (Hindi Remington <-> English QWERTY)
+        // Language Toggle (UI language only; typing text stays Hindi)
         el.langBtn.addEventListener('click', () => {
             setLang(currentLang === 'en' ? 'hi' : 'en');
         });
@@ -2954,7 +2831,7 @@
 
         try { currentLang = localStorage.getItem('hikeymash-lang') === 'en' ? 'en' : 'hi'; } catch (e) { currentLang = 'hi'; }
         applyLang();
-        renderVirtualKeyboard(currentLang === 'en' ? KB_MATRIX_EN : KB_MATRIX);
+        renderVirtualKeyboard(KB_MATRIX);
         loadSnippet(pickSnippet('all'));
 
     })();
