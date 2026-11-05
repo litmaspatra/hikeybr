@@ -19,7 +19,7 @@ const path=require('node:path');
    if(i===seq.length-2)mid=HiKeybr.unlockedIndex;
   }
   Date.now=realNow;
-  return {before,mid,after:HiKeybr.unlockedIndex,saved:JSON.parse(localStorage.getItem('hikeybr_store_v3')),result:document.getElementById('result-text').textContent};
+  return {before,mid,after:HiKeybr.unlockedIndex,saved:JSON.parse(localStorage.getItem('hikeybr_store_v3'))};
  },{ms,errorRate});
  await fresh();
  assert.equal(await page.evaluate(()=>HiKeybr.unlockedIndex),3);

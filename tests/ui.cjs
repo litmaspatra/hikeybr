@@ -255,8 +255,10 @@ const path = require('node:path');
     });
     assert.equal(await page.evaluate(() => HiKeybr.targetKrutiText), 'jke] D;k\\', 'custom text punctuation uses Remington keys');
 
-    // 10. keybr-style flow: finishing a books/custom lesson flashes the result
-    //     and starts the next lesson automatically - no Enter, no Continue.
+    // 10. keybr-style flow: finishing ANY lesson (guided, books or custom)
+    //     instantly replaces it with a freshly generated lesson - a separate
+    //     lesson, not text appended to the previous one, and no toast,
+    //     no Enter, no Continue. The finished lesson folds into the history.
     await fresh();
     await page.click('#lesson-settings > summary');
     await page.click('.ls-tab[data-lstab="custom"]');
@@ -265,6 +267,7 @@ const path = require('node:path');
         t.value = 'राम सीता';
         t.dispatchEvent(new Event('change'));
     });
+    const customTarget = await page.evaluate(() => HiKeybr.targetKrutiText);
     await page.evaluate(() => {
         const seq = HiKeybr.targetKrutiText;
         for (const ch of seq) HiKeybr.handleKeystroke(ch);
@@ -272,15 +275,40 @@ const path = require('node:path');
     const flow = await page.evaluate(() => ({
         cursor: HiKeybr.cursorIndex,
         target: HiKeybr.targetKrutiText,
-        resultHidden: document.getElementById('lesson-result').hidden,
-        continueShown: document.getElementById('continue-btn').style.display !== 'none',
-        resultText: document.getElementById('result-text').textContent
+        history: HiKeybr.lessonHistory.length,
+        last: HiKeybr.lessonHistory.at(-1),
+        event: (document.getElementById('practice-event') || {}).textContent || '',
+        toastPresent: !!document.getElementById('lesson-result'),
+        continuePresent: !!document.getElementById('continue-btn')
     }));
     assert.equal(flow.cursor, 0, 'next lesson started automatically (cursor reset)');
-    assert.equal(flow.continueShown, false, 'no Enter/Continue needed');
-    assert.equal(flow.resultHidden, false, 'result still flashes briefly');
+    assert.equal(flow.toastPresent, false, 'no result toast exists');
+    assert.equal(flow.continuePresent, false, 'no Continue button exists');
     assert.ok(flow.target.length > 0, 'fresh lesson text is ready');
-    assert.ok(flow.resultText.includes('WPM'), 'result shows the lesson speed');
+    assert.equal(flow.history, 1, 'completed lesson folded into history');
+    assert.ok(flow.last.wpm > 0 && flow.last.seconds > 0 && flow.last.keys >= 4, 'lesson record carries real timing data');
+    assert.ok(flow.event.includes('WPM'), 'event line shows the lesson speed');
+
+    // 10b. Guided lessons: the SAME text is never extended - completion
+    //      replaces the whole block with a newly generated lesson.
+    await fresh();
+    const guided = await page.evaluate(() => {
+        const first = HiKeybr.currentLessonText;
+        const firstLen = HiKeybr.targetKrutiText.length;
+        const seq = HiKeybr.targetKrutiText;
+        for (const ch of seq) HiKeybr.handleKeystroke(ch);
+        return {
+            first, firstLen,
+            afterText: HiKeybr.currentLessonText,
+            afterLen: HiKeybr.targetKrutiText.length,
+            cursor: HiKeybr.cursorIndex,
+            history: HiKeybr.lessonHistory.length
+        };
+    });
+    assert.equal(guided.cursor, 0, 'guided lesson cursor resets to the start');
+    assert.equal(guided.history, 1, 'guided lesson recorded once');
+    assert.ok(guided.afterLen < guided.firstLen + 50, 'text was replaced, not extended (was ' + guided.firstLen + ', now ' + guided.afterLen + ')');
+    assert.notEqual(guided.afterText, guided.first, 'fresh lesson text generated');
 
     assert.deepEqual(errors, [], 'no page errors: ' + errors.join(' | '));
     console.log('PASS: real key events, custom text focus, Alt-code unit scoring, speed control sync, reload persistence, strict unlock, save-failure warning.');

@@ -146,7 +146,7 @@
         *, *::before, *::after { border-radius: 0 !important; }
         button, .btn, .ctrl-select, select, input[type="text"], input[type="number"], textarea,
         .nav-tab, .ls-tab, .alt-card, .target-card, .metric-chip, .target-char-pill,
-        #lesson-result, .workspace-bar, .brand-icon, .ls-check, .goal-track, .progress-track {
+        .workspace-bar, .brand-icon, .ls-check, .goal-track, .progress-track {
             clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
         }
         .key, .kb-key {
@@ -1334,7 +1334,7 @@
         .progress-track { height: 7px; }
         .confidence-hint { font-size: 0.64rem; }
 
-        .stats-strip { gap: 8px; }
+        .stats-strip { gap: 8px; grid-template-columns: repeat(2, 1fr); }
         .stat-card { padding: 6px 12px; gap: 2px; border-radius: 8px; }
         .stat-card .s-label { font-size: 0.6rem; }
         .stat-card .s-value { font-size: 1.15rem; }
@@ -1368,7 +1368,7 @@
         .insight-panel{display:grid;gap:7px;padding:10px 14px;border:1px solid var(--border);border-radius:10px;background:var(--surface-card);font-size:.78rem;color:var(--text-dim)}
         .insight-row{display:flex;gap:16px;align-items:center;flex-wrap:wrap}.insight-row strong{color:var(--text)}.delta-up{color:var(--correct)}.delta-down{color:var(--error)}
         .goal-track{height:5px;max-width:350px;flex:1;min-width:80px;background:var(--border);border-radius:5px;overflow:hidden}.goal-fill{height:100%;background:var(--accent)}
-        .stats-strip{display:none!important}.history-bars{display:flex;align-items:end;gap:3px;height:24px}.history-bars i{display:block;width:12px;background:var(--accent);border-radius:2px 2px 0 0}
+        .history-bars{display:flex;align-items:end;gap:3px;height:24px}.history-bars i{display:block;width:12px;background:var(--accent);border-radius:2px 2px 0 0}
         :root[data-lesson-style="bold"] .text-stream-container{font-weight:800}
         :root[data-lesson-style="spaced"] .text-stream-container{letter-spacing:.06em;line-height:2}
         :root[data-lesson-style="large"] .text-stream-container{font-size:2.9rem}
@@ -1376,12 +1376,12 @@
         :root[data-key-font="system"] .k-key .hi-main,:root[data-key-font="system"] .k-key .hi-shift,:root[data-key-font="system"] .ak-char{font-family:system-ui,sans-serif}
         :root[data-theme="sunshine"]{--bg:#ffd633;--surface:#ffe780;--surface-hover:#ffeb99;--surface-card:#ffdd51;--border:#b49b35;--border-subtle:#d4b942;--text:#302800;--text-dim:#5c4c0b;--text-faint:#78651a;--accent:#604a00;--accent-soft:#e9bf25;--correct:#246622;--error:#a82620;--key-bg:#ffe780;--key-border:#b49b35;--key-bottom:#a58d2c;--key-unlocked:#dbe785;--key-unlocked-border:#7b9531;--chip-bg:#ffe780;--chip-border:#604a00}
         :root[data-theme="forest"]{--bg:#10231c;--surface:#19362a;--surface-card:#142d23;--surface-hover:#254637;--border:#365f48;--text:#ecf5e8;--text-dim:#b3c9b5;--text-faint:#809e85;--accent:#b9dd86;--correct:#86d9a6;--key-bg:#173327;--key-border:#365f48;--chip-bg:#254637;--chip-border:#b9dd86}
-        @media(max-height:800px){.insight-panel{gap:4px;padding:7px 12px}.target-card{padding:10px 16px}.stats-strip{display:none}.typing-canvas{min-height:100px}.text-stream-container{max-height:110px}}
+        @media(max-height:800px){.target-card{padding:10px 16px}.typing-canvas{min-height:100px}.text-stream-container{max-height:110px}}
 
 .confidence-hint{gap:14px;flex-wrap:wrap}.confidence-hint>span{flex:1 1 300px}.confidence-hint>span:last-child{text-align:right}
 /* Assessment fixes: text-first practice, accessible small screens. */
 .practice-live,.word-tools{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:12px 0}.practice-live{font-size:.95rem}.practice-live button{margin-left:auto}.mobile-notice{font-size:.75rem;color:var(--text-dim)}
-#panel-practice .typing-canvas{min-height:190px;padding-top:30px}.text-stream-container{max-height:260px;min-height:100px;color:var(--text-dim);scroll-behavior:auto}.confidence-hint{font-size:.76rem;color:var(--text-dim)}.table-scroll{overflow-x:auto}.table-scroll table{min-width:620px}#panel-profile .stats-strip{display:flex}#lesson-result[hidden]{display:none}#lesson-result{margin:12px 0}#result-text{line-height:1.7;margin:12px 0}.word-tools label{display:flex;gap:8px;align-items:center;font-size:.8rem}button,select{min-height:36px}.word-tools select{max-width:170px;background:var(--surface);color:var(--text)}
+#panel-practice .typing-canvas{min-height:190px;padding-top:30px}.text-stream-container{max-height:260px;min-height:100px;color:var(--text-dim);scroll-behavior:auto}.confidence-hint{font-size:.76rem;color:var(--text-dim)}.table-scroll{overflow-x:auto}.table-scroll table{min-width:620px}.word-tools label{display:flex;gap:8px;align-items:center;font-size:.8rem}button,select{min-height:36px}.word-tools select{max-width:170px;background:var(--surface);color:var(--text)}
 @media(max-width:650px){html,body{width:100%;overflow-x:hidden}header,.header-inner,.top-bar{max-width:100%}header{height:auto!important;flex-wrap:wrap;gap:6px;padding:8px!important}header nav{order:3;width:100%;display:flex;justify-content:space-between;min-width:0;gap:2px}header nav button{flex:1;padding:8px 3px!important;font-size:.72rem!important;white-space:nowrap}main{padding:12px!important;min-width:0;width:100%;box-sizing:border-box}.panel,.content-card,.workspace-bar{min-width:0;max-width:100%;box-sizing:border-box}.quick-controls,.ctrl-item{width:100%;min-width:0}.ctrl-select{max-width:100%}.target-card-top,.confidence-hint{flex-wrap:wrap;gap:8px}.progress-track-wrapper{gap:8px}.progress-stat{font-size:.76rem;white-space:nowrap}.keyboard-frame{padding:8px 3px;gap:4px;max-width:100%;box-sizing:border-box}.k-row{gap:2px}.k-key{min-width:0!important;width:calc((100vw - 66px)/13);flex:0 1 auto;height:42px;border-radius:4px}.k-key .hi-main{font-size:.85rem}.k-key .hi-shift{font-size:.58rem}.k-key .en-sub{font-size:.5rem}.typing-canvas{padding:26px 8px 12px!important}.text-stream-container{font-size:1.65rem;max-height:240px;padding:4px;box-sizing:border-box;line-height:1.8}.canvas-hint{font-size:.6rem;right:8px}.live-hint-strip{flex-wrap:wrap;gap:6px}.content-card{padding:16px}.card-header{flex-wrap:wrap}.target-identity{flex-wrap:wrap}.insight-row{flex-wrap:wrap}.word-tools label{width:100%;flex-wrap:wrap}.logo-badge{display:none}.nav-tab{min-width:0}#panel-altlab input{min-width:0;width:100%}.alt-cards-grid{grid-template-columns:1fr!important}}
 @media(max-width:650px){.confidence-hint>span{flex-basis:100%;text-align:left!important}.word-tools{overflow-wrap:anywhere}.brand{gap:8px}nav .nav-tab{font-size:.66rem!important}footer{overflow-wrap:anywhere}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto!important;transition:none!important}}
@@ -1434,7 +1434,41 @@ html.cur-box .text-current{background:transparent!important;box-shadow:none!impo
 html.cur-line .text-current{background:transparent!important;box-shadow:inset 3px 0 0 var(--accent)!important}
 html.cur-underline .text-current{background:transparent!important;box-shadow:0 3px 0 var(--accent)!important}
 @media(max-width:600px){.ls-row>label{flex:1 1 100%}.ls-tab{padding:8px 9px;font-size:.85rem}}
-</style>
+
+        /* keybr-style practice metrics + profile charts */
+        .practice-substats{display:flex;flex-wrap:wrap;gap:4px 16px;align-items:center;font-size:.78rem;color:var(--text-dim);margin:8px 0 2px}
+        .practice-substats .goal-track{flex:0 0 90px;height:6px}
+        .practice-substats .wp-status{font-size:.7rem}
+        #practice-event{margin:8px 0 0;padding:7px 12px;border:1px solid var(--accent);color:var(--accent);background:var(--accent-soft);font-size:.85rem;font-weight:600}
+        .s-sub{display:block;font-size:.68rem;color:var(--text-faint);margin-top:2px;font-weight:400}
+        .prof-h{margin:22px 0 8px;font-size:1rem;color:var(--text)}
+        .prof-streak{font-size:.82rem;color:var(--text-dim);margin:8px 0 0}
+        .chart-block{margin:26px 0 8px;border-top:1px solid var(--border-subtle);padding-top:14px}
+        .chart-block h3{margin:0 0 4px;font-size:.95rem}
+        .chart-desc{font-size:.75rem;color:var(--text-dim);margin:0 0 10px}
+        .chart-legend{font-size:.72rem;color:var(--text-dim);margin:8px 0 0;display:flex;flex-wrap:wrap;gap:4px 14px}
+        .chart-empty{padding:30px 0;text-align:center;color:var(--text-faint);font-size:.85rem;border:1px dashed var(--border)}
+        .smooth-row{display:flex;align-items:center;gap:10px;font-size:.75rem;color:var(--text-dim);margin-top:8px}
+        .smooth-row input{flex:0 0 160px}
+        .lg-dot{display:inline-block;width:9px;height:9px;margin-right:4px;vertical-align:-1px}
+        svg text{fill:var(--text-dim);font-family:inherit}
+        .prof-mastered{font-weight:400;color:var(--text-dim);font-size:.78rem;margin-left:8px}
+        .prof-actions{display:flex;gap:10px;margin-top:18px}
+        .prof-actions .btn-modal{cursor:pointer;text-align:center}
+        .pg-row{display:flex;align-items:center;gap:8px;margin:3px 0}
+        .pg-key{flex:0 0 34px;text-align:right;font-family:'Noto Sans Devanagari';font-weight:700;font-size:.9rem}
+        .pg-cells{display:flex;gap:2px;flex-wrap:nowrap}
+        .pg-cells i{width:10px;height:14px;display:block}
+        .cal-month{display:inline-block;vertical-align:top;margin:0 18px 14px 0}
+        .cal-month h4{margin:0 0 6px;font-size:.78rem;color:var(--text-dim);font-weight:600}
+        .cal-grid{display:grid;grid-template-columns:repeat(7,16px);gap:2px}
+        .cal-grid b{font-size:.55rem;color:var(--text-faint);font-weight:400;text-align:center;line-height:14px}
+        .cal-cell{width:16px;height:16px;background:var(--surface-hover);display:inline-block}
+        .cal-legend{display:flex;gap:4px;align-items:center;font-size:.7rem;color:var(--text-faint);margin-top:4px}
+        .ak-badge{position:relative;overflow:hidden}
+        .ak-badge .ak-bar{position:absolute;left:0;right:0;bottom:0;opacity:.4;pointer-events:none}
+        @media(max-width:650px){.cal-grid{grid-template-columns:repeat(7,13px)}.cal-cell{width:13px;height:13px}.pg-key{flex-basis:26px;font-size:.8rem}}
+    </style>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;700&display=swap" rel="stylesheet"></head>
 <body>
 
@@ -1536,7 +1570,7 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
                 </div>
             </details>
 
-<div class="practice-live"><span id="practice-speed">0.0 WPM</span><span id="practice-accuracy">100% accuracy</span><span class="mobile-notice">Use a physical keyboard for Remington practice.</span></div>
+<div class="practice-live"><span class="mobile-notice">Use a physical keyboard for Remington practice.</span></div>
             <div class="insight-row" style="font-size:.75rem;color:var(--text-dim)"><span>Lesson completion: <strong id="lesson-completion-pct">0%</strong></span><div class="goal-track"><div class="goal-fill" id="lesson-completion-fill"></div></div></div>
             <!-- Keybr Speed-Maintenance & Confidence Card -->
             <div class="target-card">
@@ -1577,25 +1611,53 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
                 <span style="font-size:0.72rem; color:var(--text-dim);">(Use the shown Lab sequence or Alt code)</span>
             </div>
 
-            <!-- Live Dashboard Stats Strip -->
+            <!-- keybr-style metrics strip: the live lesson metrics live in practice -->
             <div class="stats-strip">
                 <div class="stat-card">
-                    <span class="s-label">Session Speed</span>
-                    <div class="s-value"><span id="metric-wpm">0</span><span class="s-unit">wpm</span></div>
+                    <span class="s-label">Speed</span>
+                    <div class="s-value"><span id="metric-wpm">0.0</span><span class="s-unit">wpm</span></div>
+                    <span class="s-sub" id="metric-wpm-avg">avg of last lessons: -</span>
                 </div>
                 <div class="stat-card">
                     <span class="s-label">Accuracy</span>
                     <div class="s-value"><span id="metric-accuracy">100</span><span class="s-unit">%</span></div>
+                    <span class="s-sub" id="metric-accuracy-avg">avg of last lessons: -</span>
+                </div>
+                <div class="stat-card">
+                    <span class="s-label">Score</span>
+                    <div class="s-value" id="metric-score">0</div>
+                    <span class="s-sub" id="metric-score-best">best: 0</span>
                 </div>
                 <div class="stat-card">
                     <span class="s-label">Keys Unlocked</span>
                     <div class="s-value"><span id="metric-unlocked">4</span><span class="s-unit">/ <span id="metric-total-keys">70</span></span></div>
                 </div>
-                <div class="stat-card">
-                    <span class="s-label">Total Keystrokes</span>
-                    <div class="s-value" id="metric-score">0</div>
+            </div>
+
+            <!-- keybr KeySetRow analog: per-key progression with live speed bars -->
+            <div class="alphabet-strip">
+                <div class="alphabet-header">
+                    <span>Remington GAIL Progression (<span id="total-keys-header">70</span> Keys)</span>
+                    <span id="progression-summary">Key 4 of 70 Unlocked</span>
+                </div>
+                <div class="alphabet-keys" id="alphabet-container"></div>
+                <div class="heat-legend">
+                    <span><i class="heat-dot hd-1"></i>Not yet good</span>
+                    <span><i class="heat-dot hd-2"></i>Improving</span>
+                    <span><i class="heat-dot hd-3"></i>Learnt</span>
+                    <span style="margin-left:auto">bar = key speed vs your target</span>
                 </div>
             </div>
+
+            <div class="practice-substats">
+                <span>Last lesson: <strong id="p-last">none yet</strong></span>
+                <span id="p-streak">No accuracy streaks.</span>
+                <span>Daily goal: <strong id="p-goal">0%</strong></span>
+                <span class="goal-track"><span class="goal-fill" id="p-goal-fill"></span></span>
+                <span class="history-bars" id="ins-history" aria-label="Recent lesson speeds"></span>
+                <span id="word-pool-status" class="wp-status"></span>
+            </div>
+            <div id="practice-event" hidden aria-live="polite"></div>
 
             <!-- Typing Canvas (Continuous HarfBuzz Ligature-Safe Container) -->
             <div class="typing-canvas" id="typing-canvas">
@@ -1615,7 +1677,6 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
                 <span id="live-hint-detail" style="font-size:0.75rem; color:var(--text-faint);"></span>
             </div>
 
-            <section id="lesson-result" hidden class="content-card" aria-live="polite"><h3>Lesson complete</h3><p id="result-text"></p><button class="btn-modal" id="continue-btn">Continue (Enter)</button></section>
             <!-- Full Remington GAIL Virtual Keyboard -->
             <div class="keyboard-frame" id="keyboard-frame"></div>
 
@@ -1633,47 +1694,65 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
                     </div>
                 </div>
 
-                <div class="stats-strip" style="margin-bottom: 8px;">
-                    <div class="stat-card">
-                        <span class="s-label">Total Keystrokes</span>
-                        <div class="s-value" id="prof-total-typed">0</div>
-                    </div>
-                    <div class="stat-card">
-                        <span class="s-label">Total Errors</span>
-                        <div class="s-value" id="prof-total-errors" style="color:var(--error);">0</div>
-                    </div>
-                    <div class="stat-card">
-                        <span class="s-label">Overall Accuracy</span>
-                        <div class="s-value" id="prof-overall-acc">100%</div>
-                    </div>
-                    <div class="stat-card">
-                        <span class="s-label">Keys Learned</span>
-                        <div class="s-value" id="prof-mastered-count">0 / 70</div>
-                    </div>
+                                <h3 class="prof-h">All time statistics</h3>
+                <div class="stats-strip prof-tiles" id="prof-tiles-all"></div>
+                <h3 class="prof-h">Statistics for today</h3>
+                <div class="stats-strip prof-tiles" id="prof-tiles-today"></div>
+                <p class="prof-streak" id="prof-streak-line"></p>
+
+                <div class="chart-block">
+                    <h3>Typing Speed</h3>
+                    <p class="chart-desc">One point per completed lesson. Values are exponentially smoothed (α = 10<sup>-3s</sup>, keybr's formula); the dashed line is the least-squares trend of the smoothed speed. Raw numbers come from your stored lesson records, never invented.</p>
+                    <div id="chart-speed"></div>
+                    <label class="smooth-row">Smoothness <input type="range" id="smoothness" min="0" max="100" value="50"></label>
+                    <p class="chart-legend" id="chart-speed-legend"></p>
                 </div>
 
-<div class="insight-panel" aria-label="Practice metrics">
- <div class="insight-row"><strong>Metrics:</strong><span title="Accepted input strokes / 5 / total elapsed minutes, including errors, excluding explicit pauses. Restricted-key practice is not a full-keyboard speed test.">Lesson speed: <strong id="ins-speed">0 wpm</strong> <span id="ins-speed-delta"></span></span><span>Accuracy: <strong id="ins-accuracy">100%</strong> <span id="ins-accuracy-delta"></span></span><span title="Lesson score balances input rate, distinct input units, length and errors; not exam marks">Lesson score: <strong id="ins-score">0</strong> <span id="ins-score-delta"></span></span><span style="display:none">Hindi words/min: <strong id="ins-words">0</strong></span><span>Overall: <strong id="ins-overall">0%</strong></span></div>
- <details><summary>Per-key diagnostics (not overall WPM)</summary><div class="insight-row"><span>Current key last: <strong id="ins-last">Need samples</strong></span><span>Current key best: <strong id="ins-top">Need samples</strong></span><span>Current key trend: <strong id="ins-rate">Uncertain</strong></span></div><p>These are equivalent speeds for one key, not your typing speed. Easy-key lessons cannot estimate full-keyboard speed.</p></details>
- <div class="insight-row"><span id="ins-streak">No accuracy streaks.</span><span>Daily goal: <strong id="ins-goal">0% / 30 minutes</strong></span><div class="goal-track"><div class="goal-fill" id="ins-goal-fill"></div></div></div>
- <div class="insight-row"><span>Recent lessons:</span><div class="history-bars" id="ins-history" aria-label="Recent lesson speeds"></div><span id="word-pool-status" style="font-size:.7rem"></span><span id="ins-summary">Finish a lesson to start your history.</span></div>
-</div>
-
-            <!-- Alphabet Strip (Keybr letters progression bar) -->
-            <div class="alphabet-strip">
-                <div class="alphabet-header">
-                    <span>Remington GAIL Progression (<span id="total-keys-header">70</span> Keys)</span>
-                    <span id="progression-summary">Key 4 of 70 Unlocked</span>
+                <div class="chart-block">
+                    <h3>Typing Speed Distribution</h3>
+                    <p class="chart-desc">How often each lesson speed occurs. Bucket width adapts to your range (1/2/5/10 WPM); the dashed line marks your average lesson speed.</p>
+                    <div id="chart-speed-dist"></div>
                 </div>
-                <div class="alphabet-keys" id="alphabet-container"></div>
-                <div class="heat-legend">
-                    <span><i class="heat-dot hd-1"></i>Not yet good</span>
-                    <span><i class="heat-dot hd-2"></i>Improving</span>
-                    <span><i class="heat-dot hd-3"></i>Learnt</span>
-                </div>
-            </div>
 
-                <div class="table-scroll"><table class="data-table">
+                <div class="chart-block">
+                    <h3>Key Typing Speed</h3>
+                    <p class="chart-desc">Average equivalent speed per key: 12,000 ÷ mean clean milliseconds per hit (10% outliers trimmed). Green meets your target, amber is within 80%, red needs practice. The dashed line is your target speed.</p>
+                    <div id="chart-key-speed"></div>
+                </div>
+
+                <div class="chart-block">
+                    <h3>Key Frequency</h3>
+                    <p class="chart-desc">How often each key was hit (green) vs missed (red), with the miss ratio under each key. Counts are your actual recorded keystrokes.</p>
+                    <div id="chart-key-freq"></div>
+                </div>
+
+                <div class="chart-block">
+                    <h3>Learning Progress Overview</h3>
+                    <p class="chart-desc">Each row is a key, each cell a recent lesson sample (oldest → newest). Colour is that sample's speed relative to your target: red slow → amber close → green at or above target.</p>
+                    <div id="chart-progress"></div>
+                </div>
+
+                <div class="chart-block">
+                    <h3>Practice Calendar</h3>
+                    <p class="chart-desc">Days you practiced, shaded by how much of your daily goal you completed: light &lt;50%, medium 50-99%, solid 100%+.</p>
+                    <div id="chart-calendar"></div>
+                </div>
+
+                <details class="chart-block">
+                    <summary style="cursor:pointer;font-weight:600">How the numbers are computed</summary>
+                    <div class="chart-desc" style="margin-top:8px;line-height:1.65">
+                        <p><strong>Lesson speed (WPM)</strong> = (accepted keystrokes ÷ 5) ÷ elapsed minutes, measured from first keystroke to lesson completion, excluding explicit pauses. Errors are included in the count, as on keybr.com. Restricted-key lessons measure what you practiced, not a full-keyboard exam speed.</p>
+                        <p><strong>Accuracy</strong> = accepted ÷ (accepted + errors) per lesson. Overall figures average per-lesson values.</p>
+                        <p><strong>Per-key speed</strong> = 12,000 ÷ mean clean milliseconds per hit on that key (equivalent WPM if every key were that fast). The top and bottom 10% of timings in a lesson are trimmed before averaging, so one stumble or one lucky burst does not move the number.</p>
+                        <p><strong>Score</strong> = CPM × distinct keys used ÷ (errors + 1) × (accepted ÷ 50). It rewards fast, varied, clean lessons.</p>
+                        <p><strong>Smoothing</strong> on the speed chart is exponential: smoothed = α·value + (1−α)·previous, with α = 10<sup>−3×smoothness</sup> (the same formula keybr.com uses). The dashed trend line is a least-squares fit over the smoothed values.</p>
+                        <p><strong>Calendar shading</strong> uses your actual stored practice seconds per day against your daily goal setting.</p>
+                    </div>
+                </details>
+
+                <h3 class="prof-h">Key details <span id="prof-mastered-line" class="prof-mastered"></span></h3>
+
+            <div class="table-scroll"><table class="data-table">
                     <thead>
                         <tr>
                             <th>Hindi</th>
@@ -2122,8 +2201,6 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
         let keyStats = {}; // { key: { hits: 0, errors: 0, ttt: 0, tttSamples: 0 } }
         let pendingUnlockIndex = null;
         let lessonCompleted = false;
-        let nextLessonTimer = null;
-        let toastTimer = null;
         let targetKeyBuffer = []; // Rolling sliding window of recent hits on target key
         let targetSpeedGoal = 25; // WPM required to advance
         let textSource='words', bookPos={};
@@ -2144,6 +2221,11 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
         let currentTheme = 'dark';
         let lessonHistory = [], keyLearning = {}, dailyPractice = {day:'', seconds:0};
         let accuracyStreak = 0, dailyGoalMinutes = 30, lessonStyle = 'classic', keyFont = 'sans';
+        // Per-day and lifetime aggregates backing the profile charts (persisted).
+        let dailyStats = {}; // {'YYYY-MM-DD': {seconds, lessons, typed, errors}}
+        let totalLessons = 0, totalPracticeSeconds = 0;
+        let bestLessonWpm = 0, bestLessonAcc = 0, bestStreak = 0, bestScore = 0;
+        let pendingLessonEvents = [], goalFlashedDay = '';
         let lessonKeyTimes = {}, lessonActiveSeconds = 0, activityAt = null;
         let previousAttemptWrong=false, measurementEvents = [], displayFont = 'krutidev', altEntryStartedAt = null;
         const FONT_REGISTRY = {krutidev:{label:'KrutiDev 010',encoding:'krutidev',family:'KrutiDev010'},devlys010:{label:'DevLys 010',encoding:'krutidev-compatible',family:'DevLys010Web'},noto:{label:'Noto Sans Hindi',encoding:'unicode',family:'Noto Sans Devanagari'},serif:{label:'Noto Serif Hindi',encoding:'unicode',family:'Noto Serif Devanagari'},mangal:{label:'Mangal (installed)',encoding:'unicode',family:'Mangal'}};
@@ -2202,10 +2284,6 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
             modalConfirmBtn: document.getElementById('modal-confirm-btn'),
             resetSettingsBtn: document.getElementById('reset-settings-btn'),
             profileTableBody: document.getElementById('profile-table-body'),
-            profTotalTyped: document.getElementById('prof-total-typed'),
-            profTotalErrors: document.getElementById('prof-total-errors'),
-            profOverallAcc: document.getElementById('prof-overall-acc'),
-            profMasteredCount: document.getElementById('prof-mastered-count'),
             altCardsGrid: document.getElementById('alt-cards-grid'),
             altTesterInput: document.getElementById('alt-tester-input'),
             altTestResult: document.getElementById('alt-test-result'),
@@ -2325,6 +2403,7 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
                 totalTypedCount,
                 totalErrorsCount,
                 keyStats, lessonHistory, keyLearning, dailyPractice, accuracyStreak, dailyGoalMinutes, lessonStyle, keyFont, displayFont, measurementVersion:2,
+                dailyStats, totalLessons, totalPracticeSeconds, bestLessonWpm, bestLessonAcc, bestStreak, bestScore,
                 theme: currentTheme,
                 soundEnabled,
                 showFingerHint
@@ -2367,7 +2446,29 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
                         }
                     }
                 }
-                lessonHistory = Array.isArray(data.lessonHistory) ? data.lessonHistory.slice(-30) : [];
+                lessonHistory = Array.isArray(data.lessonHistory) ? data.lessonHistory.slice(-400) : [];
+                dailyStats=(data.dailyStats&&typeof data.dailyStats==='object')?data.dailyStats:{};
+                totalLessons=typeof data.totalLessons==='number'?data.totalLessons:0;
+                totalPracticeSeconds=typeof data.totalPracticeSeconds==='number'?data.totalPracticeSeconds:0;
+                bestLessonWpm=data.bestLessonWpm||0;bestLessonAcc=data.bestLessonAcc||0;
+                bestStreak=data.bestStreak||0;bestScore=data.bestScore||0;
+                if(!data.dailyStats&&!data.totalLessons&&lessonHistory.length){
+                    // One-time migration for older saves: rebuild daily and lifetime
+                    // aggregates from the stored per-lesson history.
+                    lessonHistory.forEach(r=>{
+                        if(!r||!r.ts)return;
+                        const day=new Date(r.ts).toLocaleDateString('en-CA');
+                        const d=dailyStats[day]||(dailyStats[day]={seconds:0,lessons:0,typed:0,errors:0});
+                        const seconds=typeof r.seconds==='number'?r.seconds:(r.wpm>0?(r.chars||0)/(5*r.wpm)*60:0);
+                        const errors=typeof r.errors==='number'?r.errors:Math.round((r.chars||0)*(100/Math.max(1,r.acc||100)-1));
+                        d.seconds+=seconds;d.lessons+=1;d.typed+=r.chars||0;d.errors+=errors;
+                        totalLessons+=1;totalPracticeSeconds+=seconds;
+                        bestLessonWpm=Math.max(bestLessonWpm,r.wpm||0);
+                        bestLessonAcc=Math.max(bestLessonAcc,r.acc||0);
+                        bestScore=Math.max(bestScore,r.score||0);
+                    });
+                    bestStreak=accuracyStreak;
+                }
                 keyLearning = data.keyLearning || {};
                 dailyPractice = data.dailyPractice || {day:'', seconds:0};
                 accuracyStreak = data.accuracyStreak || 0;
@@ -3114,7 +3215,16 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
                     badge.classList.add('locked');
                 }
 
-                badge.innerHTML = `<span class="ak-char">${item.h}</span><span class="ak-key">${item.alt ? item.alt : (item.conjunct ? item.h : item.k.toUpperCase())}</span>`;
+                let bar='';
+                if (idx <= highestUnlocked) {
+                    const hs2 = keyStats[item.k];
+                    if (hs2 && hs2.modelTtt > 0 && (hs2.modelSamples||0) >= 1) {
+                        const wpm = 12000/hs2.modelTtt, ratio = Math.min(1.25, wpm/targetSpeedGoal);
+                        const color = ratio>=1?'var(--correct)':ratio>=.8?'#eab308':'var(--error)';
+                        bar = `<i class="ak-bar" style="height:${Math.max(6,Math.round(ratio/1.25*100))}%;background:${color}"></i>`;
+                    }
+                }
+                badge.innerHTML = bar+`<span class="ak-char">${item.h}</span><span class="ak-key">${item.alt ? item.alt : (item.conjunct ? item.h : item.k.toUpperCase())}</span>`;
 
                 badge.addEventListener('click', () => {
                     if (idx <= highestUnlocked) {
@@ -3193,14 +3303,40 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
         }
         function recordCompletedLesson() {
             commitKeyMeasurements();
-            const elapsed=sessionStartTime?Math.max(.001,lessonElapsed()/60000):0;
+            const elapsedMs=sessionStartTime?Math.max(1,lessonElapsed()):0;
+            const elapsed=Math.max(.001,elapsedMs/60000);
             const acc=sessionCorrect/Math.max(1,sessionCorrect+sessionErrors)*100;
             const cpm=elapsed>0?sessionCorrect/elapsed:0;
             const complexity=new Set(measurementEvents.map(e=>e.key)).size;
-            const score=complexity?cpm*complexity/(sessionErrors+1)*(sessionCorrect/50):0;
+            const score=complexity?Math.round(cpm*complexity/(sessionErrors+1)*(sessionCorrect/50)):0;
             const words=currentLessonText.trim().split(/\s+/).length;
-            lessonHistory.push({wpm:cpm/5,acc,chars:sessionCorrect,score,wordsPerMinute:elapsed?words/elapsed:0,ts:Date.now(),model:2});
-            lessonHistory=lessonHistory.slice(-30);accuracyStreak=acc>=95?accuracyStreak+1:0;
+            const prevBestWpm=bestLessonWpm, prevBestScore=bestScore;
+            // keybr Result analog: one durable record per completed lesson.
+            lessonHistory.push({wpm:cpm/5,acc,chars:sessionCorrect,errors:sessionErrors,seconds:elapsedMs/1000,keys:highestUnlocked+1,score,wordsPerMinute:elapsed?words/elapsed:0,ts:Date.now(),model:3});
+            lessonHistory=lessonHistory.slice(-400);
+            accuracyStreak=acc>=95?accuracyStreak+1:0;
+            bestStreak=Math.max(bestStreak,accuracyStreak);
+            bestLessonWpm=Math.max(bestLessonWpm,cpm/5);
+            bestLessonAcc=Math.max(bestLessonAcc,acc);
+            bestScore=Math.max(bestScore,score);
+            totalLessons+=1;
+            totalPracticeSeconds+=elapsedMs/1000;
+            const day=new Date().toLocaleDateString('en-CA');
+            const d=dailyStats[day]||(dailyStats[day]={seconds:0,lessons:0,typed:0,errors:0});
+            d.seconds+=elapsedMs/1000;d.lessons+=1;d.typed+=sessionCorrect;d.errors+=sessionErrors;
+            pendingLessonEvents=[];
+            if(totalLessons>1&&prevBestWpm>0&&cpm/5>prevBestWpm)pendingLessonEvents.push('New top speed!');
+            if(totalLessons>1&&prevBestScore>0&&score>prevBestScore)pendingLessonEvents.push('New top score!');
+            renderProfileCharts();
+        }
+        let practiceEventTimer=null;
+        function flashPracticeEvent(text){
+            const n=document.getElementById('practice-event');
+            if(!n)return;
+            n.textContent=text;
+            n.hidden=false;
+            clearTimeout(practiceEventTimer);
+            practiceEventTimer=setTimeout(()=>{n.hidden=true;},5000);
         }
         // Fit recent lesson speeds independently: degree 1/2/3 at 3/11/21
         // samples, R² >= .5, derivative at latest lesson; otherwise Uncertain.
@@ -3221,48 +3357,33 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
             return total>1e-9&&1-res/total>=.5?coef.reduce((sum,c,k)=>sum+k*c,0)/(n-1):null;
         }
         function updateInsights() {
-            const put=(id,text)=>document.getElementById(id).textContent=text;
-            const last=lessonHistory.at(-1), prev=lessonHistory.at(-2);
-            const elapsed=sessionStartTime ? lessonElapsed()/60000 : 0;
-            const speed=elapsed>0 ? sessionCorrect/5/elapsed : (last?.wpm || 0);
-            const acc=sessionCorrect+sessionErrors ? sessionCorrect/(sessionCorrect+sessionErrors)*100 : (last?.acc ?? 100);
-            document.getElementById('practice-speed').textContent=speed.toFixed(1)+' WPM';document.getElementById('practice-accuracy').textContent=acc.toFixed(1)+'% accuracy';
-            put('ins-speed',speed.toFixed(1)+' wpm');put('ins-accuracy',acc.toFixed(2)+'%');put('ins-score',Math.round(last?.score||0).toLocaleString());
-            const acceptedPrefix=targetKrutiText.slice(0,cursorIndex);
-            const wordCount=(acceptedPrefix.match(/ /g)||[]).length+(lessonCompleted?1:0);
-            put('ins-words',elapsed>0?(wordCount/elapsed).toFixed(1):(last?.wordsPerMinute||0).toFixed(1));
-            const delta=(id,value,suffix)=>{const node=document.getElementById(id);node.textContent=value==null?'':`(${value>=0?'+':''}${(id==='ins-score-delta'?value.toFixed(0):value.toFixed(1))}${suffix})`;node.className=value>=0?'delta-up':'delta-down';};
-            delta('ins-speed-delta',last&&prev?last.wpm-prev.wpm:null,' wpm');
-            delta('ins-accuracy-delta',last&&prev?last.acc-prev.acc:null,'%');delta('ins-score-delta',last&&prev&&last.score!=null&&prev.score!=null?last.score-prev.score:null,'');
-            const learned=KEY_PROGRESSION.filter(x=>keyHeatLevel(x)===3&&(keyStats[x.k]?.modelSamples||0)>=10).length;
-            put('ins-overall',learned+' / '+KEY_PROGRESSION.length+' learned');
-            const item=KEY_PROGRESSION[unlockedIndex], data=keyLearning[item.k], samples=data?.speeds || [];
-            const fmt=v=>v.toFixed(1)+' wpm ('+Math.round(v/targetSpeedGoal*100)+'%)';
-            put('ins-last',samples.length?fmt(samples.at(-1)):'Need samples');put('ins-top',data?.best?fmt(data.best):'Need samples');
-            const rate=learningTrend(samples);put('ins-rate',rate==null?'Uncertain':(rate>=0?'+':'')+rate.toFixed(1)+' wpm/lesson '+(rate>0?'↗':'↘'));
-            put('ins-streak',accuracyStreak?accuracyStreak+' lessons with 95%+ accuracy':'No accuracy streaks.');
-            const day=new Date().toLocaleDateString('en-CA');const seconds=dailyPractice.day===day?dailyPractice.seconds:0;
-            const percent=Math.floor(seconds/(dailyGoalMinutes*60)*100);put('ins-goal',percent+'% / '+dailyGoalMinutes+' minutes');document.getElementById('ins-goal-fill').style.width=Math.min(100,percent)+'%';
-            const bars=document.getElementById('ins-history');bars.replaceChildren();lessonHistory.slice(-12).forEach(result=>{const bar=document.createElement('i');bar.style.height=Math.max(3,Math.min(24,result.wpm/targetSpeedGoal*16))+'px';bar.title=result.wpm.toFixed(1)+' wpm, '+result.acc.toFixed(1)+'% accuracy';bars.appendChild(bar);});
-            put('ins-summary',last?'Last lesson accuracy: '+last.acc.toFixed(1)+'% · restricted-key practice':'Restricted-key practice, not a full-keyboard speed estimate.');
+            const put=(id,text)=>{const n=document.getElementById(id);if(n)n.textContent=text;};
+            const last=lessonHistory.at(-1);
+            const elapsed=sessionStartTime?lessonElapsed()/60000:0;
+            const liveSpeed=elapsed>0?sessionCorrect/5/elapsed:(last?last.wpm:0);
+            const liveAcc=sessionCorrect+sessionErrors?sessionCorrect/(sessionCorrect+sessionErrors)*100:(last?last.acc:100);
+            el.metricWpm.textContent=Math.max(0,liveSpeed).toFixed(1);
+            el.metricAccuracy.textContent=Math.round(liveAcc);
+            const recent=lessonHistory.slice(-10);
+            const avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:null;
+            const avgWpm=avg(recent.map(r=>r.wpm)), avgAcc=avg(recent.map(r=>r.acc));
+            put('metric-wpm-avg',avgWpm==null?'avg of last lessons: -':'avg of last lessons: '+avgWpm.toFixed(1)+' wpm');
+            put('metric-accuracy-avg',avgAcc==null?'avg of last lessons: -':'avg of last lessons: '+avgAcc.toFixed(1)+'%');
+            el.metricScore.textContent=Math.round(last?last.score||0:0).toLocaleString();
+            put('metric-score-best','best: '+Math.round(bestScore).toLocaleString());
+            put('p-last',last?last.wpm.toFixed(1)+' wpm · '+last.acc.toFixed(1)+'% accuracy':'none yet');
+            put('p-streak',accuracyStreak?accuracyStreak+' lesson(s) at 95%+ accuracy'+(bestStreak>accuracyStreak?' (best '+bestStreak+')':''):'No accuracy streaks.');
+            const day=new Date().toLocaleDateString('en-CA');
+            const seconds=dailyPractice.day===day?dailyPractice.seconds:0;
+            const percent=Math.floor(seconds/(dailyGoalMinutes*60)*100);
+            put('p-goal',percent+'% / '+dailyGoalMinutes+' min');
+            const fill=document.getElementById('p-goal-fill');if(fill)fill.style.width=Math.min(100,percent)+'%';
+            if(percent>=100&&goalFlashedDay!==day){goalFlashedDay=day;flashPracticeEvent('Daily goal reached: '+dailyGoalMinutes+' minutes of practice today.');}
+            const bars=document.getElementById('ins-history');
+            if(bars){bars.replaceChildren();lessonHistory.slice(-12).forEach(result=>{const bar=document.createElement('i');bar.style.height=Math.max(3,Math.min(24,result.wpm/targetSpeedGoal*16))+'px';bar.title=result.wpm.toFixed(1)+' wpm, '+result.acc.toFixed(1)+'% accuracy';bars.appendChild(bar);});}
         }
 
         function updateLiveStats() {
-            const totalSession = sessionCorrect + sessionErrors;
-            const acc = totalSession > 0 ? Math.round((sessionCorrect / totalSession) * 100) : 100;
-            el.metricAccuracy.textContent = acc;
-
-            if (sessionStartTime) {
-                const mins = lessonElapsed()/60000;
-                if (mins > 0.04) {
-                    const wpm = Math.round((sessionCorrect / 5) / mins);
-                    el.metricWpm.textContent = Math.max(0, wpm);
-                }
-            } else {
-                el.metricWpm.textContent = '0';
-            }
-
-            el.metricScore.textContent = totalTypedCount;
             updateInsights();
         }
 
@@ -3277,6 +3398,307 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
                 if (reviewMode && idx === unlockedIndex) opt.selected = true;
                 el.jumpSelect.appendChild(opt);
             });
+        }
+
+        // ─────────────────────────────────────────────────────────────
+        // PROFILE ANALYTICS - keybr-style charts computed from the real
+        // stored records: lessonHistory (one record per completed lesson),
+        // dailyStats, keyStats and keyLearning. Nothing here invents data.
+        // ─────────────────────────────────────────────────────────────
+        const ChartMath = {
+            // keybr.com's exponential smoothing: alpha = 1 / 10^(smoothness*3)
+            alpha(smoothness){ return 1/Math.pow(10, smoothness*3); },
+            smooth(values, alpha){
+                const out=[]; let v;
+                for(const x of values){ v = v===undefined ? x : alpha*x+(1-alpha)*v; out.push(v); }
+                return out;
+            },
+            // Least-squares trend over sample index: y = a + b*i
+            linRegress(ys){
+                const n=ys.length; if(n<2) return {a:ys[0]||0, b:0};
+                let sx=0,sy=0,sxx=0,sxy=0;
+                for(let i=0;i<n;i++){sx+=i;sy+=ys[i];sxx+=i*i;sxy+=i*ys[i];}
+                const d=n*sxx-sx*sx, b=d?(n*sxy-sx*sy)/d:0;
+                return {a:(sy-b*sx)/n, b};
+            },
+            niceCeil(v){
+                if(!(v>0)) return 1;
+                const p=Math.pow(10,Math.floor(Math.log10(v)));
+                for(const m of [1,2,2.5,5,10]) if(v<=m*p) return m*p;
+                return 10*p;
+            },
+            bucketWidth(range, target){
+                if(!(range>0)) return 1;
+                const raw=range/(target||20), p=Math.pow(10,Math.floor(Math.log10(raw)));
+                for(const m of [1,2,5,10]) if(raw<=m*p) return m*p;
+                return 10*p;
+            },
+            histogram(values, width){
+                const buckets=new Map();
+                for(const v of values){ const b=Math.floor(v/width)*width; buckets.set(b,(buckets.get(b)||0)+1); }
+                return [...buckets.entries()].sort((a,b)=>a[0]-b[0]).map(([x0,n])=>({x0,n}));
+            }
+        };
+
+        function svgWrap(width,height,inner){
+            return `<svg viewBox="0 0 ${width} ${height}" width="100%" height="${height}" role="img" style="display:block;max-width:100%">${inner}</svg>`;
+        }
+        function speedColor(ratio){
+            // 0 = far below target (red), 0.8 = close (amber), >=1 = at target (green)
+            const r=Math.max(0,Math.min(1.25,ratio))/1.25;
+            const hue=r<0.64?4+(r/0.64)*41:45+((r-0.64)/0.36)*95;
+            return `hsl(${hue.toFixed(0)} 70% 48%)`;
+        }
+        function fmtTime(totalSeconds){
+            const sec=Math.max(0,Math.round(totalSeconds));
+            const h=Math.floor(sec/3600), m=Math.floor(sec%3600/60), s=sec%60;
+            return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+        }
+        function profTile(label,value){
+            return `<div class="stat-card"><span class="s-label">${label}</span><div class="s-value" style="font-size:1.12rem">${value}</div></div>`;
+        }
+        function renderSummaryTiles(){
+            const all=document.getElementById('prof-tiles-all'); if(!all) return;
+            const valid=lessonHistory.filter(r=>r&&typeof r.wpm==='number'&&r.wpm>0);
+            const avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:0;
+            all.innerHTML=
+                profTile('Time',fmtTime(totalPracticeSeconds))+
+                profTile('Lessons',totalLessons)+
+                profTile('Top speed',valid.length?bestLessonWpm.toFixed(1)+' wpm':'N/A')+
+                profTile('Average speed',valid.length?avg(valid.map(r=>r.wpm)).toFixed(1)+' wpm':'N/A')+
+                profTile('Top accuracy',valid.length?bestLessonAcc.toFixed(1)+'%':'N/A')+
+                profTile('Average accuracy',valid.length?avg(valid.map(r=>r.acc)).toFixed(1)+'%':'N/A');
+            const day=new Date().toLocaleDateString('en-CA');
+            const today=(dailyStats&&dailyStats[day])||{seconds:0,lessons:0,typed:0,errors:0};
+            const todayLessons=valid.filter(r=>r.ts&&new Date(r.ts).toLocaleDateString('en-CA')===day);
+            document.getElementById('prof-tiles-today').innerHTML=
+                profTile('Time',fmtTime(today.seconds))+
+                profTile('Lessons',today.lessons)+
+                profTile('Top speed',todayLessons.length?Math.max(...todayLessons.map(r=>r.wpm)).toFixed(1)+' wpm':'N/A')+
+                profTile('Average speed',todayLessons.length?avg(todayLessons.map(r=>r.wpm)).toFixed(1)+' wpm':'N/A')+
+                profTile('Top accuracy',todayLessons.length?Math.max(...todayLessons.map(r=>r.acc)).toFixed(1)+'%':'N/A')+
+                profTile('Average accuracy',todayLessons.length?avg(todayLessons.map(r=>r.acc)).toFixed(1)+'%':'N/A');
+            const line=document.getElementById('prof-streak-line');
+            if(line)line.textContent=(accuracyStreak||bestStreak)
+                ?`Accuracy streaks: current ${accuracyStreak} lesson(s) at 95%+ accuracy · longest ${bestStreak}.`
+                :'No accuracy streaks yet - finish a lesson at 95%+ accuracy to start one.';
+        }
+
+        function renderSpeedChart(){
+            const box=document.getElementById('chart-speed'); if(!box) return;
+            const legend=document.getElementById('chart-speed-legend');
+            const data=lessonHistory.filter(r=>r&&typeof r.wpm==='number'&&r.wpm>0).slice(-150);
+            if(data.length<2){
+                box.innerHTML='<div class="chart-empty">Not enough data yet - complete a couple of lessons and this chart draws itself.</div>';
+                if(legend)legend.textContent='';
+                return;
+            }
+            const slider=document.getElementById('smoothness');
+            const s=(slider?Number(slider.value):50)/100;
+            const alpha=ChartMath.alpha(s);
+            const speed=ChartMath.smooth(data.map(r=>r.wpm),alpha);
+            const acc=ChartMath.smooth(data.map(r=>typeof r.acc==='number'?r.acc:100),alpha);
+            const keys=ChartMath.smooth(data.map(r=>r.keys||0),alpha);
+            const W=720,H=300,padL=46,padR=12,padT=14,padB=30;
+            const iw=W-padL-padR, ih=H-padT-padB;
+            const maxSpeed=ChartMath.niceCeil(Math.max(...speed,1)*1.1);
+            let accMin=Math.floor((Math.min(...acc)-1)/5)*5, accMax=Math.ceil((Math.max(...acc)+1)/5)*5;
+            if(accMax-accMin<5){accMin=Math.max(0,Math.min(accMin,97.5));accMax=Math.min(100,accMin+5);accMin=accMax-5;}
+            const keyMax=Math.max(3,ChartMath.niceCeil(Math.max(...keys,0)));
+            const n=data.length;
+            const X=i=>padL+(n===1?iw/2:i/(n-1)*iw);
+            const Ys=v=>padT+ih*(1-v/maxSpeed);
+            const Ya=v=>padT+ih*(1-(v-accMin)/(accMax-accMin));
+            const Yk=v=>padT+ih*(1-Math.min(v,keyMax)/keyMax);
+            let g='';
+            for(let t=0;t<=5;t++){
+                const y=padT+ih*t/5, val=maxSpeed*(1-t/5);
+                g+=`<line x1="${padL}" y1="${y.toFixed(1)}" x2="${W-padR}" y2="${y.toFixed(1)}" stroke="var(--border-subtle)" stroke-width="1"/>`;
+                g+=`<text x="${padL-6}" y="${(y+4).toFixed(1)}" font-size="11" text-anchor="end">${val%1?val.toFixed(1):val}</text>`;
+            }
+            g+=`<text x="${padL}" y="${padT-5}" font-size="10">WPM</text>`;
+            const step=Math.max(1,Math.ceil(n/12));
+            for(let i=0;i<n;i+=step)g+=`<text x="${X(i).toFixed(1)}" y="${H-8}" font-size="10" text-anchor="middle">${i+1}</text>`;
+            const dots=(ys,Y,color,r)=>ys.map((v,i)=>`<circle cx="${X(i).toFixed(1)}" cy="${Y(v).toFixed(1)}" r="${r}" fill="${color}"/>`).join('');
+            g+=dots(keys,Yk,'#a78bfa',2.5);
+            g+=dots(acc,Ya,'var(--accent)',2.5);
+            g+=dots(speed,Ys,'var(--correct)',3);
+            const reg=ChartMath.linRegress(speed);
+            g+=`<line x1="${X(0).toFixed(1)}" y1="${Ys(Math.max(0,reg.a)).toFixed(1)}" x2="${X(n-1).toFixed(1)}" y2="${Ys(Math.max(0,reg.a+reg.b*(n-1))).toFixed(1)}" stroke="var(--correct)" stroke-width="1.6" stroke-dasharray="6 4" opacity=".85"/>`;
+            box.innerHTML=svgWrap(W,H,g);
+            if(legend)legend.innerHTML=
+                `<span><i class="lg-dot" style="background:var(--correct)"></i>typing speed in WPM (left axis; dashed trend ${reg.b>=0?'+':''}${reg.b.toFixed(2)} wpm/lesson)</span>`+
+                `<span><i class="lg-dot" style="background:var(--accent)"></i>typing accuracy (scaled ${accMin}-${accMax}%)</span>`+
+                `<span><i class="lg-dot" style="background:#a78bfa"></i>keys in lesson (scaled 0-${keyMax})</span>`+
+                `<span>horizontal axis: lesson number · smoothing α=${alpha.toFixed(4)}</span>`;
+        }
+
+        function renderSpeedDist(){
+            const box=document.getElementById('chart-speed-dist'); if(!box) return;
+            const values=lessonHistory.filter(r=>r&&r.wpm>0).map(r=>r.wpm);
+            if(values.length<3){box.innerHTML='<div class="chart-empty">Not enough data yet - finish a few lessons.</div>';return;}
+            const min=Math.min(...values), max=Math.max(...values);
+            const width=ChartMath.bucketWidth(max-min||max||1);
+            const buckets=ChartMath.histogram(values,width);
+            const maxN=Math.max(...buckets.map(b=>b.n));
+            const W=720,H=230,padL=40,padR=14,padT=14,padB=34;
+            const iw=W-padL-padR, ih=H-padT-padB;
+            const x0min=buckets[0].x0, x1max=buckets[buckets.length-1].x0+width;
+            const X=v=>padL+(v-x0min)/(x1max-x0min)*iw;
+            const bw=Math.max(2.5,iw*width/(x1max-x0min)-3);
+            let g='';
+            for(let t=0;t<=4;t++){
+                const y=padT+ih*t/4, val=Math.round(maxN*(1-t/4));
+                g+=`<line x1="${padL}" y1="${y.toFixed(1)}" x2="${W-padR}" y2="${y.toFixed(1)}" stroke="var(--border-subtle)"/>`;
+                g+=`<text x="${padL-6}" y="${(y+4).toFixed(1)}" font-size="11" text-anchor="end">${val}</text>`;
+            }
+            g+=`<text x="${padL}" y="${padT-5}" font-size="10">lessons</text>`;
+            const labelEvery=Math.max(1,Math.ceil(buckets.length/9));
+            buckets.forEach((b,i)=>{
+                const h=ih*b.n/maxN;
+                g+=`<rect x="${X(b.x0).toFixed(1)}" y="${(padT+ih-h).toFixed(1)}" width="${bw.toFixed(1)}" height="${h.toFixed(1)}" fill="var(--correct)" opacity=".8"><title>${b.n} lesson(s) at ${b.x0.toFixed(1)}-${(b.x0+width).toFixed(1)} wpm</title></rect>`;
+                if(i%labelEvery===0)g+=`<text x="${(X(b.x0)+bw/2).toFixed(1)}" y="${H-16}" font-size="10" text-anchor="middle">${b.x0%1?b.x0.toFixed(1):b.x0}</text>`;
+            });
+            g+=`<text x="${W/2}" y="${H-2}" font-size="10" text-anchor="middle">lesson speed (wpm), bucket width ${width%1?width.toFixed(1):width}</text>`;
+            const avg=values.reduce((a,b)=>a+b,0)/values.length;
+            g+=`<line x1="${X(avg).toFixed(1)}" y1="${padT}" x2="${X(avg).toFixed(1)}" y2="${padT+ih}" stroke="var(--error)" stroke-width="1.6" stroke-dasharray="6 4"/>`;
+            g+=`<text x="${Math.min(X(avg)+6,W-110).toFixed(1)}" y="${padT+12}" font-size="11" fill="var(--error)">avg ${avg.toFixed(1)} wpm</text>`;
+            box.innerHTML=svgWrap(W,H,g);
+        }
+
+        function renderKeySpeedChart(){
+            const box=document.getElementById('chart-key-speed'); if(!box) return;
+            const rows=KEY_PROGRESSION
+                .filter(item=>{const s=keyStats[item.k];return s&&s.modelTtt>0&&(s.modelSamples||0)>=1;})
+                .map(item=>({h:item.h,wpm:12000/keyStats[item.k].modelTtt,samples:keyStats[item.k].modelSamples||0}));
+            if(!rows.length){box.innerHTML='<div class="chart-empty">No per-key timings yet - they appear after your first measured lesson.</div>';return;}
+            const W=720,H=260,padL=42,padR=12,padT=16,padB=42;
+            const iw=W-padL-padR, ih=H-padT-padB;
+            const maxV=ChartMath.niceCeil(Math.max(targetSpeedGoal*1.2,...rows.map(r=>r.wpm)));
+            const bw=Math.min(34,iw/rows.length-4);
+            let g='';
+            for(let t=0;t<=4;t++){
+                const y=padT+ih*t/4, val=maxV*(1-t/4);
+                g+=`<line x1="${padL}" y1="${y.toFixed(1)}" x2="${W-padR}" y2="${y.toFixed(1)}" stroke="var(--border-subtle)"/>`;
+                g+=`<text x="${padL-6}" y="${(y+4).toFixed(1)}" font-size="11" text-anchor="end">${val%1?val.toFixed(1):val}</text>`;
+            }
+            g+=`<text x="8" y="${padT+2}" font-size="10">WPM</text>`;
+            const ty=padT+ih*(1-targetSpeedGoal/maxV);
+            g+=`<line x1="${padL}" y1="${ty.toFixed(1)}" x2="${W-padR}" y2="${ty.toFixed(1)}" stroke="var(--error)" stroke-dasharray="6 4" stroke-width="1.5"/>`;
+            g+=`<text x="${W-padR-4}" y="${(ty-5).toFixed(1)}" font-size="11" text-anchor="end" fill="var(--error)">target ${targetSpeedGoal} wpm</text>`;
+            rows.forEach((r,i)=>{
+                const cx=padL+(i+.5)*iw/rows.length;
+                const h=ih*Math.min(r.wpm,maxV)/maxV;
+                const ratio=r.wpm/targetSpeedGoal;
+                const color=ratio>=1?'var(--correct)':ratio>=.8?'#eab308':'var(--error)';
+                g+=`<rect x="${(cx-bw/2).toFixed(1)}" y="${(padT+ih-h).toFixed(1)}" width="${bw.toFixed(1)}" height="${h.toFixed(1)}" fill="${color}"><title>${r.h}: ${r.wpm.toFixed(1)} wpm over ${r.samples} clean hit(s)</title></rect>`;
+                g+=`<text x="${cx.toFixed(1)}" y="${(padT+ih+16).toFixed(1)}" font-size="12" text-anchor="middle" style="font-family:'Noto Sans Devanagari'">${r.h}</text>`;
+                g+=`<text x="${cx.toFixed(1)}" y="${(padT+ih+29).toFixed(1)}" font-size="9" text-anchor="middle" fill="var(--text-faint)">${r.wpm.toFixed(0)}</text>`;
+            });
+            box.innerHTML=svgWrap(W,H,g);
+        }
+
+        function renderKeyFreqChart(){
+            const box=document.getElementById('chart-key-freq'); if(!box) return;
+            const rows=KEY_PROGRESSION
+                .map(item=>({h:item.h,hits:(keyStats[item.k]&&keyStats[item.k].hits)||0,errors:(keyStats[item.k]&&keyStats[item.k].errors)||0}))
+                .filter(r=>r.hits+r.errors>0);
+            if(!rows.length){box.innerHTML='<div class="chart-empty">No keystrokes recorded yet.</div>';return;}
+            const W=720,H=250,padL=46,padR=12,padT=16,padB=42;
+            const iw=W-padL-padR, ih=H-padT-padB;
+            const maxC=ChartMath.niceCeil(Math.max(...rows.map(r=>Math.max(r.hits,r.errors))));
+            const group=iw/rows.length, bw=Math.min(16,group/2-2);
+            let g='';
+            for(let t=0;t<=4;t++){
+                const y=padT+ih*t/4, val=Math.round(maxC*(1-t/4));
+                g+=`<line x1="${padL}" y1="${y.toFixed(1)}" x2="${W-padR}" y2="${y.toFixed(1)}" stroke="var(--border-subtle)"/>`;
+                g+=`<text x="${padL-6}" y="${(y+4).toFixed(1)}" font-size="11" text-anchor="end">${val}</text>`;
+            }
+            g+=`<text x="${padL}" y="${padT-5}" font-size="10">count</text>`;
+            rows.forEach((r,i)=>{
+                const cx=padL+(i+.5)*group;
+                const hh=ih*r.hits/maxC, eh=ih*r.errors/maxC;
+                g+=`<rect x="${(cx-bw-1).toFixed(1)}" y="${(padT+ih-hh).toFixed(1)}" width="${bw}" height="${hh.toFixed(1)}" fill="var(--correct)"><title>${r.h}: ${r.hits} hits</title></rect>`;
+                g+=`<rect x="${(cx+1).toFixed(1)}" y="${(padT+ih-eh).toFixed(1)}" width="${bw}" height="${eh.toFixed(1)}" fill="var(--error)"><title>${r.h}: ${r.errors} misses</title></rect>`;
+                g+=`<text x="${cx.toFixed(1)}" y="${(padT+ih+15).toFixed(1)}" font-size="11" text-anchor="middle" style="font-family:'Noto Sans Devanagari'">${r.h}</text>`;
+                const miss=Math.round(r.errors/(r.hits+r.errors)*100);
+                g+=`<text x="${cx.toFixed(1)}" y="${(padT+ih+28).toFixed(1)}" font-size="9" text-anchor="middle" fill="var(--text-faint)">${miss}% miss</text>`;
+            });
+            box.innerHTML=svgWrap(W,H,g);
+        }
+
+        function renderProgressOverview(){
+            const box=document.getElementById('chart-progress'); if(!box) return;
+            box.replaceChildren();
+            const rows=KEY_PROGRESSION
+                .map(item=>({item,samples:((keyLearning[item.k]||{}).speeds)||[]}))
+                .filter(r=>r.samples.length>=2);
+            if(!rows.length){box.innerHTML='<div class="chart-empty">Not enough per-key history yet - each key needs two measured lessons.</div>';return;}
+            for(const r of rows){
+                const row=document.createElement('div');row.className='pg-row';
+                const label=document.createElement('span');label.className='pg-key';label.textContent=r.item.h;row.appendChild(label);
+                const cells=document.createElement('span');cells.className='pg-cells';
+                r.samples.slice(-24).forEach(wpm=>{
+                    const c=document.createElement('i');
+                    c.style.background=speedColor(wpm/targetSpeedGoal);
+                    c.title=`${r.item.h}: ${wpm.toFixed(1)} wpm (target ${targetSpeedGoal})`;
+                    cells.appendChild(c);
+                });
+                row.appendChild(cells);box.appendChild(row);
+            }
+        }
+
+        function renderCalendar(){
+            const box=document.getElementById('chart-calendar'); if(!box) return;
+            box.replaceChildren();
+            const days=Object.keys(dailyStats||{}).filter(d=>dailyStats[d]&&dailyStats[d].lessons>0);
+            if(!days.length){box.innerHTML='<div class="chart-empty">No practice days recorded yet.</div>';return;}
+            const goalSeconds=dailyGoalMinutes*60;
+            const now=new Date();
+            const months=[];
+            for(let back=3;back>=0;back--)months.push(new Date(now.getFullYear(),now.getMonth()-back,1));
+            months.forEach(m=>{
+                const y=m.getFullYear(), mo=m.getMonth();
+                const wrap=document.createElement('div');wrap.className='cal-month';
+                const title=document.createElement('h4');title.textContent=m.toLocaleDateString('en-GB',{month:'long',year:'numeric'});wrap.appendChild(title);
+                const grid=document.createElement('div');grid.className='cal-grid';
+                ['M','T','W','T','F','S','S'].forEach(d=>{const b=document.createElement('b');b.textContent=d;grid.appendChild(b);});
+                const first=new Date(y,mo,1);
+                const lead=(first.getDay()+6)%7; // Monday-first offset
+                for(let i=0;i<lead;i++)grid.appendChild(document.createElement('span'));
+                const daysIn=new Date(y,mo+1,0).getDate();
+                for(let d=1;d<=daysIn;d++){
+                    const key=`${y}-${String(mo+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+                    const cell=document.createElement('span');cell.className='cal-cell';
+                    const rec=dailyStats[key];
+                    if(rec&&rec.lessons>0){
+                        const frac=goalSeconds?rec.seconds/goalSeconds:0;
+                        const op=frac>=1?1:frac>=.5?.6:frac>0?.3:0;
+                        if(op>0)cell.style.background=`color-mix(in srgb, var(--correct) ${Math.round(op*100)}%, transparent)`;
+                        cell.title=`${key}: ${Math.round(rec.seconds/60)} min, ${rec.lessons} lesson(s)`;
+                    }else{
+                        cell.title=key+': no practice';
+                    }
+                    grid.appendChild(cell);
+                }
+                wrap.appendChild(grid);
+                box.appendChild(wrap);
+            });
+            const legend=document.createElement('div');legend.className='cal-legend';
+            legend.append('Less ');
+            [0.3,0.6,1].forEach(op=>{const c=document.createElement('span');c.className='cal-cell';c.style.background=`color-mix(in srgb, var(--correct) ${op*100}%, transparent)`;legend.appendChild(c);});
+            legend.append(' More of your daily goal');
+            box.appendChild(legend);
+        }
+
+        function renderProfileCharts(){
+            renderSummaryTiles();
+            renderSpeedChart();
+            renderSpeedDist();
+            renderKeySpeedChart();
+            renderKeyFreqChart();
+            renderProgressOverview();
+            renderCalendar();
         }
 
         function updateProfileTable() {
@@ -3310,14 +3732,8 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
                 el.profileTableBody.appendChild(tr);
             });
 
-            el.profTotalTyped.textContent = totalTypedCount;
-            el.profTotalErrors.textContent = totalErrorsCount;
-            const overallTot = totalTypedCount;
-            const overallAcc = overallTot > 0
-                ? Math.round(((overallTot - totalErrorsCount) / overallTot) * 100)
-                : 100;
-            el.profOverallAcc.textContent = `${overallAcc}%`;
-            el.profMasteredCount.textContent = `${masteredCount} / ${KEY_PROGRESSION.length}`;
+            const masteredLine=document.getElementById('prof-mastered-line');
+            if(masteredLine)masteredLine.textContent=`${masteredCount} / ${KEY_PROGRESSION.length} keys learned · ${totalTypedCount.toLocaleString()} lifetime keystrokes · ${Math.round((1-totalErrorsCount/Math.max(1,totalTypedCount))*100)}% lifetime accuracy`;
         }
 
         function renderAltCodesCards() {
@@ -3697,44 +4113,21 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
                     if(cleared)sound.unlock();
                     saveStorage();
                     const last=lessonHistory.at(-1);
-                    document.getElementById('result-text').textContent=last.wpm.toFixed(1)+' WPM · '+last.acc.toFixed(1)+'% accuracy. '+(cleared?'Key cleared. Next: '+KEY_PROGRESSION[unlockedIndex].h:state.ready?'Ready. Continue to practice.':!state.recentAccuracy?'Reach 95% accuracy in a completed lesson.':state.samples<10?'Need 10 clean target timings.':!state.starterReady?'Calibrate each starter key at goal speed.':'Best target speed is below your '+targetSpeedGoal+' WPM goal.');
-                    // keybr-style everywhere: flash the result briefly and roll
-                    // straight on - no Enter/Continue. Guided lessons extend the
-                    // same text; books/custom advance to the next paragraphs.
-                    if(textSource==='words'){
-                        extendLessonText();
-                    } else {
-                        regenerateLesson();
-                    }
-                    const res=document.getElementById('lesson-result');
-                    document.getElementById('continue-btn').style.display='none';
-                    res.hidden=false;
-                    clearTimeout(toastTimer);toastTimer=setTimeout(()=>{res.hidden=true;},3600);
-                    updateDisplay();
+                    // keybr-style everywhere: the finished lesson's stats fold into
+                    // the metrics and history, and a freshly generated lesson
+                    // REPLACES the text instantly - a separate lesson, not appended
+                    // text, and no Enter/Continue/toast.
+                    const guidance=cleared?'Key cleared. Next: '+KEY_PROGRESSION[unlockedIndex].h:state.ready?'Ready. Continue to practice.':!state.recentAccuracy?'Reach 95% accuracy in a completed lesson.':state.samples<10?'Need 10 clean target timings.':!state.starterReady?'Calibrate each starter key at goal speed.':'Best target speed is below your '+targetSpeedGoal+' WPM goal.';
+                    flashPracticeEvent('Lesson: '+last.wpm.toFixed(1)+' WPM · '+last.acc.toFixed(1)+'% accuracy'+(pendingLessonEvents.length?' · '+pendingLessonEvents.join(' · '):'')+' · '+guidance);
+                    pendingLessonEvents=[];
+                    regenerateLesson();
                 }
             }
         }
 
-        function extendLessonText() {
-            // Append a fresh segment so practice never stops at a lesson boundary.
-            const next = generateLessonText();
-            currentLessonText = currentLessonText + ' ' + next;
-            targetKrutiText = targetKrutiText + ' ' + unicodeToKrutiDev(next);
-            lessonCompleted = false; lessonEndedAt = null; pausedAt = null; pausedTotal = 0;
-            lessonKeyTimes = {}; measurementEvents = []; previousAttemptWrong = false; lessonActiveSeconds = 0; activityAt = null;
-            sessionCorrect = 0; sessionErrors = 0; sessionStartTime = null; lastKeystrokeTime = null;
-            rawKeys = []; practiceAlias = '';
-            updateLessonPreview();
-        }
-
         function regenerateLesson() {
-            clearTimeout(toastTimer);
-            document.getElementById('continue-btn').style.display='';
-            clearTimeout(nextLessonTimer);
-            nextLessonTimer = null;
             lessonCompleted = false;
             pausedAt=null;pausedTotal=0;lessonEndedAt=null;
-            document.getElementById('lesson-result').hidden=true;
             pendingUnlockIndex = null;
             lessonKeyTimes = {}; measurementEvents=[]; previousAttemptWrong=false; lessonActiveSeconds = 0; activityAt = null;
             currentLessonText = generateLessonText();
@@ -4072,8 +4465,26 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
 
         window.addEventListener('blur',pauseLesson);
         document.addEventListener('visibilitychange',()=>{if(document.hidden)pauseLesson();});
-                document.getElementById('continue-btn').onclick=()=>{regenerateLesson();el.hiddenInput.focus({preventScroll:true});};
-        document.addEventListener('keydown',e=>{if(e.key==='Enter'&&lessonCompleted&&document.getElementById('panel-practice').classList.contains('active')){e.preventDefault();document.getElementById('continue-btn').click();}});
+        const exportBtn=document.getElementById('export-progress-btn');
+        if(exportBtn)exportBtn.onclick=()=>{
+            let data={};
+            try{data=JSON.parse(localStorage.getItem('hikeybr_store_v3')||'{}');}catch(_){}
+            const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+            const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='hikeybr-progress.json';a.click();
+            setTimeout(()=>URL.revokeObjectURL(a.href),5000);
+        };
+        const importFile=document.getElementById('import-progress-file');
+        if(importFile)importFile.addEventListener('change',e=>{
+            const f=e.target.files&&e.target.files[0];if(!f)return;
+            const r=new FileReader();
+            r.onload=()=>{try{
+                const data=JSON.parse(r.result);
+                if(!data||typeof data!=='object'||Array.isArray(data))throw 0;
+                localStorage.setItem('hikeybr_store_v3',JSON.stringify(data));
+                location.reload();
+            }catch(_){alert('That file is not a valid HiKeybr progress export.');}};
+            r.readAsText(f);
+        });
         // Navigation Tabs switching
         document.querySelectorAll('.nav-tab[data-target]').forEach(tab => {
             tab.addEventListener('click', () => {
@@ -4089,6 +4500,7 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
 
                 if (target === 'profile') {
                     updateProfileTable();
+                    renderProfileCharts();
                 }
                 if (target === 'altlab') {
                     renderAltCodesCards();
@@ -4306,6 +4718,8 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
         document.getElementById('lesson-style-select').addEventListener('change',e=>{lessonStyle=e.target.value;applyDisplayPreferences();saveStorage();});
         document.getElementById('key-font-select').addEventListener('change',e=>{keyFont=e.target.value;applyDisplayPreferences();saveStorage();});
         document.getElementById('daily-goal-select').addEventListener('change',e=>{dailyGoalMinutes=Number(e.target.value);saveStorage();updateInsights();});
+        const smoothSlider=document.getElementById('smoothness');
+        if(smoothSlider)smoothSlider.addEventListener('input',renderSpeedChart);
 
         // Reset Modal Handlers
         function openResetModal() {
@@ -4374,7 +4788,14 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
             regenerateLesson,
             unicodeToKrutiDev,
             updateDisplay,
-            calculateConfidence
+            calculateConfidence,
+            get lessonHistory() { return lessonHistory; },
+            get dailyStats() { return dailyStats; },
+            get keyLearning() { return keyLearning; },
+            get keyStats() { return keyStats; },
+            flashPracticeEvent,
+            renderProfileCharts,
+            ChartMath
         };
 
         setTimeout(() => el.hiddenInput.focus({preventScroll:true}), 120);
