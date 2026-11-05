@@ -1661,6 +1661,11 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
         }
         :root[data-lesson-style="spaced"] .text-stream-container { height: calc(var(--practice-lines, 3) * 2.0667em) !important; max-height: calc(var(--practice-lines, 3) * 2.0667em) !important; }
 
+        /* Never show legacy-encoded text before its font is ready (reload with
+           a saved DevLys/KrutiDev variant would otherwise flash Latin glyphs). */
+        :root:not([data-font-ready]) .text-stream-container,
+        :root:not([data-font-ready]) .text-stream-container * { color: transparent !important; }
+
         /* Real-keyboard proportions: every row fills the frame, keys sized in
            standard unit ratios, spacebar ~6.25u wide instead of soaking the row. */
         @media (min-width: 651px) {
@@ -4935,6 +4940,7 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
         $id('opt-font').onchange=async e=>{
             const requested=e.target.value;
             await ensureFontLoaded(requested);
+            document.documentElement.dataset.fontReady='1';
             displayFont=requested;if(document.getElementById('display-font-select'))document.getElementById('display-font-select').value=displayFont;saveStorage();applyDisplayPreferences();regenerateLesson();
         };
         $id('opt-text-size').oninput=e=>{opts.textSize=parseInt(e.target.value,10)||32;$id('opt-text-size-val').textContent=opts.textSize+'px';applyPracticeTextPrefs();saveStorage();};
@@ -5062,6 +5068,7 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
             const font=FONT_REGISTRY[requested];
             if(!font)return false;
             await ensureFontLoaded(requested);
+            document.documentElement.dataset.fontReady='1';
             displayFont=requested;saveStorage();updateDisplay();
             document.getElementById('font-status').textContent=font.label+' · Remington legacy encoding · every keystroke highlights its own glyph'+(requested==='devlys010'?' · Bundled copy; matches the standard exam DevLys 010.':requested==='devlys040'?' · Matches the standard exam DevLys 040.':'');
             return true;
@@ -5117,6 +5124,11 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
         renderAltCodesCards();
         Object.keys(FONT_REGISTRY).forEach(ensureFontLoaded);
         loadStorage();
+        if (displayFont === 'krutidev' || displayFont === 'devlys010') {
+            document.documentElement.dataset.fontReady = '1';
+        } else {
+            ensureFontLoaded(displayFont).then(() => { document.documentElement.dataset.fontReady = '1'; });
+        }
         applyDisplayPreferences();
         populateTextSources();
         populateJumpSelect();
