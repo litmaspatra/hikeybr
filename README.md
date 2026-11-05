@@ -17,7 +17,7 @@
   - **Reph `र्` (`Shift + Z`)**: Typed after the consonant, moving above automatically.
 - **25 Words per Lesson**: Keybr standard phonotactic drills generated strictly from currently unlocked keys.
 - **Speed-Maintenance Progression**: Keys unlock at the end of a lesson after banking 10 clean timings at the target speed (e.g. 25 WPM) with at least 95% lesson accuracy.
-- **Alt-Codes Lab & Interactive Reference**: Built-in reference and sandbox for Hindi special conjuncts (e.g., `Alt + 0204` for `क्त`, or the equivalent Remington sequence `Dr`: Shift+D then `r`).
+- **Alt-Codes Lab & Interactive Reference**: Built-in reference and sandbox for Hindi special conjuncts (e.g., `Alt + 0228` for `क्त`, or the equivalent Remington sequence `Dr`: Shift+D then `r`).
 
 ---
 

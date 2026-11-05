@@ -1109,6 +1109,38 @@
             margin-top: 2px;
         }
 
+        /* Profile table: make horizontal scrolling obvious on narrow screens */
+        .table-wrap {
+            position: relative;
+        }
+
+        .table-scroll {
+            overflow-x: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border) transparent;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .table-scroll::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .table-scroll::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px;
+        }
+
+        .table-wrap.can-scroll:not(.at-end)::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 56px;
+            pointer-events: none;
+            background: linear-gradient(to right, rgba(0,0,0,0), var(--surface-card) 90%);
+        }
+
         .data-table {
             width: 100%;
             border-collapse: collapse;
@@ -1996,7 +2028,7 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
 
                 <h3 class="prof-h">Key details <span id="prof-mastered-line" class="prof-mastered"></span></h3>
 
-            <div class="table-scroll"><table class="data-table">
+            <div class="table-wrap"><div class="table-scroll"><table class="data-table">
                     <thead>
                         <tr>
                             <th>Hindi</th>
@@ -2009,7 +2041,7 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
                         </tr>
                     </thead>
                     <tbody id="profile-table-body"></tbody>
-                </table></div>
+                </table></div></div>
             </div>
         </section>
 
@@ -3547,6 +3579,7 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
             el.alphabetContainer.innerHTML = '';
 
             KEY_PROGRESSION.forEach((item, idx) => {
+                if (!showAllKeys && idx > highestUnlocked) return;
                 const badge = document.createElement('div');
                 badge.className = 'ak-badge';
                 badge.title = `${item.h} (Key ${item.k.toUpperCase()}) — ${item.d}\nFinger: ${item.finger}`;
@@ -3717,7 +3750,12 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
             const put=(id,text)=>{const n=document.getElementById(id);if(n)n.textContent=text;};
             const last=lessonHistory.at(-1);
             const elapsed=sessionStartTime?lessonElapsed()/60000:0;
-            const liveSpeed=elapsed>0?sessionCorrect/5/elapsed:(last?last.wpm:0);
+            // A brand-new session has too little data for a meaningful speed:
+            // a few fast keystrokes inside the first seconds otherwise flash
+            // absurd readings (thousands of WPM). Show the last finished
+            // lesson's speed until 8s and 12+ accepted keystrokes are in.
+            const sessionWarmed=sessionStartTime&&elapsed>=8/60&&sessionCorrect>=12;
+            const liveSpeed=sessionWarmed?sessionCorrect/5/elapsed:(last?last.wpm:0);
             const liveAcc=sessionCorrect+sessionErrors?sessionCorrect/(sessionCorrect+sessionErrors)*100:(last?last.acc:100);
             el.metricWpm.textContent=Math.max(0,liveSpeed).toFixed(1);
             el.metricAccuracy.textContent=Math.round(liveAcc);
@@ -4058,21 +4096,25 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
             renderCalendar();
         }
 
-        let showAllProfileKeys = false;
+        let showAllKeys = false;
+        {
+            const toggleBtn = document.getElementById('toggle-locked-keys-btn');
+            if (toggleBtn) toggleBtn.onclick = () => {
+                showAllKeys = !showAllKeys;
+                toggleBtn.textContent = showAllKeys ? 'Hide Locked Keys' : 'Show All 70 Keys';
+                updateAlphabetStrip();
+                updateProfileTable();
+            };
+        }
         function updateProfileTable() {
             if (!el.profileTableBody) return;
             el.profileTableBody.innerHTML = '';
-            const toggleBtn = document.getElementById('toggle-locked-keys-btn');
-            if (toggleBtn) {
-                toggleBtn.textContent = showAllProfileKeys ? 'Hide Locked Keys' : 'Show All 70 Keys';
-                toggleBtn.onclick = () => { showAllProfileKeys = !showAllProfileKeys; updateProfileTable(); };
-            }
 
             let masteredCount = 0;
 
             KEY_PROGRESSION.forEach((item, idx) => {
                 const s = keyStats[item.k] || { hits: 0, errors: 0 };
-                if (!showAllProfileKeys && idx > unlockedIndex && (s.hits || 0) === 0) return;
+                if (!showAllKeys && idx > unlockedIndex && (s.hits || 0) === 0) return;
                 const total = s.hits + s.errors;
                 const acc = total > 0 ? Math.round((s.hits / total) * 100) + '%' : '—';
                 const isMastered = keyHeatLevel(item)===3 && (s.modelSamples||0)>=10;
@@ -4098,7 +4140,21 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
 
             const masteredLine=document.getElementById('prof-mastered-line');
             if(masteredLine)masteredLine.textContent=`${masteredCount} / ${KEY_PROGRESSION.length} keys learned · ${totalTypedCount.toLocaleString()} lifetime keystrokes · ${Math.round((1-totalErrorsCount/Math.max(1,totalTypedCount))*100)}% lifetime accuracy`;
+            refreshTableScrollHint();
         }
+
+        // Show/hide the right-edge fade signalling the table scrolls sideways.
+        function refreshTableScrollHint(){
+            document.querySelectorAll('.table-wrap').forEach(wrap=>{
+                const scroller=wrap.querySelector('.table-scroll');
+                if(!scroller)return;
+                const can=scroller.scrollWidth>scroller.clientWidth+2;
+                wrap.classList.toggle('can-scroll',can);
+                wrap.classList.toggle('at-end',!can||scroller.scrollLeft>=scroller.scrollWidth-scroller.clientWidth-2);
+            });
+        }
+        window.addEventListener('resize',refreshTableScrollHint);
+        document.querySelectorAll('.table-scroll').forEach(s=>s.addEventListener('scroll',refreshTableScrollHint,{passive:true}));
 
         function renderAltCodesCards() {
             if (!el.altCardsGrid) return;

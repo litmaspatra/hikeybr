@@ -8,56 +8,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-<!DOCTYPE html>
-<html lang="hi" data-theme="dark">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HiKeymash — Hindi Literature Remington (GAIL) Typing Match</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-<!DOCTYPE html>
-<html lang="hi" data-theme="dark">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HiKeymash — Hindi Literature Remington (GAIL) Typing Match</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-<!DOCTYPE html>
-<html lang="hi" data-theme="dark">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HiKeymash — Hindi Literature Remington (GAIL) Typing Match</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-<!DOCTYPE html>
-<html lang="hi" data-theme="dark">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HiKeymash — Hindi Literature Remington (GAIL) Typing Match</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-<!DOCTYPE html>
-<html lang="hi" data-theme="dark">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HiKeymash — Hindi Literature Remington (GAIL) Typing Test</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
         /* ═══════════════════════════════════════════════════════════
            AUTHENTIC KRUTIDEV 010 FONT (Base64 Embedded + Fallback)
            ═══════════════════════════════════════════════════════════ */
@@ -1958,6 +1908,18 @@
             from { opacity: 0; transform: scale(0.98); }
             to { opacity: 1; transform: scale(1); }
         }
+        /* Visually hidden, still exposed to screen readers */
+        .sr-only {
+            position: absolute !important;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0 0 0 0);
+            white-space: nowrap;
+            border: 0;
+        }
     </style>
     <link rel="stylesheet" href="theme.css">
 </head>
@@ -2044,8 +2006,11 @@
                     </div>
                 </div>
 
-                <!-- Authentic KrutiDev Stream Container -->
-                <div class="kruti-stream" id="kruti-stream">
+                <!-- Authentic KrutiDev Stream Container (visual only: the encoded
+                     bytes read as Latin gibberish to screen readers, so assistive
+                     tech gets the Unicode quote from #sr-quote instead) -->
+                <p class="sr-only" id="sr-quote"></p>
+                <div class="kruti-stream" id="kruti-stream" aria-hidden="true">
                     <span id="text-correct" class="text-correct"></span><span id="text-error" class="text-error"></span><span id="text-current" class="text-current"></span><span id="text-remaining" class="text-remaining"></span>
                 </div>
 
@@ -2054,12 +2019,12 @@
                     <div class="typing-input-caret"></div>
                 </div>
 
-                <input id="hidden-input" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+                <input id="hidden-input" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" aria-label="दिया गया हिंदी पाठ यहाँ टाइप करें">
             </div>
 
             <!-- Live Keystroke Hint Strip -->
             <div class="live-hint-strip" id="live-hint-strip">
-                <span>अगली कुंजी: Press <kbd class="live-hint-key" id="live-hint-key">D</kbd> for <span id="live-hint-char" style="font-family:'Noto Sans Devanagari'; font-size:1.05rem; color:var(--km-accent);">क</span></span>
+                <span>अगली कुंजी: <span id="live-hint-char" style="font-family:'Noto Sans Devanagari'; font-size:1.05rem; color:var(--km-accent);">क</span> के लिए <kbd class="live-hint-key" id="live-hint-key">D</kbd> दबाएँ</span>
                 <span id="live-hint-detail" style="font-size:0.72rem; color:var(--km-text-faint);"></span>
             </div>
 
@@ -2463,45 +2428,45 @@
             ]
         ];
         const KRUTI_HINT_DESCS = {
-            "'": { hi: 'श्', name: 'Half-Sha', detail: "Press ' then complete with 'k'", key: "'", shift: false },
-            "[": { hi: 'ख्', name: 'Half-Kha', detail: "Press [ then complete with 'k'", key: '[', shift: false },
-            "/": { hi: 'ध्', name: 'Half-Dha', detail: "Press / then complete with 'k'", key: '/', shift: false },
-            "?": { hi: 'घ्', name: 'Half-Gha', detail: "Shift + / then complete with 'k'", key: '/', shift: true },
-            "F": { hi: 'थ्', name: 'Half-Tha', detail: "Shift + F then complete with 'k'", key: 'f', shift: true },
-            "H": { hi: 'भ्', name: 'Half-Bha', detail: "Shift + H then complete with 'k'", key: 'h', shift: true },
-            "{": { hi: 'क्ष्', name: 'Half-Ksha', detail: "Shift + [ then complete with 'k'", key: '[', shift: true },
-            '"': { hi: 'ष्', name: 'Half-Shha', detail: "Shift + ' then complete with 'k'", key: "'", shift: true },
-            ".": { hi: 'ण्', name: 'Half-Nna', detail: "Press . then complete with 'k'", key: '.', shift: false },
-            "f": { hi: 'ि', name: 'Chhoti I matra', detail: 'Typed BEFORE consonant', key: 'f', shift: false },
-            "Z": { hi: 'र्', name: 'Reph', detail: 'Shift + Z (typed AFTER consonant)', key: 'z', shift: true },
-            " ": { hi: '␣', name: 'Space', detail: 'Space between words', key: ' ', shift: false },
-            "d": { hi: 'क', name: 'Ka', detail: 'Left Middle', key: 'd', shift: false },
-            "k": { hi: 'ा', name: 'Aa matra / Stem', detail: 'Right Middle', key: 'k', shift: false },
-            "j": { hi: 'र', name: 'Ra', detail: 'Right Index', key: 'j', shift: false },
-            "s": { hi: 'े', name: 'E matra', detail: 'Left Ring', key: 's', shift: false },
-            "e": { hi: 'म', name: 'Ma', detail: 'Left Middle', key: 'e', shift: false },
-            "r": { hi: 'त', name: 'Ta', detail: 'Left Index', key: 'r', shift: false },
-            "u": { hi: 'न', name: 'Na', detail: 'Right Index', key: 'u', shift: false },
-            "i": { hi: 'प', name: 'Pa', detail: 'Right Middle', key: 'i', shift: false },
-            "o": { hi: 'व', name: 'Va', detail: 'Right Ring', key: 'o', shift: false },
-            "p": { hi: 'च', name: 'Cha', detail: 'Right Pinky', key: 'p', shift: false },
-            "x": { hi: 'ग', name: 'Ga', detail: 'Left Ring', key: 'x', shift: false },
-            "c": { hi: 'ब', name: 'Ba', detail: 'Left Middle', key: 'c', shift: false },
-            "v": { hi: 'अ', name: 'A vowel', detail: 'Left Index', key: 'v', shift: false },
-            "b": { hi: 'इ', name: 'I vowel', detail: 'Left Index', key: 'b', shift: false },
-            "m": { hi: 'उ', name: 'U vowel', detail: 'Right Index', key: 'm', shift: false },
-            ",": { hi: 'ए', name: 'E vowel', detail: 'Right Middle', key: ',', shift: false },
-            "l": { hi: 'स', name: 'Sa', detail: 'Right Ring', key: 'l', shift: false },
-            ";": { hi: 'य', name: 'Ya', detail: 'Right Pinky', key: ';', shift: false },
-            "g": { hi: 'ह', name: 'Ha', detail: 'Left Index', key: 'g', shift: false },
-            "h": { hi: 'ी', name: 'Badi Ee matra', detail: 'Right Index', key: 'h', shift: false },
-            "q": { hi: 'ु', name: 'Chhoti U matra', detail: 'Left Pinky', key: 'q', shift: false },
-            "w": { hi: 'ू', name: 'Badi Oo matra', detail: 'Left Ring', key: 'w', shift: false },
-            "a": { hi: 'ं', name: 'Anusvara', detail: 'Left Pinky', key: 'a', shift: false },
+            "'": { hi: 'श्', name: 'Half-Sha', detail: "' दबाएँ, फिर k से पूरा करें", key: "'", shift: false },
+            "[": { hi: 'ख्', name: 'Half-Kha', detail: "[ दबाएँ, फिर k से पूरा करें", key: '[', shift: false },
+            "/": { hi: 'ध्', name: 'Half-Dha', detail: "/ दबाएँ, फिर k से पूरा करें", key: '/', shift: false },
+            "?": { hi: 'घ्', name: 'Half-Gha', detail: "Shift + / दबाएँ, फिर k से पूरा करें", key: '/', shift: true },
+            "F": { hi: 'थ्', name: 'Half-Tha', detail: "Shift + F दबाएँ, फिर k से पूरा करें", key: 'f', shift: true },
+            "H": { hi: 'भ्', name: 'Half-Bha', detail: "Shift + H दबाएँ, फिर k से पूरा करें", key: 'h', shift: true },
+            "{": { hi: 'क्ष्', name: 'Half-Ksha', detail: "Shift + [ दबाएँ, फिर k से पूरा करें", key: '[', shift: true },
+            '"': { hi: 'ष्', name: 'Half-Shha', detail: "Shift + ' दबाएँ, फिर k से पूरा करें", key: "'", shift: true },
+            ".": { hi: 'ण्', name: 'Half-Nna', detail: ". दबाएँ, फिर k से पूरा करें", key: '.', shift: false },
+            "f": { hi: 'ि', name: 'Chhoti I matra', detail: 'व्यंजन से पहले टाइप करें', key: 'f', shift: false },
+            "Z": { hi: 'र्', name: 'Reph', detail: 'Shift + Z (व्यंजन के बाद टाइप करें)', key: 'z', shift: true },
+            " ": { hi: '␣', name: 'Space', detail: 'शब्दों के बीच स्पेस', key: ' ', shift: false },
+            "d": { hi: 'क', name: 'Ka', detail: 'बाईं मध्यमा', key: 'd', shift: false },
+            "k": { hi: 'ा', name: 'Aa matra / Stem', detail: 'दाईं मध्यमा', key: 'k', shift: false },
+            "j": { hi: 'र', name: 'Ra', detail: 'दाईं तर्जनी', key: 'j', shift: false },
+            "s": { hi: 'े', name: 'E matra', detail: 'बाईं अनामिका', key: 's', shift: false },
+            "e": { hi: 'म', name: 'Ma', detail: 'बाईं मध्यमा', key: 'e', shift: false },
+            "r": { hi: 'त', name: 'Ta', detail: 'बाईं तर्जनी', key: 'r', shift: false },
+            "u": { hi: 'न', name: 'Na', detail: 'दाईं तर्जनी', key: 'u', shift: false },
+            "i": { hi: 'प', name: 'Pa', detail: 'दाईं मध्यमा', key: 'i', shift: false },
+            "o": { hi: 'व', name: 'Va', detail: 'दाईं अनामिका', key: 'o', shift: false },
+            "p": { hi: 'च', name: 'Cha', detail: 'दाईं कनिष्ठा', key: 'p', shift: false },
+            "x": { hi: 'ग', name: 'Ga', detail: 'बाईं अनामिका', key: 'x', shift: false },
+            "c": { hi: 'ब', name: 'Ba', detail: 'बाईं मध्यमा', key: 'c', shift: false },
+            "v": { hi: 'अ', name: 'A vowel', detail: 'बाईं तर्जनी', key: 'v', shift: false },
+            "b": { hi: 'इ', name: 'I vowel', detail: 'बाईं तर्जनी', key: 'b', shift: false },
+            "m": { hi: 'उ', name: 'U vowel', detail: 'दाईं तर्जनी', key: 'm', shift: false },
+            ",": { hi: 'ए', name: 'E vowel', detail: 'दाईं मध्यमा', key: ',', shift: false },
+            "l": { hi: 'स', name: 'Sa', detail: 'दाईं अनामिका', key: 'l', shift: false },
+            ";": { hi: 'य', name: 'Ya', detail: 'दाईं कनिष्ठा', key: ';', shift: false },
+            "g": { hi: 'ह', name: 'Ha', detail: 'बाईं तर्जनी', key: 'g', shift: false },
+            "h": { hi: 'ी', name: 'Badi Ee matra', detail: 'दाईं तर्जनी', key: 'h', shift: false },
+            "q": { hi: 'ु', name: 'Chhoti U matra', detail: 'बाईं कनिष्ठा', key: 'q', shift: false },
+            "w": { hi: 'ू', name: 'Badi Oo matra', detail: 'बाईं अनामिका', key: 'w', shift: false },
+            "a": { hi: 'ं', name: 'Anusvara', detail: 'बाईं कनिष्ठा', key: 'a', shift: false },
             "S": { hi: 'ै', name: 'Ai matra', detail: 'Shift + S', key: 's', shift: true },
             "N": { hi: 'छ', name: 'Chha', detail: 'Shift + N', key: 'n', shift: true },
             ">": { hi: 'झ', name: 'Jha', detail: 'Shift + .', key: '.', shift: true },
-            "=": { hi: 'त्र', name: 'Tra', detail: 'Right Pinky', key: '=', shift: false },
+            "=": { hi: 'त्र', name: 'Tra', detail: 'दाईं कनिष्ठा', key: '=', shift: false },
             "K": { hi: 'ज्ञ', name: 'Gya', detail: 'Shift + K', key: 'k', shift: true },
             "J": { hi: 'श्र', name: 'Shra', detail: 'Shift + J', key: 'j', shift: true },
             // Number Row Hints (Feature A & Full Glyphs)
@@ -2512,22 +2477,22 @@
             "*": { hi: '’', name: 'Closing single quote', detail: 'Shift + 8', key: '8', shift: true },
             ":": { hi: 'रू', name: 'Roo', detail: 'Shift + ;', key: ';', shift: true },
             // Remington punctuation keys: the English punctuation keys type Hindi letters in KrutiDev
-            "]": { hi: ',', name: 'Comma (Alpviram)', detail: "Press ] for a comma — the ',' key types ए", key: ']', shift: false },
-            "\\": { hi: '?', name: 'Question mark (Prashn-chinha)', detail: "Press \\ for '?' — the '?' key types घ्", key: '\\', shift: false },
-            "-": { hi: '.', name: 'Full stop', detail: "Press - for '.' — the '.' key types ण्", key: '-', shift: false },
+            "]": { hi: ',', name: 'Comma (Alpviram)', detail: "अल्पविराम के लिए ] दबाएँ; ',' कुंजी से ए टाइप होती है", key: ']', shift: false },
+            "\\": { hi: '?', name: 'Question mark (Prashn-chinha)', detail: "'?' के लिए \\ दबाएँ; '?' कुंजी से घ् टाइप होती है", key: '\\', shift: false },
+            "-": { hi: '.', name: 'Full stop', detail: "'.' के लिए - दबाएँ; '.' कुंजी से ण् टाइप होती है", key: '-', shift: false },
             "&": { hi: '-', name: 'Hyphen / dash', detail: 'Shift + 7', key: '7', shift: true },
             "(": { hi: ';', name: 'Semicolon', detail: 'Shift + 9', key: '9', shift: true },
             "A": { hi: '।', name: 'Danda (Purn Viram)', detail: 'Shift + A', key: 'a', shift: true },
-            "1": { hi: '१', name: 'Digit 1', detail: 'Left Pinky', key: '1', shift: false },
-            "2": { hi: '२', name: 'Digit 2', detail: 'Left Ring', key: '2', shift: false },
-            "3": { hi: '३', name: 'Digit 3', detail: 'Left Middle', key: '3', shift: false },
-            "4": { hi: '४', name: 'Digit 4', detail: 'Left Index', key: '4', shift: false },
-            "5": { hi: '५', name: 'Digit 5', detail: 'Left Index', key: '5', shift: false },
-            "6": { hi: '६', name: 'Digit 6', detail: 'Right Index', key: '6', shift: false },
-            "7": { hi: '७', name: 'Digit 7', detail: 'Right Index', key: '7', shift: false },
-            "8": { hi: '८', name: 'Digit 8', detail: 'Right Middle', key: '8', shift: false },
-            "9": { hi: '९', name: 'Digit 9', detail: 'Right Ring', key: '9', shift: false },
-            "0": { hi: '०', name: 'Digit 0', detail: 'Right Pinky', key: '0', shift: false }
+            "1": { hi: '१', name: 'Digit 1', detail: 'बाईं कनिष्ठा', key: '1', shift: false },
+            "2": { hi: '२', name: 'Digit 2', detail: 'बाईं अनामिका', key: '2', shift: false },
+            "3": { hi: '३', name: 'Digit 3', detail: 'बाईं मध्यमा', key: '3', shift: false },
+            "4": { hi: '४', name: 'Digit 4', detail: 'बाईं तर्जनी', key: '4', shift: false },
+            "5": { hi: '५', name: 'Digit 5', detail: 'बाईं तर्जनी', key: '5', shift: false },
+            "6": { hi: '६', name: 'Digit 6', detail: 'दाईं तर्जनी', key: '6', shift: false },
+            "7": { hi: '७', name: 'Digit 7', detail: 'दाईं तर्जनी', key: '7', shift: false },
+            "8": { hi: '८', name: 'Digit 8', detail: 'दाईं मध्यमा', key: '8', shift: false },
+            "9": { hi: '९', name: 'Digit 9', detail: 'दाईं अनामिका', key: '9', shift: false },
+            "0": { hi: '०', name: 'Digit 0', detail: 'दाईं कनिष्ठा', key: '0', shift: false }
         };
         function unicodeToKrutiDev(text) {
             let s = text;
@@ -2656,7 +2621,7 @@
                     physicalKey: null,
                     keyLabel: 'Alt + ' + code,
                     hindiChar: glyph,
-                    detail: 'Hold Alt, type ' + code + ' on Numpad',
+                    detail: 'Alt दबाए रखें और नंबर पैड पर ' + code + ' टाइप करें',
                     isShifted: false
                 };
             }
@@ -2671,7 +2636,7 @@
                     physicalKey: 'k',
                     keyLabel: 'K',
                     hindiChar: fullLetter,
-                    detail: "Press 'k' to complete " + fullLetter,
+                    detail: "'k' दबाकर " + fullLetter + " पूरा करें",
                     isShifted: false
                 };
             }
@@ -2680,7 +2645,7 @@
             if (hit) {
                 return {
                     physicalKey: hit.key,
-                    keyLabel: hit.shift ? ('Shift + ' + hit.key.toUpperCase()) : (hit.key === ' ' ? 'Spacebar' : hit.key.toUpperCase()),
+                    keyLabel: hit.shift ? ('Shift + ' + hit.key.toUpperCase()) : (hit.key === ' ' ? 'स्पेसबार' : hit.key.toUpperCase()),
                     hindiChar: hit.hi,
                     detail: hit.detail,
                     isShifted: hit.shift
@@ -2692,7 +2657,7 @@
             const baseKey = SHIFT_BASE[expected] || expected.toLowerCase();
             return {
                 physicalKey: baseKey,
-                keyLabel: isShift ? ('Shift + ' + baseKey.toUpperCase()) : (expected === ' ' ? 'Spacebar' : expected.toUpperCase()),
+                keyLabel: isShift ? ('Shift + ' + baseKey.toUpperCase()) : (expected === ' ' ? 'स्पेसबार' : expected.toUpperCase()),
                 hindiChar: expected,
                 detail: '',
                 isShifted: isShift
@@ -3641,6 +3606,8 @@
 
             // Guess-the-title banner stays hidden while typing
             el.snippetGenre.textContent = snippet.genre || 'उपन्यास';
+            const srQuote = document.getElementById('sr-quote');
+            if (srQuote) srQuote.textContent = snippet.title + ', ' + snippet.author + ': ' + snippet.text;
             const rawWords = snippet.text.trim().split(/\s+/);
             el.snippetWordCount.textContent = rawWords.length + ' शब्द';
             el.snippetCharCount.textContent = snippet.text.length + ' अक्षर';

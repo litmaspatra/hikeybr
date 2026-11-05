@@ -292,7 +292,7 @@ const path = require('node:path');
     assert.ok(flow.target.length > 0, 'fresh lesson text is ready');
     assert.equal(flow.history, 1, 'completed lesson folded into history');
     assert.ok(flow.last.wpm > 0 && flow.last.seconds > 0 && flow.last.keys >= 4, 'lesson record carries real timing data');
-    assert.ok(flow.event.includes('WPM'), 'event line shows the lesson speed');
+    assert.ok(!flow.event.includes('WPM'), 'custom/books mode: no post-lesson speed strip (guided-only)');
 
     // 10b. Guided lessons: the SAME text is never extended - completion
     //      replaces the whole block with a newly generated lesson.
@@ -307,9 +307,11 @@ const path = require('node:path');
             afterText: HiKeybr.currentLessonText,
             afterLen: HiKeybr.targetKrutiText.length,
             cursor: HiKeybr.cursorIndex,
-            history: HiKeybr.lessonHistory.length
+            history: HiKeybr.lessonHistory.length,
+            event: (document.getElementById('practice-event') || {}).textContent || ''
         };
     });
+    assert.ok(guided.event.includes('WPM'), 'guided mode: event line shows the lesson speed');
     assert.equal(guided.cursor, 0, 'guided lesson cursor resets to the start');
     assert.equal(guided.history, 1, 'guided lesson recorded once');
     assert.ok(guided.afterLen < guided.firstLen + 50, 'text was replaced, not extended (was ' + guided.firstLen + ', now ' + guided.afterLen + ')');
