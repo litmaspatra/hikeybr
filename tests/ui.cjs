@@ -125,41 +125,6 @@ const path = require('node:path');
     assert.equal(await page.evaluate(() => HiKeybr.sessionErrors), 0, 'late OS symbol adds no error');
     assert.equal(await page.evaluate(() => HiKeybr.sessionCorrect), 5, '3 Alt glyphs + 2 spaces, each glyph one input unit');
 
-    // 3e. Lab sandbox: same Windows-style entry (OS symbol instead of Alt keyup).
-    await page.click('.nav-tab[data-target="altlab"]');
-    await page.click('#alt-tester-input');
-    await page.keyboard.down('Alt');
-    for (const k of ['Numpad0', 'Numpad2', 'Numpad2', 'Numpad8']) await page.keyboard.press(k);
-    await page.evaluate(() => {
-        document.getElementById('alt-tester-input').dispatchEvent(new KeyboardEvent('keydown', { key: 'Ø', bubbles: true, cancelable: true }));
-    });
-    assert.equal(await page.locator('#alt-tester-input').inputValue(), 'Dr', 'lab commits the buffered code on the OS symbol (KrutiDev bytes stay visible)');
-    assert.ok((await page.locator('#alt-test-result').textContent()).includes('Alt+0228'), 'lab reports the Alt code used');
-    await page.keyboard.up('Alt');
-    assert.equal(await page.locator('#alt-tester-input').inputValue(), 'Dr', 'late Alt keyup does not double-commit in the lab');
-
-    // 3f. Lab sandbox, Windows order 3: the OS swallows the digits AND the Alt
-    //     keyup; only the composed symbol arrives. It must still commit.
-    await page.click('#clear-alt-test-btn');
-    await page.evaluate(() => {
-        document.getElementById('alt-tester-input').dispatchEvent(new KeyboardEvent('keydown', { key: 'Ì', bubbles: true, cancelable: true }));
-    });
-    assert.equal(await page.locator('#alt-tester-input').inputValue(), 'n~n', 'lab commits द्द from the OS-composed symbol alone');
-    assert.ok((await page.locator('#alt-test-result').textContent()).includes('Alt+0204'), 'lab reports the symbol Alt code');
-
-    // 3g. Lab sandbox keeps earlier glyphs visible: Alt and GAIL entries accumulate.
-    await page.click('#clear-alt-test-btn');
-    await page.click('#alt-tester-input');
-    await page.keyboard.press('D');
-    await page.keyboard.press('r');
-    assert.equal(await page.locator('#alt-tester-input').inputValue(), 'Dr', 'GAIL Dr commits क्त and it stays visible');
-    await page.keyboard.down('Alt');
-    for (const k of ['Numpad0', 'Numpad2', 'Numpad0', 'Numpad4']) await page.keyboard.press(k);
-    await page.keyboard.up('Alt');
-    assert.equal(await page.locator('#alt-tester-input').inputValue(), 'Drn~n', 'next Alt code accumulates - earlier letters never vanish');
-    await page.keyboard.press('Backspace');
-    assert.equal(await page.locator('#alt-tester-input').inputValue(), 'Drn~', 'backspace trims the committed line');
-
     // 3c. Only legacy Remington fonts are offered (Unicode fonts dropped: their
     //     matras/half letters could not highlight per keystroke). Per-byte
     //     highlighting reassembles the lesson byte stream in any listed font.

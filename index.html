@@ -180,7 +180,7 @@
            (clipped) corners. Deliberately not keybr's soft look.
            ─────────────────────────────────────────────────────────── */
         *, *::before, *::after { border-radius: 0 !important; }
-        .alt-card, .target-card, #lesson-result, .workspace-bar, .modal-card, #results-modal .modal-content, .card-surface {
+        .target-card, #lesson-result, .workspace-bar, .modal-card, #results-modal .modal-content, .card-surface {
             clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
         }
         .key, .kb-key {
@@ -1166,59 +1166,6 @@
             border: 1px solid var(--border);
         }
 
-        /* Alt-Codes Grid */
-        .alt-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 12px;
-        }
-
-        .alt-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 14px;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            transition: all 0.15s ease;
-            cursor: pointer;
-        }
-
-        .alt-card:hover {
-            border-color: var(--accent);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 14px rgba(0,0,0,0.15);
-        }
-
-        .alt-glyph {
-            font-family: 'Noto Sans Devanagari', sans-serif;
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: var(--accent);
-            min-width: 44px;
-            text-align: center;
-        }
-
-        .alt-details {
-            display: flex;
-            flex-direction: column;
-            gap: 3px;
-        }
-
-        .alt-code-label {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: var(--text);
-        }
-
-        .alt-gail-label {
-            font-size: 0.75rem;
-            color: var(--correct);
-            font-weight: 600;
-        }
-
         /* Modal Dialog */
         .modal-overlay {
             display: none;
@@ -1415,7 +1362,7 @@
 /* Assessment fixes: text-first practice, accessible small screens. */
 .practice-live,.word-tools{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:12px 0}.practice-live{font-size:.95rem}.practice-live button{margin-left:auto}.mobile-notice{font-size:.75rem;color:var(--text-dim)}
 #panel-practice .typing-canvas{min-height:190px;padding-top:30px}.text-stream-container{max-height:260px;min-height:100px;color:var(--text-dim);scroll-behavior:auto}.confidence-hint{font-size:.76rem;color:var(--text-dim)}.table-scroll{overflow-x:auto}.table-scroll table{min-width:620px}.word-tools label{display:flex;gap:8px;align-items:center;font-size:.8rem}button,select{min-height:36px}.word-tools select{max-width:170px;background:var(--surface);color:var(--text)}
-@media(max-width:650px){html,body{width:100%;overflow-x:hidden}header,.header-inner,.top-bar{max-width:100%}header{height:auto!important;flex-wrap:wrap;gap:6px;padding:8px!important}header nav{order:3;width:100%;display:flex;justify-content:space-between;min-width:0;gap:2px}header nav button{flex:1;padding:8px 3px!important;font-size:.72rem!important;white-space:nowrap}main{padding:12px!important;min-width:0;width:100%;box-sizing:border-box}.panel,.content-card,.workspace-bar{min-width:0;max-width:100%;box-sizing:border-box}.quick-controls,.ctrl-item{width:100%;min-width:0}.ctrl-select{max-width:100%}.target-card-top,.confidence-hint{flex-wrap:wrap;gap:8px}.progress-track-wrapper{gap:8px}.progress-stat{font-size:.76rem;white-space:nowrap}.keyboard-frame{padding:8px 3px;gap:4px;max-width:100%;box-sizing:border-box}.k-row{gap:2px}.k-key{min-width:0!important;width:calc((100vw - 70px)/14);flex:0 1 auto;height:42px;border-radius:4px}.k-key.w-backspace,.k-key.w-tab,.k-key.w-caps,.k-key.w-enter,.k-key.w-shift-l,.k-key.w-shift-r,.k-key.w-ctrl,.k-key.w-alt{min-width:0!important}.k-key.w-space{min-width:0!important;max-width:none;flex:3 1 auto!important}.k-key.label-key .hi-main{font-size:.38rem!important}.k-key .hi-main{font-size:.85rem}.k-key .hi-shift{font-size:.58rem}.k-key .en-sub{font-size:.5rem}.typing-canvas{padding:26px 8px 12px!important}.text-stream-container{font-size:1.65rem;max-height:240px;padding:4px;box-sizing:border-box;line-height:1.8}.canvas-hint{font-size:.6rem;right:8px}.live-hint-strip{flex-wrap:wrap;gap:6px}.content-card{padding:16px}.card-header{flex-wrap:wrap}.target-identity{flex-wrap:wrap}.insight-row{flex-wrap:wrap}.word-tools label{width:100%;flex-wrap:wrap}.logo-badge{display:none}.nav-tab{min-width:0}#panel-altlab input{min-width:0;width:100%}.alt-cards-grid{grid-template-columns:1fr!important}}
+@media(max-width:650px){html,body{width:100%;overflow-x:hidden}header,.header-inner,.top-bar{max-width:100%}header{height:auto!important;flex-wrap:wrap;gap:6px;padding:8px!important}header nav{order:3;width:100%;display:flex;justify-content:space-between;min-width:0;gap:2px}header nav button{flex:1;padding:8px 3px!important;font-size:.72rem!important;white-space:nowrap}main{padding:12px!important;min-width:0;width:100%;box-sizing:border-box}.panel,.content-card,.workspace-bar{min-width:0;max-width:100%;box-sizing:border-box}.quick-controls,.ctrl-item{width:100%;min-width:0}.ctrl-select{max-width:100%}.target-card-top,.confidence-hint{flex-wrap:wrap;gap:8px}.progress-track-wrapper{gap:8px}.progress-stat{font-size:.76rem;white-space:nowrap}.keyboard-frame{padding:8px 3px;gap:4px;max-width:100%;box-sizing:border-box}.k-row{gap:2px}.k-key{min-width:0!important;width:calc((100vw - 70px)/14);flex:0 1 auto;height:42px;border-radius:4px}.k-key.w-backspace,.k-key.w-tab,.k-key.w-caps,.k-key.w-enter,.k-key.w-shift-l,.k-key.w-shift-r,.k-key.w-ctrl,.k-key.w-alt{min-width:0!important}.k-key.w-space{min-width:0!important;max-width:none;flex:3 1 auto!important}.k-key.label-key .hi-main{font-size:.38rem!important}.k-key .hi-main{font-size:.85rem}.k-key .hi-shift{font-size:.58rem}.k-key .en-sub{font-size:.5rem}.typing-canvas{padding:26px 8px 12px!important}.text-stream-container{font-size:1.65rem;max-height:240px;padding:4px;box-sizing:border-box;line-height:1.8}.canvas-hint{font-size:.6rem;right:8px}.live-hint-strip{flex-wrap:wrap;gap:6px}.content-card{padding:16px}.card-header{flex-wrap:wrap}.target-identity{flex-wrap:wrap}.insight-row{flex-wrap:wrap}.word-tools label{width:100%;flex-wrap:wrap}.logo-badge{display:none}.nav-tab{min-width:0}}
 @media(max-width:650px){.confidence-hint>span{flex-basis:100%;text-align:left!important}.word-tools{overflow-wrap:anywhere}.brand{gap:8px}nav .nav-tab{font-size:.66rem!important}footer{overflow-wrap:anywhere}}
 @media(max-width:650px){.stats-strip{grid-template-columns:repeat(2,1fr)}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto!important;transition:none!important}}
@@ -1443,13 +1390,6 @@
 
         /* Lessons settings open inline on the page (drawer removed at user request) */
 
-        /* Alt-lab sandbox: placeholder is English guidance, so keep it in a
-           Latin UI font - the KrutiDev input font made it look like random glyphs */
-        #alt-tester-input::placeholder {
-            font-family: 'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif !important;
-            font-size: 0.95rem !important;
-            opacity: 0.55;
-        }
 
         /* Lessons panel (keybr-style) */
 .lesson-settings>summary{font-weight:700}
@@ -1725,9 +1665,6 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
             <button class="nav-tab" data-target="profile" title="Profile">
                 <span class="nav-icon">📊</span><span class="nav-label"> Profile</span>
             </button>
-            <button class="nav-tab" data-target="altlab" title="Alt-Codes Lab">
-                <span class="nav-icon">⚡</span><span class="nav-label"> Alt-Codes Lab</span>
-            </button>
             <button class="nav-tab" data-target="settings" title="Settings">
                 <span class="nav-icon">⚙️</span><span class="nav-label"> Settings</span>
             </button>
@@ -1845,7 +1782,7 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
                     <span>&bull; Alt Code: <span class="alt-code-badge" id="alt-helper-code">Alt + 0228</span></span>
                     <span>&bull; HiKeybr key sequence: <span class="alt-gail-badge" id="alt-helper-gail">Shift+D then r (Dr)</span></span>
                 </div>
-                <span style="font-size:0.72rem; color:var(--text-dim);">(Use the shown Lab sequence or Alt code)</span>
+                <span style="font-size:0.72rem; color:var(--text-dim);">(Type the shown key sequence or Alt code)</span>
             </div>
 
             <!-- keybr-style metrics strip: the live lesson metrics live in practice -->
@@ -2018,32 +1955,7 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
             </div>
         </section>
 
-        <!-- ═══════════════════════════════════════════════════════
-             PANEL 3: ALT-CODES LAB & TESTER (Tackling the Alt Keys)
-             ═══════════════════════════════════════════════════════ -->
-        <section class="panel" id="panel-altlab">
-            <div class="content-card">
-                <div class="card-header">
-                    <div>
-                        <h2>⚡ The Alt-Codes Problem &amp; How HiKeybr Solves It</h2>
-                        <p>Practice physical input, not pasted answers. Select a card to begin.</p>
-                    </div>
-                </div>
 
-                <p class="lab-instructions">Select a card, then type the exact case-sensitive sequence shown, or hold Alt and enter all four digits using a physical numpad. Release Alt to finish. Example: Shift+D then r (Dr) types क्त. The halant is ~ (Shift+backquote), not =; = types त्र. The listed laptop sequences are accepted by HiKeybr in Lab and Practice. Your exam software may differ. Pasting a glyph only previews it, not a passed typing attempt. Physical Alt behavior depends on browser and operating system.</p>
-                <div style="margin-top: 10px;">
-                    <h3 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 8px;">Interactive Alt-Code Sandbox</h3>
-                    <div style="display: flex; gap: 10px; align-items: center;">
-                        <input type="text" id="alt-tester-input" placeholder="Type here - Alt + digits, or the GAIL key sequence..." style="background:var(--surface); border:1px solid var(--border); color:var(--text); padding:10px 14px; font-size:1.35rem; flex:1; outline:none; font-family:'KrutiDev010', 'Noto Sans Devanagari', sans-serif;" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
-                        <button class="btn-modal cancel" id="clear-alt-test-btn" style="padding:10px 16px;">Clear</button>
-                    </div>
-                    <div id="alt-test-result" style="margin-top: 8px; font-size: 0.85rem; min-height: 24px;"></div>
-                </div>
-
-                <h3 style="font-size: 0.95rem; font-weight: 700; margin-top: 10px;">Exam Conjuncts &amp; Alt Codes Quick Reference</h3>
-                <div class="alt-grid" id="alt-cards-grid"></div>
-            </div>
-        </section>
 
         <!-- ═══════════════════════════════════════════════════════
              PANEL 4: SETTINGS & CUSTOMIZATION
@@ -2639,11 +2551,7 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
             modalCancelBtn: document.getElementById('modal-cancel-btn'),
             modalConfirmBtn: document.getElementById('modal-confirm-btn'),
             resetSettingsBtn: document.getElementById('reset-settings-btn'),
-            profileTableBody: document.getElementById('profile-table-body'),
-            altCardsGrid: document.getElementById('alt-cards-grid'),
-            altTesterInput: document.getElementById('alt-tester-input'),
-            altTestResult: document.getElementById('alt-test-result'),
-            clearAltTestBtn: document.getElementById('clear-alt-test-btn')
+            profileTableBody: document.getElementById('profile-table-body')
         };
 
         const keyDOMMap = new Map();
@@ -4130,32 +4038,6 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
         window.addEventListener('resize',refreshTableScrollHint);
         document.querySelectorAll('.table-scroll').forEach(s=>s.addEventListener('scroll',refreshTableScrollHint,{passive:true}));
 
-        function renderAltCodesCards() {
-            if (!el.altCardsGrid) return;
-            el.altCardsGrid.innerHTML = '';
-
-            ALT_CODES_CATALOG.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'alt-card';
-                card.title = `Click to test ${item.glyph}`;
-                card.innerHTML = `
-                    <span class="alt-glyph">${item.glyph}</span>
-                    <div class="alt-details">
-                        <span class="alt-code-label">${item.code ? 'Alt + ' + item.code : 'No Alt code'}</span>
-                        <span class="alt-gail-label">${item.gail ? 'GAIL: ' + item.gail : 'Alt only'}</span>
-                        <span style="font-size:0.68rem; color:var(--text-faint); margin-top:2px;">${item.sample}</span>
-                    </div>
-                `;
-                card.addEventListener('click', () => {
-                    labTarget=item;labBuffer='';labDigits='';labText='';el.altTesterInput.value='';
-                    const parts=[];if(item.gail)parts.push(item.gail);if(item.code)parts.push('Alt+'+item.code);
-                    el.altTestResult.textContent='Practice '+item.glyph+': '+parts.join(' or ')+'.';
-                    el.altTesterInput.focus({preventScroll:true});
-                });
-                el.altCardsGrid.appendChild(card);
-            });
-        }
-
         // ─────────────────────────────────────────────────────────────
         // 8. 25-WORD PHONOTACTIC HINDI LESSON GENERATOR
         // ─────────────────────────────────────────────────────────────
@@ -4915,10 +4797,6 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
                     updateProfileTable();
                     renderProfileCharts();
                 }
-                if (target === 'altlab') {
-                    renderAltCodesCards();
-                    if (el.altTesterInput) setTimeout(() => el.altTesterInput.focus({preventScroll:true}), 60);
-                }
                 if (target === 'practice') {
                     setTimeout(() => el.hiddenInput.focus({preventScroll:true}), 60);
                 }
@@ -5047,75 +4925,8 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
             });
         }
 
-        // Shared catalog describes both Lab and Practice aliases. Success requires real key events.
-        // labText is the running line of committed KrutiDev bytes, rendered in the
-        // KrutiDev font so every typed glyph stays visible; labBuffer is the
-        // in-progress GAIL sequence (shown in the status line until it matches).
-        let labTarget=ALT_CODES_CATALOG[0],labBuffer='',labDigits='',labText='',labEchoUntil=0,practiceAlias='';
-        function labResult(glyph,method){
-            labText+=unicodeToKrutiDev(glyph);
-            el.altTesterInput.value=labText;
-            el.altTestResult.textContent=glyph===labTarget.glyph?'Typed correctly: '+glyph+' via '+method+'.':'Typed '+glyph+' via '+method+'; target is '+labTarget.glyph+'.';
-            labBuffer='';labDigits='';
-        }
-        function commitLabAltCode(){
-            if(!labDigits)return;
-            const code=labDigits;labDigits='';
-            const glyph=KRUTIDEV_ALT_CODES[code];
-            if(glyph){labResult(glyph,'Alt+'+code);labEchoUntil=Date.now()+1500;}
-            else el.altTestResult.textContent='Unknown Alt code '+code;
-        }
-        function commitLabSymbol(ch){
-            // Windows composed the cp1252 symbol itself (digit keydowns and the
-            // Alt keyup never reached the page): the symbol's code point IS the
-            // Alt code. Without this branch the old swallow rule ate the only
-            // commit signal and the character never appeared.
-            if(!ch||ch.length!==1)return false;
-            const code='0'+ch.charCodeAt(0);
-            const glyph=KRUTIDEV_ALT_CODES[code];
-            if(!glyph)return false;
-            labResult(glyph,'Alt+'+code);labEchoUntil=Date.now()+1500;
-            return true;
-        }
-        el.altTesterInput.addEventListener('paste',()=>{labBuffer='';labDigits='';el.altTestResult.textContent='Preview only. Type the sequence or Alt code to verify your input.';});
-        el.altTesterInput.addEventListener('input',e=>{
-            // Windows can swallow the Alt keyup and force the composed cp1252
-            // symbol into the field on Alt release; that insertion is the
-            // commit signal. Otherwise restore the verified text.
-            if(labDigits){commitLabAltCode();return;}
-            if(Date.now()<labEchoUntil){labEchoUntil=0;el.altTesterInput.value=labText;return;} // OS echo of a code we already committed
-            if(e.data&&commitLabSymbol(e.data))return;
-            setTimeout(()=>{if(!labDigits&&el.altTesterInput.value!==labText)el.altTesterInput.value=labText;},0);
-            if(el.altTesterInput.value!==labText)el.altTestResult.textContent='Keep typing with physical keys.';
-        });
-        el.altTesterInput.addEventListener('keydown',e=>{
-            if(e.ctrlKey||e.metaKey)return;
-            if(e.altKey&&NUMPAD_DIGIT_MAP[e.code]){e.preventDefault();labDigits+=NUMPAD_DIGIT_MAP[e.code];el.altTestResult.textContent='Alt+'+labDigits;return;}
-            if(e.key==='Alt'&&labDigits)commitLabAltCode();
-            if(e.key==='Alt'||e.key==='Shift')return;
-            if(labDigits&&!MODIFIER_KEYS.includes(e.key))commitLabAltCode();
-            if(e.key.length===1&&e.key.charCodeAt(0)>127){
-                // OS-composed symbol: drop the echo of a code just committed,
-                // otherwise it is the commit signal itself (no digits seen).
-                e.preventDefault();
-                if(Date.now()<labEchoUntil)labEchoUntil=0;
-                else commitLabSymbol(e.key);
-                return;
-            }
-            if(e.key==='Backspace'){e.preventDefault();
-                if(labBuffer){labBuffer=labBuffer.slice(0,-1);el.altTestResult.textContent=labBuffer?('Sequence '+labBuffer+'…'):'Sequence cleared.';}
-                else{labText=labText.slice(0,-1);el.altTesterInput.value=labText;}
-                return;}
-            if(e.key.length!==1)return;
-            e.preventDefault();labBuffer+=e.key;
-            if(!labTarget.gail){el.altTestResult.textContent=labTarget.glyph+' is Alt only: use Alt+'+labTarget.code+'.';labBuffer='';return;}
-            if(labBuffer===labTarget.gail){labResult(labTarget.glyph,'keys '+labTarget.gail);return;}
-            if(!labTarget.gail.startsWith(labBuffer)){el.altTestResult.textContent='Try again: '+labTarget.gail+' (case-sensitive).';labBuffer='';}
-            else el.altTestResult.textContent='Sequence '+labBuffer+'…';
-        });
-        // Keyup for Alt-code release (unreliable on Windows; see commitLabAltCode callers).
-        window.addEventListener('keyup',e=>{if(e.key==='Alt'||e.code==='AltLeft'||e.code==='AltRight')commitLabAltCode();});
-        el.clearAltTestBtn.onclick=()=>{labBuffer='';labDigits='';labText='';el.altTesterInput.value='';const parts=[];if(labTarget.gail)parts.push(labTarget.gail);if(labTarget.code)parts.push('Alt+'+labTarget.code);el.altTestResult.textContent='Target '+labTarget.glyph+': '+parts.join(' or ');el.altTesterInput.focus({preventScroll:true});};
+        // Practice-page Alt-sequence alias state (shared with the hint catalog).
+        let practiceAlias='';
 
         async function selectDisplayFont(requested) {
             const font=FONT_REGISTRY[requested];
@@ -5174,7 +4985,6 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
         // 12. INITIALIZATION
         // ─────────────────────────────────────────────────────────────
         renderVirtualKeyboard();
-        renderAltCodesCards();
         Object.keys(FONT_REGISTRY).forEach(ensureFontLoaded);
         loadStorage();
         if (displayFont === 'krutidev' || displayFont === 'devlys010') {
