@@ -1169,16 +1169,19 @@
             color: var(--km-accent);
         }
 
+        /* Keyboard: identical keycaps, layout and highlights to HiKeybr's
+           tutor keyboard (index.html). Keycap colours come from each
+           HiKeymash theme's --key-* variables, exactly as HiKeybr's do. */
         .keyboard-frame {
             background: var(--km-card);
             border: 1px solid var(--km-border);
-            border-radius: 12px;
-            padding: 8px 14px;
+            border-radius: 0;
+            padding: 16px 20px;
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 7px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
             user-select: none;
-            transition: all 0.2s ease;
         }
 
         .keyboard-frame.hidden {
@@ -1188,73 +1191,127 @@
         .k-row {
             display: flex;
             justify-content: center;
-            gap: 4px;
+            gap: 6px;
         }
 
         .k-key {
             background: var(--key-bg);
             border: 1px solid var(--key-border);
-            border-bottom: 2px solid var(--key-bottom);
-            border-radius: 6px;
-            height: 38px;
-            min-width: 36px;
+            border-bottom: 3px solid var(--key-bottom);
+            border-radius: 0;
+            clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+            height: 48px;
+            min-width: 44px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             position: relative;
-            cursor: pointer;
+            cursor: default;
+            user-select: none;
             transition: all 0.08s ease;
-            padding: 2px 3px;
+            padding: 2px 4px;
         }
 
         .k-key.pressed {
-            transform: translateY(1px);
+            transform: translateY(2px);
+            border-bottom-width: 1px;
             background: var(--km-border-light);
         }
 
         .k-key.target {
             background: var(--km-accent);
-            border-color: #fb923c;
-            border-bottom-color: #c2410c;
-            box-shadow: 0 0 12px var(--km-accent-glow);
-            transform: translateY(-1px);
+            border-color: #ff8533;
+            border-bottom-color: #b34b00;
+            box-shadow: 0 0 16px var(--km-accent-glow);
+            transform: translateY(-2px);
+            animation: targetPulse 1.2s infinite alternate;
         }
 
         .k-key.target .hi-main,
         .k-key.target .hi-shift,
         .k-key.target .en-sub {
-            color: #000000 !important;
+            color: #ffffff !important;
             font-weight: 800;
+        }
+
+        @keyframes targetPulse {
+            0% { box-shadow: 0 0 8px var(--km-accent-glow); }
+            100% { box-shadow: 0 0 20px var(--km-accent-glow); }
+        }
+
+        .k-key.shift-needed {
+            border-color: #38bdf8;
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
         }
 
         .k-key .hi-shift {
             font-family: 'Noto Sans Devanagari', sans-serif;
-            font-size: 10.5px;
+            font-size: 0.65rem;
             color: var(--km-text-dim);
             line-height: 1;
             position: absolute;
-            top: 2px;
-            left: 4px;
+            top: 3px;
+            left: 5px;
         }
 
         .k-key .hi-main {
             font-family: 'Noto Sans Devanagari', sans-serif;
-            font-size: 0.88rem;
+            font-size: 1.05rem;
             font-weight: 700;
             color: var(--km-text-main);
             line-height: 1;
-            margin-top: 3px;
+            margin-top: 4px;
         }
 
         .k-key .en-sub {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 10.5px;
-            color: var(--km-text-dim);
+            font-size: 0.58rem;
+            color: var(--km-text-faint);
             line-height: 1;
             position: absolute;
-            bottom: 2px;
-            right: 4px;
+            bottom: 3px;
+            right: 5px;
+        }
+
+        .k-key.w-backspace { min-width: 82px; }
+        .k-key.w-tab { min-width: 66px; }
+        .k-key.w-caps { min-width: 76px; }
+        .k-key.w-enter { min-width: 86px; }
+        .k-key.w-shift-l { min-width: 98px; }
+        .k-key.w-shift-r { min-width: 98px; }
+        .k-key.w-ctrl { min-width: 60px; }
+        .k-key.w-alt { min-width: 58px; }
+        .k-key.w-space { flex: 1 1 auto; min-width: 240px; max-width: 460px; }
+
+        .k-key.label-key .hi-main {
+            font-size: 0.75rem;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 600;
+            color: var(--km-text-dim);
+        }
+
+        /* Real-keyboard proportions (same as HiKeybr): every row fills the
+           frame, keys sized in standard unit ratios, spacebar ~6.25u wide. */
+        @media (min-width: 651px) {
+            .k-key { flex: 1 1 0; min-width: 0; }
+            .k-key.w-backspace { flex: 2 1 0; min-width: 0; }
+            .k-key.w-tab { flex: 1.5 1 0; min-width: 0; }
+            .k-key.w-caps { flex: 1.8 1 0; min-width: 0; }
+            .k-key.w-enter { flex: 2.3 1 0; min-width: 0; }
+            .k-key.w-shift-l, .k-key.w-shift-r { flex: 2.3 1 0; min-width: 0; }
+            .k-key.w-ctrl, .k-key.w-alt { flex: 1.4 1 0; min-width: 0; }
+            .k-key.w-space { flex: 6.5 1 0; min-width: 0; max-width: none; }
+            .k-spacer { flex: 1.9 1 0; visibility: hidden; }
+        }
+
+        /* Shorter viewports: compact keys so the race still fits one screen */
+        @media (min-width: 651px) and (max-height: 800px) {
+            .k-key { height: 33px; min-width: 30px; }
+            .k-row { gap: 3px; }
+            .keyboard-frame { padding: 6px 12px; gap: 3px; }
+            .k-key .hi-main { font-size: 0.82rem; margin-top: 2px; }
+            .k-key.label-key .hi-main { font-size: 0.62rem; }
         }
 
         /* ── Mobile (<=650px): reflow header, fit keyboard ─────────── */
@@ -1291,22 +1348,28 @@
             /* Keyboard: rows always fit the viewport instead of clipping
                at both edges */
             .keyboard-frame {
-                padding: 6px 4px;
-                gap: 3px;
+                padding: 8px 3px;
+                gap: 4px;
+                max-width: 100%;
+                box-sizing: border-box;
                 overflow: hidden;
             }
-            .k-row { gap: 2px; flex-wrap: nowrap; }
+            .k-row { gap: 2px; }
             .k-key {
-                flex: 1 1 0;
-                min-width: 0;
-                width: auto;
-                height: 36px;
+                min-width: 0 !important;
+                width: calc((100vw - 70px)/14);
+                flex: 0 1 auto;
+                height: 42px;
                 padding: 1px;
-                border-radius: 4px;
+                clip-path: polygon(4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%, 0 4px);
             }
-            .k-key .hi-main { font-size: 0.72rem; margin-top: 2px; }
-            .k-key .hi-shift { font-size: 8px; top: 1px; left: 2px; }
-            .k-key .en-sub { font-size: 7.5px; bottom: 1px; right: 2px; }
+            .k-key.w-backspace, .k-key.w-tab, .k-key.w-caps, .k-key.w-enter,
+            .k-key.w-shift-l, .k-key.w-shift-r, .k-key.w-ctrl, .k-key.w-alt { min-width: 0 !important; }
+            .k-key.w-space { min-width: 0 !important; max-width: none; flex: 3 1 auto !important; }
+            .k-key.label-key .hi-main { font-size: 0.38rem !important; }
+            .k-key .hi-main { font-size: 0.85rem; }
+            .k-key .hi-shift { font-size: 0.58rem; }
+            .k-key .en-sub { font-size: 0.5rem; }
 
             .match-top-header { flex-wrap: wrap; gap: 4px 8px; }
             .live-hint-strip { flex-wrap: wrap; }
@@ -2104,50 +2167,10 @@
             font-family: 'Noto Serif Devanagari', 'Courier Prime', serif;
         }
 
-        /* ── Keyboard: rectangular typewriter keycaps under a platen rule ── */
-        .keyboard-frame {
-            background: transparent;
-            border: none;
-            border-top: 3px double var(--km-border);
-            border-radius: 0 !important;
-            clip-path: none !important;
-            padding-top: 14px;
-        }
-        .k-key {
-            border-radius: 6px !important;
-            clip-path: none !important;
-            width: 42px;
-            min-width: 42px;
-            height: 42px;
-            background: linear-gradient(180deg, var(--surface) 0%, var(--key-bg) 55%, var(--key-bottom) 130%);
-            border: 1.5px solid var(--key-border);
-            border-bottom: 3px solid var(--key-bottom);
-            box-shadow: 0 2px 3px rgba(0, 0, 0, 0.18);
-        }
-        .k-key.pressed {
-            transform: translateY(2px);
-            box-shadow: 0 0 1px rgba(0, 0, 0, 0.2);
-            background: var(--key-bottom);
-        }
-        .k-key.target {
-            background: linear-gradient(180deg, var(--km-accent) 0%, var(--km-accent) 70%, var(--key-bottom) 140%);
-            border-color: var(--km-accent);
-            border-bottom-color: var(--key-bottom);
-            box-shadow: 0 0 10px var(--km-accent-glow);
-        }
-        .k-key .hi-shift, .k-key .hi-main {
-            font-family: 'Noto Serif Devanagari', serif;
-        }
-        .k-key .en-sub {
-            font-family: 'Courier Prime', monospace;
-        }
-        @media (max-width: 650px) {
-            .k-key {
-                width: auto;
-                min-width: 0;
-                height: 34px;
-            }
-        }
+        /* ── Keyboard: intentionally NOT restyled ──
+           HiKeymash's on-screen keyboard must look and behave exactly like
+           HiKeybr's (index.html), so the retro typewriter treatment skips
+           it; the shared keyboard rules above are the single source. ── */
 
         /* ── Racers: ledger rows, dashed track, square carriage ── */
         .racer-row {
@@ -2685,10 +2708,12 @@
                 { k: '9',  h: '9',  sh: '(',  code: 'Digit9' },
                 { k: '0',  h: '0',  sh: 'द्ध', code: 'Digit0' },
                 { k: '-',  h: '-',  sh: 'ऋ',  code: 'Minus' },
-                { k: '=',  h: 'त्र', sh: '़',  code: 'Equal' }
+                { k: '=',  h: 'त्र', sh: '़',  code: 'Equal' },
+                { k: 'Backspace', h: '⌫ Backspace', label: true, w: 'w-backspace' }
             ],
             // Row 2: Top Alpha
             [
+                { k: 'Tab', h: '↹ Tab', label: true, w: 'w-tab' },
                 { k: 'q',  h: 'ु',  sh: 'फ',  code: 'KeyQ' },
                 { k: 'w',  h: 'ू',  sh: 'ॅ',  code: 'KeyW' },
                 { k: 'e',  h: 'म',  sh: 'म्', code: 'KeyE' },
@@ -2705,6 +2730,7 @@
             ],
             // Row 3: Home Alpha
             [
+                { k: 'CapsLock', h: '⇪ Caps', label: true, w: 'w-caps' },
                 { k: 'a',  h: 'ं',  sh: 'ँ',  code: 'KeyA' },
                 { k: 's',  h: 'े',  sh: 'ै',  code: 'KeyS' },
                 { k: 'd',  h: 'क',  sh: 'क्', code: 'KeyD' },
@@ -2715,10 +2741,12 @@
                 { k: 'k',  h: 'ा',  sh: 'ज्ञ', code: 'KeyK' },
                 { k: 'l',  h: 'स',  sh: 'स्', code: 'KeyL' },
                 { k: ';',  h: 'य',  sh: 'रू', code: 'Semicolon' },
-                { k: "'",  h: 'श',  sh: 'ष्', code: 'Quote' }
+                { k: "'",  h: 'श',  sh: 'ष्', code: 'Quote' },
+                { k: 'Enter', h: '⏎ Enter', label: true, w: 'w-enter' }
             ],
             // Row 4: Bottom Alpha
             [
+                { k: 'ShiftLeft', h: '⇧ Shift', label: true, w: 'w-shift-l' },
                 { k: 'z',  h: '्र', sh: 'र्', code: 'KeyZ' },
                 { k: 'x',  h: 'ग',  sh: 'घ',  code: 'KeyX' },
                 { k: 'c',  h: 'ब',  sh: 'भ',  code: 'KeyC' },
@@ -2728,7 +2756,18 @@
                 { k: 'm',  h: 'उ',  sh: 'ड',  code: 'KeyM' },
                 { k: ',',  h: 'ए',  sh: 'ढ',  code: 'Comma' },
                 { k: '.',  h: 'ण',  sh: 'झ',  code: 'Period' },
-                { k: '/',  h: 'ध',  sh: 'घ्', code: 'Slash' }
+                { k: '/',  h: 'ध',  sh: 'घ्', code: 'Slash' },
+                { k: 'ShiftRight', h: '⇧ Shift', label: true, w: 'w-shift-r' }
+            ],
+            // Row 5: Space bar row (keybr-style); spacers keep real-keyboard proportions
+            [
+                { sp: 1.9 },
+                { k: 'ControlLeft', h: 'Ctrl', label: true, w: 'w-ctrl' },
+                { k: 'AltLeft', h: 'Alt', label: true, w: 'w-alt' },
+                { k: ' ', h: 'Space', label: true, w: 'w-space' },
+                { k: 'AltRight', h: 'Alt', label: true, w: 'w-alt' },
+                { k: 'ControlRight', h: 'Ctrl', label: true, w: 'w-ctrl' },
+                { sp: 1.9 }
             ]
         ];
         const KRUTI_HINT_DESCS = {
@@ -3299,40 +3338,46 @@
         // 5. VIRTUAL KEYBOARD RENDERER
         // ─────────────────────────────────────────────────────────────
         const keyDOMMap = new Map();
+        const CLICKABLE_LABEL_KEYS = new Set([' ', 'Backspace']);
         function renderVirtualKeyboard() {
             el.keyboardFrame.innerHTML = '';
+            keyDOMMap.clear();
             KB_MATRIX.forEach(row => {
                 const rowDiv = document.createElement('div');
                 rowDiv.className = 'k-row';
                 row.forEach(keyDef => {
+                    if (keyDef.sp) {
+                        const spacerEl = document.createElement('div');
+                        spacerEl.className = 'k-spacer';
+                        spacerEl.style.flexGrow = String(keyDef.sp);
+                        rowDiv.appendChild(spacerEl);
+                        return;
+                    }
                     const keyEl = document.createElement('div');
-                    keyEl.className = 'k-key';
-                    keyEl.dataset.code = keyDef.code;
+                    const classes = ['k-key'];
+                    if (keyDef.w) classes.push(keyDef.w);
+                    if (keyDef.label) classes.push('label-key');
+                    keyEl.className = classes.join(' ');
                     keyEl.dataset.key = keyDef.k;
 
-                    const shiftSpan = document.createElement('span');
-                    shiftSpan.className = 'hi-shift';
-                    shiftSpan.textContent = keyDef.sh;
+                    if (keyDef.label) {
+                        keyEl.innerHTML = `<span class="hi-main">${keyDef.h}</span>`;
+                    } else {
+                        const shiftHtml = keyDef.sh ? `<span class="hi-shift">${keyDef.sh}</span>` : '';
+                        const enLabel = (keyDef.k.length === 1 && keyDef.k !== ' ') ? keyDef.k.toUpperCase() : '';
+                        keyEl.innerHTML = `${shiftHtml}<span class="hi-main">${keyDef.h}</span><span class="en-sub">${enLabel}</span>`;
+                    }
 
-                    const mainSpan = document.createElement('span');
-                    mainSpan.className = 'hi-main';
-                    mainSpan.textContent = keyDef.h;
-
-                    const subSpan = document.createElement('span');
-                    subSpan.className = 'en-sub';
-                    subSpan.textContent = keyDef.k.toUpperCase();
-
-                    keyEl.appendChild(shiftSpan);
-                    keyEl.appendChild(mainSpan);
-                    keyEl.appendChild(subSpan);
-
-                    keyEl.addEventListener('mousedown', (e) => {
-                        e.preventDefault();
-                        handleKeystroke(keyDef.k);
-                    });
+                    if (!keyDef.label || CLICKABLE_LABEL_KEYS.has(keyDef.k)) {
+                        keyEl.addEventListener('mousedown', (e) => {
+                            e.preventDefault();
+                            handleKeystroke(keyDef.k);
+                        });
+                    }
 
                     keyDOMMap.set(keyDef.k, keyEl);
-                    keyDOMMap.set(keyDef.code, keyEl);
+                    if (keyDef.code) keyDOMMap.set(keyDef.code, keyEl);
+                    if (keyDef.k.length === 1) keyDOMMap.set(keyDef.k.toLowerCase(), keyEl);
                     rowDiv.appendChild(keyEl);
                 });
                 el.keyboardFrame.appendChild(rowDiv);
@@ -3340,18 +3385,20 @@
         }
 
         function updateKeyboardHighlights(targetInfo) {
-            document.querySelectorAll('.k-key.target, .k-key.shift-needed').forEach(k => {
-                k.classList.remove('target', 'shift-needed');
+            keyDOMMap.forEach((keyEl) => {
+                keyEl.classList.remove('target', 'shift-needed');
             });
             if (!targetInfo || !targetInfo.targetKey) return;
 
-            const baseKey = targetInfo.targetKey.toLowerCase();
-            const targetEl = keyDOMMap.get(baseKey);
+            const targetEl = keyDOMMap.get(targetInfo.targetKey.toLowerCase()) || keyDOMMap.get(targetInfo.targetKey);
             if (targetEl) {
                 targetEl.classList.add('target');
-                if (targetInfo.isShifted) {
-                    targetEl.classList.add('shift-needed');
-                }
+            }
+            if (targetInfo.isShifted) {
+                const shiftL = keyDOMMap.get('ShiftLeft');
+                const shiftR = keyDOMMap.get('ShiftRight');
+                if (shiftL) shiftL.classList.add('shift-needed');
+                if (shiftR) shiftR.classList.add('shift-needed');
             }
         }
 
