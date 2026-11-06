@@ -97,7 +97,8 @@ src/
     hikeymash/              Arcade: data, engine, quotes, audio, state,
                             keyboard, bots, picker, display, input, results,
                             insights, ui, lobby, init
-books.js                    Book Reader content (loaded by both pages)
+books.js                    Book Reader stories (loaded by both pages)
+data/books/                 Full novels (Nirmala, Godan) for the Book Reader
 data/                       Quote and cinema libraries (HiKeymash)
 ```
 
