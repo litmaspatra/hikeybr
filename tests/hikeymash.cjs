@@ -69,7 +69,7 @@ const path = require('node:path');
     // 8. keymash-style: the category picker lives in the lobby only - never
     //    while typing - and no WPM/accuracy HUD or progress bar shows mid-race.
     assert.equal(await page.$$eval('.pill-btn[data-cat]', els => els.length), 0, 'no in-race category selector');
-    assert.ok((await page.$$eval('#lobby-cat-pills .lobby-pill[data-cat]', els => els.length)) >= 3, 'lobby offers Cinema/Literature/Mixed');
+    assert.equal(await page.$('#lobby-cat-pills'), null, 'no content selector - race content is always mixed');
     assert.equal(await page.evaluate(() => getComputedStyle(document.getElementById('lobby-screen')).display), 'none', 'lobby hidden while typing');
     assert.equal(await page.evaluate(() => getComputedStyle(document.querySelector('.hud-strip')).display), 'none', 'no speed/accuracy HUD while typing');
     assert.equal(await page.evaluate(() => getComputedStyle(document.querySelector('.progress-bar-container')).display), 'none', 'no progress bar while typing');
@@ -106,14 +106,15 @@ const path = require('node:path');
     await page.waitForTimeout(3200);
     assert.ok(!(await page.evaluate(() => document.getElementById('countdown-overlay').classList.contains('show'))), 'countdown clears');
 
-    // 13. Cinema category serves cinema dialogues with no immediate repeat.
+    // 13. Mixed pool serves both cinema and literature with no immediate repeat.
     await page.click('#match-leave-btn');
     assert.equal(await page.evaluate(() => getComputedStyle(document.getElementById('lobby-screen')).display), 'block', 'LEAVE returns to the lobby');
-    await page.click('#lobby-cat-pills .lobby-pill[data-cat="cinema"]');
-    const cin1 = await page.evaluate(() => window.__HIKEYMASH__.pickRaceSnippet());
-    const cin2 = await page.evaluate(() => window.__HIKEYMASH__.pickRaceSnippet());
-    assert.equal(cin1.category, 'cinema', 'cinema pool serves cinema');
-    assert.notEqual(cin1.id, cin2.id, 'cinema picks do not repeat immediately');
+    const mixPicks = await page.evaluate(() => Array.from({length: 40}, () => window.__HIKEYMASH__.pickRaceSnippet()));
+    const cats = new Set(mixPicks.map(p => p.category));
+    assert.ok(cats.has('cinema'), 'mixed pool includes cinema');
+    assert.ok([...cats].some(c => c && c !== 'cinema'), 'mixed pool includes literature');
+    const ids = mixPicks.map(p => p.id);
+    assert.ok(ids.slice(1).every((id, i) => id !== ids[i]), 'picks do not repeat immediately');
 
     // 14. Book Reader: opens a saved paragraph, finishing flows to the next.
     await page.evaluate(() => window.__HIKEYMASH__.openBook('idgah'));

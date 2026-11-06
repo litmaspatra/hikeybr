@@ -25,8 +25,8 @@
             return pickFromPool(LITERATURE_SNIPPETS, excludeId);
         }
 
-        // Race content pools: cinema dialogues (data/cinema.js) and the
-        // literature library (data/quotes.js), selectable in the lobby.
+        // Race content pool: cinema dialogues (data/cinema.js) and the
+        // literature library (data/quotes.js), always mixed together.
         let cinemaCache = null;
         function cinemaSnippets() {
             if (cinemaCache) return cinemaCache;
@@ -45,8 +45,7 @@
         }
 
         function racePool() {
-            if (raceConfig.cat === 'cinema') return cinemaSnippets();
-            if (raceConfig.cat === 'literature') return LITERATURE_SNIPPETS;
+            // Content is always mixed: literature library + cinema dialogues.
             return LITERATURE_SNIPPETS.concat(cinemaSnippets());
         }
 

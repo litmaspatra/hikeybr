@@ -194,13 +194,6 @@
             el.lobbyPanelRace.style.display = 'none';
             renderBookCards();
         });
-        document.querySelectorAll('#lobby-cat-pills .lobby-pill').forEach(p => {
-            p.addEventListener('click', () => {
-                raceConfig.cat = p.dataset.cat;
-                document.querySelectorAll('#lobby-cat-pills .lobby-pill').forEach(x => x.classList.toggle('active', x === p));
-                refreshLobbyCounts();
-            });
-        });
         document.querySelectorAll('#lobby-len-pills .lobby-pill').forEach(p => {
             p.addEventListener('click', () => {
                 if (p.disabled) return;
