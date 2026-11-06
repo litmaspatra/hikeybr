@@ -1296,6 +1296,12 @@
             background: #dc2626;
         }
 
+
+        /* Selected / danger / cancel text must stay readable on every theme */
+        :root[data-theme="dark"] .btn-modal.danger, :root[data-theme="forest"] .btn-modal.danger,
+        :root[data-theme="navy"] .btn-modal.danger, :root[data-theme="amber"] .btn-modal.danger { background: #ff8a80; color: #2a0505; }
+        .btn-modal.cancel { color: var(--text); }
+
         footer {
             text-align: center;
             font-size: 0.72rem;

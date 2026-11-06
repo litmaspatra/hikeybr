@@ -2212,6 +2212,28 @@
         .history-table th, .history-table td {
             font-family: 'Courier Prime', 'Noto Serif Devanagari', monospace;
         }
+
+        /* ── Selected / active / hover contrast guard (all 6 themes) ──
+           Selected controls always pair a fill with a readable text colour.
+           --on-accent is the text colour that reads on each theme's accent fill. */
+        :root, :root[data-theme="dark"], :root[data-theme="navy"], :root[data-theme="forest"] { --on-accent: #0b1210; }
+        :root[data-theme="light"], :root[data-theme="paper"], :root[data-theme="sunshine"] { --on-accent: #ffffff; }
+        :root[data-theme="amber"] { --on-accent: #0b0604; }
+        .res-subtab.active {
+            background: var(--km-accent);
+            color: var(--on-accent);
+        }
+        .res-subtab.active:hover { color: var(--on-accent); }
+        .res-subtab:not(.active) { color: var(--km-text-main); }
+        .replay-speed-btn.active, .replay-speed-btn.active:hover {
+            background: var(--km-accent);
+            border-color: var(--km-accent);
+            color: var(--on-accent);
+        }
+        .replay-ctrl-btn { background: var(--km-card-inner); color: var(--km-text-main); }
+        .replay-ctrl-btn:hover { background: var(--km-accent); color: var(--on-accent); }
+        .racer-pill.player { color: var(--on-accent); }
+        .bottom-action-square.leave-btn, .bottom-action-square.next-btn { color: var(--on-accent); }
     </style>
     <script src="data/quotes.js" defer></script>
 </head>
