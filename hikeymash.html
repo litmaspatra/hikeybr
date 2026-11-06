@@ -2037,6 +2037,14 @@
     </style>
     <link rel="stylesheet" href="theme.css">
     <style>
+        /* keybr.com keyboard look for HiKeymash only: theme.css forces a
+           global angular style (zero border-radius, chamfered keycaps);
+           undo that here so the keyboard stays flat, square and borderless */
+        #keyboard-frame { border-radius: 12px !important; }
+        #keyboard-frame .k-key { clip-path: none !important; border-radius: 3px !important; }
+        #keyboard-frame .k-key.target::after { border-radius: 50% !important; }
+    </style>
+    <style>
         /* ═══════════════════════════════════════════════════════════
            RETRO TYPEWRITER RESTYLE (HiKeymash identity)
            - Default theme: Paper (same palette as HiKeybr's Paper).
