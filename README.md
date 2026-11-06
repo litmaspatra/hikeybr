@@ -22,7 +22,7 @@
 
 ## 🚀 Running Locally or Deploying
 
-HiKeybr is a standalone, single-page application with zero build tools or server dependencies required.
+HiKeybr is a static site with zero build tools or server dependencies required.
 
 1. **Local Run**: Double click `index.html` or open with any modern web browser.
 2. **GitHub Pages**:
@@ -76,6 +76,33 @@ Lesson settings (top of the Practice tab) include a text source: adaptive Hindi 
 
 ---
 
+## 🗂 Project structure
+
+Both pages are thin HTML shells; all styles and logic live under `src/` as plain CSS and classic (non-module) scripts, so everything still works from `file://` and GitHub Pages with no build step.
+
+```
+index.html                  HiKeybr tutor shell
+hikeymash.html              HiKeymash arcade shell
+src/
+  css/
+    hikeybr.css             HiKeybr page styles
+    hikeymash.css           HiKeymash page styles
+    hikeymash-overrides.css HiKeymash overrides loaded after the shared sheets
+    theme.css               Shared retro typewriter theme
+    keyboard.css            Shared keyboard styles
+  js/
+    hikeybr/                Tutor: progression, state, audio, storage, engine
+                            (unicode -> KrutiDev), keyboard, adaptive engine,
+                            lessons, display, input, ui, init
+    hikeymash/              Arcade: data, engine, quotes, audio, state,
+                            keyboard, bots, picker, display, input, results,
+                            insights, ui, lobby, init
+books.js                    Book Reader content (loaded by both pages)
+data/                       Quote and cinema libraries (HiKeymash)
+```
+
+Each script is loaded in a fixed order with plain `<script src>` tags; shared top-level `let`/`const` bindings are visible to later scripts, exactly as when the code lived in one inline block.
+
 ## 🧪 Running the tests
 
 The progression and UI tests use [Playwright](https://playwright.dev) (Chromium).
@@ -86,4 +113,4 @@ npx playwright install chromium
 npm test
 ```
 
-`npm test` runs `tests/progression.cjs` (unlock gates, review isolation, saved-progress recovery, all 70 levels) and `tests/ui.cjs` (real key events, custom text, Alt codes, settings sync, reload persistence). The same tests run in GitHub Actions on every push (`.github/workflows/tests.yml`).
+`npm test` runs `tests/progression.cjs` (unlock gates, review isolation, saved-progress recovery, all 70 levels), `tests/ui.cjs` (real key events, custom text, Alt codes, settings sync, reload persistence), `tests/hikeymash.cjs` (lobby, race flow, results) and `tests/graphs.cjs` (chart math, profile migration, empty states). The same tests run in GitHub Actions on every push (`.github/workflows/tests.yml`).
