@@ -1,0 +1,222 @@
+        /* ═══════════════════════════════════════════════════════════
+           RETRO TYPEWRITER RESTYLE (HiKeymash identity)
+           - Default theme: Paper (same palette as HiKeybr's Paper).
+           - --km-* keymash variables are remapped onto the shared
+             theme.css palettes so every theme matches HiKeybr.
+           - Typography + components get the typewriter look: Courier /
+             Special Elite, ink-on-paper, square keycaps, ledger rules.
+           ═══════════════════════════════════════════════════════════ */
+        :root {
+            --km-bg: var(--bg);
+            --km-card: var(--surface);
+            --km-card-inner: var(--surface-card);
+            --km-border: var(--border);
+            --km-border-light: var(--border-subtle);
+            --km-accent: var(--accent);
+            --km-accent-glow: var(--accent-glow);
+            --km-cyan: var(--correct);
+            --km-blue-btn: var(--accent);
+            --km-coral-btn: var(--error);
+            --km-text-main: var(--text);
+            --km-text-dim: var(--text-dim);
+            --km-text-faint: var(--text-faint);
+            --km-error: var(--error);
+            --km-error-bg: var(--error-bg);
+        }
+
+        /* ── Paper body: subtle tooth texture, typewriter mono UI ── */
+        body {
+            background-color: var(--km-bg);
+            background-image: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.018) 0 1px, transparent 1px 4px);
+            font-family: 'Courier Prime', 'Noto Serif Devanagari', 'JetBrains Mono', monospace;
+        }
+
+        /* ── Header: ink rule, typewriter brand ── */
+        header {
+            background: var(--km-card);
+            border-bottom: 3px double var(--km-border);
+        }
+        .brand-icon {
+            border-radius: 50% !important;
+            clip-path: none !important;
+            background: var(--km-text-main) !important;
+            color: var(--km-bg) !important;
+            border: 2px solid var(--km-text-main) !important;
+            font-family: 'Noto Serif Devanagari', serif !important;
+        }
+        .brand-title {
+            font-family: 'Special Elite', 'Courier Prime', monospace !important;
+            letter-spacing: 0.04em;
+        }
+        .brand-badge {
+            font-family: 'Special Elite', 'Noto Serif Devanagari', monospace !important;
+            border: 1px dashed var(--km-accent) !important;
+            border-radius: 0 !important;
+            clip-path: none !important;
+        }
+        .nav-tab {
+            font-family: 'Special Elite', 'Noto Serif Devanagari', monospace !important;
+            letter-spacing: 0.03em;
+        }
+
+        /* ── Match header: typed page heading ── */
+        .match-title {
+            font-family: 'Special Elite', 'Courier Prime', monospace !important;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            border-bottom: 3px double var(--km-text-faint);
+            padding-bottom: 2px;
+        }
+        .match-subtitle, .match-player-count {
+            font-family: 'Special Elite', 'Courier Prime', monospace !important;
+            letter-spacing: 0.18em;
+        }
+
+        /* ── Typing canvas: bare sheet, no card chrome (text not in a box) ── */
+        .typing-canvas {
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            border-radius: 0 !important;
+            clip-path: none !important;
+            padding: 8px 4px 12px;
+        }
+        .typing-canvas.active-focus {
+            border-color: transparent !important;
+            box-shadow: none !important;
+        }
+        .match-leave-btn {
+            font-family: 'Special Elite', 'Courier Prime', monospace !important;
+        }
+        .match-ping-indicator {
+            font-family: 'Courier Prime', monospace !important;
+        }
+        .kruti-stream {
+            border-top: 1px solid var(--km-border-subtle);
+            border-bottom: 1px solid var(--km-border-subtle);
+            padding: 14px 2px;
+            /* exactly 3 text lines + padding: any extra pixel lets the
+               next line's matras/bindus peek through as stray marks */
+            height: calc(5.25em + 28px);
+        }
+
+        /* ── Hint strip & alt pill: typewriter chips ── */
+        .live-hint-strip {
+            font-family: 'Noto Serif Devanagari', 'Courier Prime', serif;
+        }
+        .live-hint-key, .alt-code-badge {
+            font-family: 'Courier Prime', monospace !important;
+            background: transparent;
+            border: 1px dashed var(--km-text-dim);
+            border-radius: 0 !important;
+            clip-path: none !important;
+        }
+        .alt-helper-pill {
+            border: 1px dashed var(--km-accent);
+            border-radius: 0 !important;
+            clip-path: none !important;
+            font-family: 'Noto Serif Devanagari', 'Courier Prime', serif;
+        }
+
+        /* ── Keyboard: intentionally NOT restyled ──
+           HiKeymash's on-screen keyboard must look and behave exactly like
+           HiKeybr's (index.html), so the retro typewriter treatment skips
+           it; the shared keyboard rules above are the single source. ── */
+
+        /* ── Racers: ledger rows, dashed track, square carriage ── */
+        .racer-row {
+            background: transparent;
+            border: none;
+            border-top: 1px solid var(--km-border-subtle);
+            border-radius: 0 !important;
+            clip-path: none !important;
+            box-shadow: none;
+            padding: 10px 4px;
+        }
+        .racer-avatar-box {
+            border-radius: 50% !important;
+            clip-path: none !important;
+            background: transparent;
+            border: 1.5px solid var(--km-border);
+        }
+        .racer-name {
+            font-family: 'Noto Serif Devanagari', 'Courier Prime', serif;
+        }
+        .racer-track-line {
+            height: 2px;
+            background: repeating-linear-gradient(90deg, var(--km-border) 0 7px, transparent 7px 13px);
+            border-radius: 0 !important;
+        }
+        .racer-pill {
+            background: var(--km-card);
+            border: 1.5px solid var(--km-text-main);
+            color: var(--km-text-main);
+            border-radius: 0 !important;
+            clip-path: none !important;
+            font-family: 'Courier Prime', 'Noto Serif Devanagari', monospace;
+            box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.18);
+        }
+        .racer-pill.player {
+            background: var(--km-accent);
+            border-color: var(--km-accent);
+            color: #ffffff;
+        }
+        .racer-wpm {
+            font-family: 'Courier Prime', monospace !important;
+        }
+
+        /* ── Results: typed report card ── */
+        .keymash-results-container, .modal-content {
+            border-radius: 0 !important;
+            clip-path: none !important;
+        }
+        .res-top-tab, .res-subtab, .res-m-label, .res-meta-tag, .history-title, .sum-label, .perf-chart-title {
+            font-family: 'Special Elite', 'Noto Serif Devanagari', 'Courier Prime', monospace !important;
+            letter-spacing: 0.08em;
+        }
+        .res-m-value, .sum-val, .perf-chart-peak, .pm-val {
+            font-family: 'Courier Prime', monospace !important;
+        }
+        .res-metric-card, .res-meta-header-card, .res-review-card, .perf-chart-card,
+        .perf-metric-chip, .sum-card, .summary-history-card, .replay-display-card {
+            border-radius: 0 !important;
+            clip-path: none !important;
+            border: 1px solid var(--km-border);
+            box-shadow: none;
+        }
+        .bottom-action-square {
+            border-radius: 0 !important;
+            clip-path: none !important;
+            font-family: 'Special Elite', 'Courier Prime', monospace !important;
+        }
+        .bottom-player-name {
+            font-family: 'Noto Serif Devanagari', 'Courier Prime', serif;
+        }
+        .bottom-track-groove {
+            border-radius: 0 !important;
+        }
+        .history-table th, .history-table td {
+            font-family: 'Courier Prime', 'Noto Serif Devanagari', monospace;
+        }
+
+        /* ── Selected / active / hover contrast guard (all 6 themes) ──
+           Selected controls always pair a fill with a readable text colour.
+           --on-accent is the text colour that reads on each theme's accent fill. */
+        :root, :root[data-theme="dark"], :root[data-theme="navy"], :root[data-theme="forest"] { --on-accent: #0b1210; }
+        :root[data-theme="light"], :root[data-theme="paper"], :root[data-theme="sunshine"] { --on-accent: #ffffff; }
+        :root[data-theme="amber"] { --on-accent: #0b0604; }
+        .res-subtab.active {
+            background: var(--km-accent);
+            color: var(--on-accent);
+        }
+        .res-subtab.active:hover { color: var(--on-accent); }
+        .res-subtab:not(.active) { color: var(--km-text-main); }
+        .replay-speed-btn.active, .replay-speed-btn.active:hover {
+            background: var(--km-accent);
+            border-color: var(--km-accent);
+            color: var(--on-accent);
+        }
+        .replay-ctrl-btn { background: var(--km-card-inner); color: var(--km-text-main); }
+        .replay-ctrl-btn:hover { background: var(--km-accent); color: var(--on-accent); }
+        .racer-pill.player { color: var(--on-accent); }
+        .bottom-action-square.leave-btn, .bottom-action-square.next-btn { color: var(--on-accent); }
