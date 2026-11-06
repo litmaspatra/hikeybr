@@ -1350,12 +1350,15 @@
             .k-row { gap: 2px; }
             .k-key {
                 min-width: 0 !important;
-                width: calc((100vw - 70px)/14);
+                width: calc((100vw - 72px)/15);
                 flex: 0 1 auto;
                 height: 42px;
                 padding: 1px;
             }
-            .k-key.w-backspace, .k-key.w-tab, .k-key.w-caps, .k-key.w-enter,
+            .k-key.w-backspace { width: calc((100vw - 72px)/15 * 1.6); }
+            .k-key.w-backspace .hi-main { font-size: 0 !important; }
+            .k-key.w-backspace .hi-main::after { content: '\232B'; font-size: 0.85rem; }
+            .k-key.w-tab, .k-key.w-caps, .k-key.w-enter,
             .k-key.w-shift-l, .k-key.w-shift-r, .k-key.w-ctrl, .k-key.w-alt { min-width: 0 !important; }
             .k-key.w-space { min-width: 0 !important; max-width: none; flex: 3 1 auto !important; }
             .k-key.label-key .hi-main { font-size: 0.38rem !important; }
