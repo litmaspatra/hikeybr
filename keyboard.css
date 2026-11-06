@@ -1,0 +1,90 @@
+/* ═══════════════════════════════════════════════════════════
+   SHARED KEYBOARD SKIN — HiKeybr (index.html) & HiKeymash (hikeymash.html)
+   keybr.com look: flat square borderless keys with even gaps on a
+   rounded flat frame; the next key gets a thin ring around its
+   letter, Shift-needed keys get a flat accent fill, and HiKeybr's
+   guided lessons colour keys by per-key confidence.
+
+   Loaded AFTER theme.css in both pages. The !important rules undo
+   theme.css's global angular styling (zero border-radius, chamfered
+   keycaps) for the keyboard only. Geometry (key heights, widths,
+   gaps, breakpoints, font sizes) stays in each page so each keeps
+   its own one-screen fit; this file owns the LOOK so both keyboards
+   stay identical.
+   ═══════════════════════════════════════════════════════════ */
+
+#keyboard-frame {
+    background: var(--surface);
+    border: none;
+    border-radius: 12px !important;
+    box-shadow: none;
+}
+
+#keyboard-frame .k-key {
+    background: var(--key-bg);
+    border: none !important;
+    border-radius: 3px !important;
+    clip-path: none !important;
+    box-shadow: none;
+    transition: filter 0.08s ease, transform 0.08s ease, background 0.08s ease;
+}
+
+#keyboard-frame .k-key.pressed {
+    transform: translateY(1px);
+    filter: brightness(0.8);
+}
+
+/* HiKeybr guided lessons: unlocked keys carry a subtle theme tint
+   until they earn a confidence colour below. */
+#keyboard-frame .k-key.unlocked {
+    background: var(--key-unlocked);
+}
+
+/* keybr-style per-key confidence heat map (HiKeybr colours its keys
+   from measured per-key timings; HiKeymash collects no per-key stats,
+   so it never applies these classes):
+   heat-1  yellow = practising, below 80% of goal speed
+   heat-2  lime   = close, 80-99% of goal speed
+   heat-3  green  = learnt, goal speed reached with 95%+ accuracy */
+#keyboard-frame .k-key.heat-1 { background: rgba(250, 204, 21, 0.35); }
+#keyboard-frame .k-key.heat-2 { background: rgba(163, 230, 53, 0.40); }
+#keyboard-frame .k-key.heat-3 { background: rgba(74, 222, 128, 0.48); }
+
+/* Next key to press: a thin ring around its letter — no glow, no
+   raised or filled key (keybr.com). Wins over the heat colours. */
+#keyboard-frame .k-key.target {
+    animation: none;
+    box-shadow: none;
+}
+#keyboard-frame .k-key.target::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 27px;
+    height: 27px;
+    transform: translate(-50%, -50%);
+    border: 1.5px solid var(--accent);
+    border-radius: 50% !important;
+    pointer-events: none;
+}
+
+/* Shift needed for the next character: flat accent fill, white label. */
+#keyboard-frame .k-key.shift-needed {
+    background: var(--key-active);
+    box-shadow: none;
+}
+#keyboard-frame .k-key.shift-needed .hi-main {
+    color: #ffffff;
+}
+
+/* Home-key guide bumps (F/J row): small dash under the letter. */
+#keyboard-frame .k-key.bump::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    width: 10px;
+    height: 2px;
+    background: var(--text-dim);
+    border-radius: 1px !important;
+}

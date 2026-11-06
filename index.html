@@ -962,29 +962,23 @@
         /* ═══════════════════════════════════════════════════════════
            VIRTUAL KEYBOARD (Full Remington GAIL Layout)
            ═══════════════════════════════════════════════════════════ */
+        /* Keyboard skin (flat, keybr.com-style) lives in keyboard.css,
+           shared with HiKeymash; only page-specific geometry stays here. */
         .keyboard-frame {
-            background: var(--surface-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
             padding: 16px 20px;
             display: flex;
             flex-direction: column;
-            gap: 7px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            gap: 3px;
             user-select: none;
         }
 
         .k-row {
             display: flex;
             justify-content: center;
-            gap: 6px;
+            gap: 3px;
         }
 
         .k-key {
-            background: var(--key-bg);
-            border: 1px solid var(--key-border);
-            border-bottom: 3px solid var(--key-bottom);
-            border-radius: 8px;
             height: 48px;
             min-width: 44px;
             display: flex;
@@ -994,46 +988,11 @@
             position: relative;
             cursor: default;
             user-select: none;
-            transition: all 0.08s ease;
             padding: 2px 4px;
         }
 
-        .k-key.pressed {
-            transform: translateY(2px);
-            border-bottom-width: 1px;
-            background: var(--surface-hover);
-        }
-
-        .k-key.unlocked {
-            background: var(--key-unlocked);
-            border-color: var(--key-unlocked-border);
-        }
-
-        .k-key.target {
-            background: var(--accent);
-            border-color: #ff8533;
-            border-bottom-color: #b34b00;
-            box-shadow: 0 0 16px var(--accent-glow);
-            transform: translateY(-2px);
-            animation: targetPulse 1.2s infinite alternate;
-        }
-
-        .k-key.target .hi-main,
-        .k-key.target .hi-shift,
-        .k-key.target .en-sub {
-            color: #ffffff !important;
-            font-weight: 800;
-        }
-
-        @keyframes targetPulse {
-            0% { box-shadow: 0 0 8px var(--accent-glow); }
-            100% { box-shadow: 0 0 20px rgba(255, 107, 0, 0.7); }
-        }
-
-        .k-key.shift-needed {
-            border-color: #38bdf8;
-            box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
-        }
+        /* pressed / unlocked / target ring / shift-needed / heat colours:
+           all in keyboard.css (shared with HiKeymash). */
 
         .k-key .hi-shift {
             font-family: 'Noto Sans Devanagari', sans-serif;
@@ -1062,16 +1021,6 @@
             position: absolute;
             bottom: 3px;
             right: 5px;
-        }
-
-        .k-key.bump::after {
-            content: '';
-            position: absolute;
-            bottom: 4px;
-            width: 10px;
-            height: 2px;
-            background: var(--text-dim);
-            border-radius: 1px;
         }
 
         .k-key.w-backspace { min-width: 82px; }
@@ -1357,11 +1306,9 @@
             margin-top: auto;
         }
 
-        /* Keybr-style per-key confidence heat map:
-           yellow = not yet good, yellow-green = improving, green = learnt */
-        .k-key.heat-1 { background: rgba(250, 204, 21, 0.20); border-color: #eab308; }
-        .k-key.heat-2 { background: rgba(163, 230, 53, 0.24); border-color: #84cc16; }
-        .k-key.heat-3 { background: rgba(74, 222, 128, 0.32); border-color: #22c55e; }
+        /* Keybr-style per-key confidence heat map on the keyboard keys:
+           yellow = not yet good, yellow-green = improving, green = learnt.
+           Key fills live in keyboard.css (shared with HiKeymash). */
 
         .ak-badge.heat-1 { background: rgba(250, 204, 21, 0.20); border-color: #eab308; color: var(--text); }
         .ak-badge.heat-2 { background: rgba(163, 230, 53, 0.24); border-color: #84cc16; color: var(--text); }
@@ -1751,6 +1698,7 @@ html.cur-underline .text-current{background:transparent!important;box-shadow:0 3
         }
     </style>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;700&display=swap" rel="stylesheet">    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="keyboard.css">
 </head>
 <body>
 

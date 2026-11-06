@@ -1170,12 +1170,10 @@
         }
 
         /* Keyboard: keybr.com-style keycaps — flat square keys with no
-           borders, even 3px gaps on a rounded flat frame. Keycap colours
-           come from each HiKeymash theme's --key-* variables. */
+           borders, even 3px gaps on a rounded flat frame. The skin lives
+           in keyboard.css, shared with HiKeybr; only page-specific
+           geometry stays here. */
         .keyboard-frame {
-            background: var(--km-card);
-            border: none;
-            border-radius: 12px;
             padding: 14px;
             display: flex;
             flex-direction: column;
@@ -1194,9 +1192,6 @@
         }
 
         .k-key {
-            background: var(--key-bg);
-            border: none;
-            border-radius: 3px;
             height: 48px;
             min-width: 44px;
             display: flex;
@@ -1206,37 +1201,11 @@
             position: relative;
             cursor: default;
             user-select: none;
-            transition: filter 0.08s ease, transform 0.08s ease, background 0.08s ease;
             padding: 2px 4px;
         }
 
-        .k-key.pressed {
-            transform: translateY(1px);
-            filter: brightness(0.8);
-        }
-
-        /* keybr shows the next key with a thin circle around its letter,
-           no glow and no raised/bordered key */
-        .k-key.target::after {
-            content: '';
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            width: 27px;
-            height: 27px;
-            transform: translate(-50%, -50%);
-            border: 1.5px solid var(--km-accent);
-            border-radius: 50%;
-            pointer-events: none;
-        }
-
-        .k-key.shift-needed {
-            background: var(--key-active);
-        }
-
-        .k-key.shift-needed .hi-main {
-            color: #ffffff;
-        }
+        /* pressed / target ring / shift-needed: in keyboard.css
+           (shared with HiKeybr). */
 
         .k-key .hi-shift {
             font-family: 'Noto Sans Devanagari', sans-serif;
@@ -2036,14 +2005,7 @@
         }
     </style>
     <link rel="stylesheet" href="theme.css">
-    <style>
-        /* keybr.com keyboard look for HiKeymash only: theme.css forces a
-           global angular style (zero border-radius, chamfered keycaps);
-           undo that here so the keyboard stays flat, square and borderless */
-        #keyboard-frame { border-radius: 12px !important; }
-        #keyboard-frame .k-key { clip-path: none !important; border-radius: 3px !important; }
-        #keyboard-frame .k-key.target::after { border-radius: 50% !important; }
-    </style>
+    <link rel="stylesheet" href="keyboard.css">
     <style>
         /* ═══════════════════════════════════════════════════════════
            RETRO TYPEWRITER RESTYLE (HiKeymash identity)
