@@ -72,6 +72,28 @@ const path = require('node:path');
     assert.equal(await page.evaluate(() => getComputedStyle(document.querySelector('.hud-strip')).display), 'none', 'no speed/accuracy HUD while typing');
     assert.equal(await page.evaluate(() => getComputedStyle(document.querySelector('.progress-bar-container')).display), 'none', 'no progress bar while typing');
 
+    // 9. No immediate repeats: consecutive picks never serve the same paragraph twice.
+    const picks = await page.evaluate(() => {
+        const out = [];
+        let last = null;
+        for (let i = 0; i < 30; i++) {
+            const sn = window.__HIKEYMASH__.pickSnippet('all', last);
+            out.push(sn.id);
+            last = sn.id;
+        }
+        return out;
+    });
+    for (let i = 1; i < picks.length; i++) assert.notEqual(picks[i], picks[i - 1], 'no immediate repeat');
+    assert.ok(new Set(picks).size > 5, 'picks vary across the library');
+
+    // 10. Refresh button loads a different paragraph.
+    const beforeRefresh = await page.evaluate(() => window.__HIKEYMASH__.getState().currentSnippet.id);
+    await page.click('#match-refresh-btn');
+    assert.notEqual(await page.evaluate(() => window.__HIKEYMASH__.getState().currentSnippet.id), beforeRefresh, 'refresh loads a new paragraph');
+
+    // 11. Ping is measured, not a hardcoded 42ms (offline file:// shows --).
+    assert.notEqual(await page.locator('#match-ping-val').textContent(), '42ms', 'ping is real, not decoration');
+
     assert.deepEqual(errors, [], 'no page errors: ' + errors.join(' | '));
     console.log('PASS: Remington punctuation keys, single typing view, inline keymash-style results, next/retry flow.');
     await browser.close();

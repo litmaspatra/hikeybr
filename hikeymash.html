@@ -899,6 +899,21 @@
             transform: translateX(-2px);
         }
 
+        .canvas-top-actions {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .match-refresh-btn {
+            color: var(--km-cyan);
+        }
+
+        .match-refresh-btn:hover {
+            background: rgba(45, 212, 191, 0.12);
+            transform: none;
+        }
+
         .match-ping-indicator {
             display: inline-flex;
             align-items: center;
@@ -2284,14 +2299,19 @@
             <!-- Match Typing Card (Typing Canvas) -->
             <div class="typing-canvas" id="typing-canvas">
                 <div class="canvas-top-bar">
-                    <button class="match-leave-btn" id="match-leave-btn" title="पुनः प्रयास / रीसेट (Esc)">
-                        &laquo; LEAVE
-                    </button>
-                    <div class="match-ping-indicator">
+                    <div class="canvas-top-actions">
+                        <button class="match-leave-btn" id="match-leave-btn" title="पुनः प्रयास / रीसेट (Esc)">
+                            &laquo; LEAVE
+                        </button>
+                        <button class="match-leave-btn match-refresh-btn" id="match-refresh-btn" title="नया अनुच्छेद लाएँ (New paragraph)">
+                            ⟳ NEW
+                        </button>
+                    </div>
+                    <div class="match-ping-indicator" title="साइट सर्वर तक वास्तविक round-trip समय (real measured ping to the site host)">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M12 4C7.31 4 3.07 5.9 0 8.98L12 21 24 8.98C20.93 5.9 16.69 4 12 4zm0 3.5c3.65 0 6.96 1.43 9.4 3.75L12 19.3 2.6 11.25C5.04 8.93 8.35 7.5 12 7.5z"/>
                         </svg>
-                        <span id="match-ping-val">42ms</span>
+                        <span id="match-ping-val">--</span>
                     </div>
                 </div>
 
@@ -3227,6 +3247,8 @@
             keyboardToggleBtn: document.getElementById('keyboard-toggle-btn'),
             themeBtn: document.getElementById('theme-btn'),
             matchLeaveBtn: document.getElementById('match-leave-btn'),
+            matchRefreshBtn: document.getElementById('match-refresh-btn'),
+            matchPingVal: document.getElementById('match-ping-val'),
 
             // Racers Section
             playerPill: document.getElementById('player-track-pill'),
@@ -3396,12 +3418,23 @@
         // ─────────────────────────────────────────────────────────────
         // 7. SNIPPET PICKER & INITIALIZER
         // ─────────────────────────────────────────────────────────────
+        // Paragraphs already served this session: never repeat a paragraph
+        // until every other candidate in the pool has been served.
+        const recentSnippetIds = [];
         function pickSnippet(cat = 'all', excludeId = null) {
             let candidates = LITERATURE_SNIPPETS;
             if (excludeId && candidates.length > 1) {
                 candidates = candidates.filter(s => s.id !== excludeId);
             }
-            return candidates[Math.floor(Math.random() * candidates.length)];
+            if (candidates.length > 3 && recentSnippetIds.length) {
+                const fresh = candidates.filter(s => !recentSnippetIds.includes(s.id));
+                if (fresh.length) candidates = fresh;
+            }
+            const chosen = candidates[Math.floor(Math.random() * candidates.length)];
+            recentSnippetIds.push(chosen.id);
+            const cap = Math.min(40, Math.max(1, LITERATURE_SNIPPETS.length - 1));
+            while (recentSnippetIds.length > cap) recentSnippetIds.shift();
+            return chosen;
         }
 
         function loadSnippet(snippet) {
@@ -4077,6 +4110,29 @@
             const nextIdx = (themes.indexOf(currentTheme) + 1) % themes.length;
             currentTheme = themes[nextIdx];
             document.documentElement.setAttribute('data-theme', currentTheme);
+        });
+
+        // ─────────────────────────────────────────────────────────────
+        // 15b. REAL PING (measured round-trip to the site host)
+        // ─────────────────────────────────────────────────────────────
+        // HiKeymash is a static site with no game server yet, so this times a
+        // tiny cache-busted request to the host that serves the page - the same
+        // path a real multiplayer server round-trip would take.
+        async function measurePing() {
+            if (!el.matchPingVal) return;
+            const t0 = performance.now();
+            try {
+                await fetch('keyboard.css?ping=' + Date.now(), { cache: 'no-store' });
+                el.matchPingVal.textContent = Math.max(1, Math.round(performance.now() - t0)) + 'ms';
+            } catch (e) {
+                el.matchPingVal.textContent = '--';
+            }
+        }
+        measurePing();
+        setInterval(measurePing, 10000);
+
+        el.matchRefreshBtn.addEventListener('click', () => {
+            loadSnippet(pickSnippet('all', currentSnippet ? currentSnippet.id : null));
         });
 
         // ─────────────────────────────────────────────────────────────
