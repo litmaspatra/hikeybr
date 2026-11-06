@@ -914,6 +914,301 @@
             transform: none;
         }
 
+        /* ═══════════════════════════════════════════════════════════
+           LOBBY SCREEN (mode picker)
+           ═══════════════════════════════════════════════════════════ */
+        .lobby-screen { display: none; }
+        body.showing-lobby .lobby-screen { display: block; }
+        body.showing-lobby .match-screen { display: none; }
+
+        .lobby-card {
+            background: var(--km-card);
+            border: 1.5px solid var(--km-border);
+            border-radius: 14px;
+            padding: 22px 24px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .lobby-mode-tabs {
+            display: flex;
+            gap: 8px;
+        }
+
+        .lobby-mode-tab {
+            flex: 1;
+            background: var(--km-card-inner);
+            border: 1.5px solid var(--km-border);
+            border-radius: 10px;
+            color: var(--km-text-dim);
+            font-family: 'Space Grotesk', 'Noto Sans Devanagari', sans-serif;
+            font-weight: 800;
+            font-size: 1.02rem;
+            padding: 12px 10px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .lobby-mode-tab:hover { border-color: var(--km-accent); color: var(--km-text-main); }
+        .lobby-mode-tab.active {
+            background: var(--km-accent);
+            border-color: var(--km-accent);
+            color: var(--on-accent, #1a1206);
+        }
+
+        .lobby-tab-hi, .lobby-label-hi, .lobby-pill-hi, .lobby-start-hi {
+            font-family: 'Noto Sans Devanagari', sans-serif;
+            font-weight: 600;
+            opacity: 0.75;
+            font-size: 0.82em;
+        }
+
+        .lobby-panel { display: flex; flex-direction: column; gap: 16px; }
+
+        .lobby-group { display: flex; flex-direction: column; gap: 7px; }
+
+        .lobby-label {
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.09em;
+            text-transform: uppercase;
+            color: var(--km-text-faint);
+        }
+
+        .lobby-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+
+        .lobby-pill {
+            background: var(--km-card-inner);
+            border: 1.5px solid var(--km-border);
+            border-radius: 999px;
+            color: var(--km-text-main);
+            font-family: 'Space Grotesk', 'Noto Sans Devanagari', sans-serif;
+            font-weight: 700;
+            font-size: 0.88rem;
+            padding: 8px 14px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .lobby-pill:hover:not(:disabled) { border-color: var(--km-accent); }
+        .lobby-pill.active {
+            background: var(--km-accent);
+            border-color: var(--km-accent);
+            color: var(--on-accent, #1a1206);
+        }
+        .lobby-pill:disabled { opacity: 0.45; cursor: not-allowed; }
+
+        .lobby-pill-count { color: inherit; opacity: 0.65; font-size: 0.78em; }
+
+        .lobby-soon {
+            font-size: 0.66rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            background: var(--km-border);
+            color: var(--km-text-dim);
+            border-radius: 999px;
+            padding: 2px 7px;
+            margin-left: 2px;
+        }
+
+        .lobby-start {
+            margin-top: 4px;
+            background: var(--km-accent);
+            border: none;
+            border-radius: 12px;
+            color: var(--on-accent, #1a1206);
+            font-family: 'Space Grotesk', 'Noto Sans Devanagari', sans-serif;
+            font-weight: 800;
+            font-size: 1.12rem;
+            letter-spacing: 0.04em;
+            padding: 15px 18px;
+            cursor: pointer;
+            box-shadow: 0 0 0 3px var(--km-accent-glow), 0 10px 26px rgba(0,0,0,0.28);
+            transition: transform 0.12s ease, box-shadow 0.15s ease;
+        }
+
+        .lobby-start:hover { transform: translateY(-1px); box-shadow: 0 0 0 5px var(--km-accent-glow), 0 12px 30px rgba(0,0,0,0.32); }
+        .lobby-start:active { transform: translateY(1px); }
+
+        /* Book Reader cards */
+        .book-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 12px;
+        }
+
+        .book-card {
+            background: var(--km-card-inner);
+            border: 1.5px solid var(--km-border);
+            border-radius: 12px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+            transition: border-color 0.15s ease;
+        }
+
+        .book-card:hover { border-color: var(--km-accent); }
+
+        .book-cover {
+            width: 46px;
+            height: 46px;
+            border-radius: 9px;
+            background: var(--km-accent);
+            color: var(--on-accent, #1a1206);
+            font-family: 'Noto Serif Devanagari', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .book-title {
+            font-family: 'Noto Serif Devanagari', serif;
+            font-weight: 700;
+            font-size: 1.02rem;
+            color: var(--km-text-main);
+            line-height: 1.3;
+        }
+
+        .book-author { font-size: 0.8rem; color: var(--km-text-dim); font-family: 'Noto Sans Devanagari', sans-serif; }
+
+        .book-progress {
+            height: 6px;
+            border-radius: 999px;
+            background: var(--km-border);
+            overflow: hidden;
+        }
+
+        .book-progress-fill { height: 100%; background: var(--km-cyan); border-radius: 999px; }
+
+        .book-progress-label { font-size: 0.72rem; color: var(--km-text-faint); font-family: 'Noto Sans Devanagari', sans-serif; }
+
+        .book-read-btn {
+            background: transparent;
+            border: 1.5px solid var(--km-accent);
+            border-radius: 9px;
+            color: var(--km-accent);
+            font-family: 'Space Grotesk', 'Noto Sans Devanagari', sans-serif;
+            font-weight: 800;
+            font-size: 0.85rem;
+            letter-spacing: 0.04em;
+            padding: 9px 10px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .book-read-btn:hover { background: var(--km-accent); color: var(--on-accent, #1a1206); }
+
+        /* Book context bar inside the match screen */
+        .book-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 2px 4px;
+        }
+
+        .book-bar-center {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1px;
+            min-width: 0;
+            text-align: center;
+        }
+
+        .book-bar-title {
+            font-family: 'Noto Serif Devanagari', serif;
+            font-weight: 700;
+            font-size: 0.98rem;
+            color: var(--km-text-main);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 60vw;
+        }
+
+        .book-bar-pos { font-size: 0.72rem; color: var(--km-text-faint); font-family: 'JetBrains Mono', 'Noto Sans Devanagari', monospace; }
+
+        .book-skip-btn {
+            background: var(--km-card-inner);
+            border: 1.5px solid var(--km-border);
+            border-radius: 8px;
+            color: var(--km-text-main);
+            font-size: 1.1rem;
+            font-weight: 800;
+            width: 36px;
+            height: 36px;
+            cursor: pointer;
+            flex: none;
+            transition: all 0.15s ease;
+        }
+
+        .book-skip-btn:hover:not(:disabled) { border-color: var(--km-accent); color: var(--km-accent); }
+        .book-skip-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+        /* 3-2-1-GO countdown */
+        .countdown-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 500;
+            align-items: center;
+            justify-content: center;
+            background: var(--km-bg);
+            opacity: 0.97;
+        }
+
+        .countdown-overlay.show { display: flex; }
+
+        .countdown-num {
+            font-family: 'Special Elite', 'Courier Prime', monospace;
+            font-size: clamp(4rem, 18vw, 8rem);
+            font-weight: 800;
+            color: var(--km-accent);
+        }
+
+        .countdown-num.pop { animation: cd-pop 0.4s ease; }
+
+        @keyframes cd-pop {
+            0% { transform: scale(0.6); opacity: 0.2; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Paragraph finish toast (Book Reader) */
+        .para-toast {
+            position: fixed;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%) translateY(16px);
+            background: var(--km-card);
+            border: 1.5px solid var(--km-border);
+            border-radius: 10px;
+            color: var(--km-text-main);
+            font-family: 'JetBrains Mono', 'Noto Sans Devanagari', monospace;
+            font-weight: 700;
+            font-size: 0.95rem;
+            padding: 10px 18px;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.25s ease;
+            z-index: 600;
+        }
+
+        .para-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        @media (max-width: 640px) {
+            .lobby-card { padding: 16px 14px 18px; }
+            .lobby-mode-tab { font-size: 0.9rem; padding: 10px 6px; }
+            .lobby-pill { font-size: 0.8rem; padding: 7px 11px; }
+            .lobby-start { font-size: 1rem; padding: 13px 12px; }
+            .book-grid { grid-template-columns: 1fr; }
+        }
+
         .match-ping-indicator {
             display: inline-flex;
             align-items: center;
@@ -2226,8 +2521,10 @@
         .bottom-action-square.leave-btn, .bottom-action-square.next-btn { color: var(--on-accent); }
     </style>
     <script src="data/quotes.js" defer></script>
+    <script src="data/cinema.js" defer></script>
+    <script src="books.js" defer></script>
 </head>
-<body>
+<body class="showing-lobby">
 
     <!-- HEADER & LOGO -->
     <header>
@@ -2284,23 +2581,91 @@
         </div>
 
         <!-- ═══════════════════════════════════════════════════════════
+             LOBBY SCREEN (mode picker: Race / Book Reader)
+             ═══════════════════════════════════════════════════════════ -->
+        <div class="lobby-screen" id="lobby-screen">
+            <div class="lobby-card">
+                <div class="lobby-mode-tabs" role="tablist">
+                    <button class="lobby-mode-tab active" id="mode-tab-race" role="tab">🏁 Race <span class="lobby-tab-hi">रेस</span></button>
+                    <button class="lobby-mode-tab" id="mode-tab-book" role="tab">📖 Book Reader <span class="lobby-tab-hi">पाठक</span></button>
+                </div>
+
+                <div class="lobby-panel" id="lobby-panel-race">
+                    <div class="lobby-group">
+                        <div class="lobby-label">Content <span class="lobby-label-hi">सामग्री</span></div>
+                        <div class="lobby-pills" id="lobby-cat-pills">
+                            <button class="lobby-pill" data-cat="cinema">🎬 Cinema <span class="lobby-pill-hi">सिनेमा</span></button>
+                            <button class="lobby-pill" data-cat="literature">📚 Literature <span class="lobby-pill-hi">साहित्य</span></button>
+                            <button class="lobby-pill active" data-cat="mixed">🔀 Mixed <span class="lobby-pill-hi">मिश्रित</span></button>
+                        </div>
+                    </div>
+                    <div class="lobby-group">
+                        <div class="lobby-label">Length <span class="lobby-label-hi">लंबाई</span></div>
+                        <div class="lobby-pills" id="lobby-len-pills">
+                            <button class="lobby-pill active" data-len="short">⚡ Short <span class="lobby-pill-count" data-count="short"></span></button>
+                            <button class="lobby-pill" data-len="medium">🎯 Medium <span class="lobby-pill-count" data-count="medium"></span></button>
+                            <button class="lobby-pill" data-len="long">📜 Long <span class="lobby-pill-count" data-count="long"></span></button>
+                        </div>
+                    </div>
+                    <div class="lobby-group">
+                        <div class="lobby-label">Keyboard <span class="lobby-label-hi">कीबोर्ड</span></div>
+                        <div class="lobby-pills">
+                            <button class="lobby-pill active" data-layout="remington">⌨️ Remington GAIL</button>
+                            <button class="lobby-pill" disabled data-layout="inscript">🌐 InScript <span class="lobby-soon">Coming soon</span></button>
+                        </div>
+                    </div>
+                    <div class="lobby-group">
+                        <div class="lobby-label">Game <span class="lobby-label-hi">खेल</span></div>
+                        <div class="lobby-pills">
+                            <button class="lobby-pill active" data-game="single">👤 Single Player <span class="lobby-pill-hi">2 बॉट के साथ</span></button>
+                            <button class="lobby-pill" disabled data-game="multi">👥 Multiplayer <span class="lobby-soon">Coming soon</span></button>
+                        </div>
+                    </div>
+                    <button class="lobby-start" id="lobby-start-btn">▶ START MATCH <span class="lobby-start-hi">मैच शुरू करें (Enter)</span></button>
+                </div>
+
+                <div class="lobby-panel" id="lobby-panel-book" style="display:none;">
+                    <div class="book-grid" id="book-grid"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════════════
              MATCH SCREEN (IMAGE 2)
              ═══════════════════════════════════════════════════════════ -->
         <div class="match-screen" id="match-screen">
             <!-- Top Match Header Bar -->
             <div class="match-top-header">
                 <div class="match-title-group">
-                    <h2 class="match-title">FREE FOR ALL</h2>
-                    <span class="match-subtitle">PUBLIC</span>
+                    <h2 class="match-title" id="match-title">FREE FOR ALL</h2>
+                    <span class="match-subtitle" id="match-subtitle">PUBLIC</span>
                 </div>
-                <div class="match-player-count">3 PLAYERS</div>
+                <div class="match-player-count" id="match-player-count">3 PLAYERS</div>
             </div>
+
+            <!-- Book Reader context bar (book mode only) -->
+            <div class="book-bar" id="book-bar" style="display:none;">
+                <button class="book-skip-btn" id="book-prev-btn" title="पिछला पैरा (Previous paragraph)">‹</button>
+                <div class="book-bar-center">
+                    <span class="book-bar-title" id="book-bar-title"></span>
+                    <span class="book-bar-pos" id="book-bar-pos"></span>
+                </div>
+                <button class="book-skip-btn" id="book-next-btn" title="अगला पैरा (Next paragraph)">›</button>
+            </div>
+
+            <!-- 3-2-1-GO countdown overlay -->
+            <div class="countdown-overlay" id="countdown-overlay">
+                <span class="countdown-num" id="countdown-num">3</span>
+            </div>
+
+            <!-- Book paragraph finish toast -->
+            <div class="para-toast" id="para-toast"></div>
 
             <!-- Match Typing Card (Typing Canvas) -->
             <div class="typing-canvas" id="typing-canvas">
                 <div class="canvas-top-bar">
                     <div class="canvas-top-actions">
-                        <button class="match-leave-btn" id="match-leave-btn" title="पुनः प्रयास / रीसेट (Esc)">
+                        <button class="match-leave-btn" id="match-leave-btn" title="लॉबी पर लौटें (Back to lobby)">
                             &laquo; LEAVE
                         </button>
                         <button class="match-leave-btn match-refresh-btn" id="match-refresh-btn" title="नया अनुच्छेद लाएँ (New paragraph)">
@@ -3248,6 +3613,25 @@
             themeBtn: document.getElementById('theme-btn'),
             matchLeaveBtn: document.getElementById('match-leave-btn'),
             matchRefreshBtn: document.getElementById('match-refresh-btn'),
+            lobbyScreen: document.getElementById('lobby-screen'),
+            modeTabRace: document.getElementById('mode-tab-race'),
+            modeTabBook: document.getElementById('mode-tab-book'),
+            lobbyPanelRace: document.getElementById('lobby-panel-race'),
+            lobbyPanelBook: document.getElementById('lobby-panel-book'),
+            lobbyStartBtn: document.getElementById('lobby-start-btn'),
+            bookGrid: document.getElementById('book-grid'),
+            bookBar: document.getElementById('book-bar'),
+            bookBarTitle: document.getElementById('book-bar-title'),
+            bookBarPos: document.getElementById('book-bar-pos'),
+            bookPrevBtn: document.getElementById('book-prev-btn'),
+            bookNextBtn: document.getElementById('book-next-btn'),
+            countdownOverlay: document.getElementById('countdown-overlay'),
+            countdownNum: document.getElementById('countdown-num'),
+            paraToast: document.getElementById('para-toast'),
+            matchTitle: document.getElementById('match-title'),
+            matchSubtitle: document.getElementById('match-subtitle'),
+            matchPlayerCount: document.getElementById('match-player-count'),
+            racersSection: document.getElementById('racers-section'),
             matchPingVal: document.getElementById('match-ping-val'),
 
             // Racers Section
@@ -3421,8 +3805,8 @@
         // Paragraphs already served this session: never repeat a paragraph
         // until every other candidate in the pool has been served.
         const recentSnippetIds = [];
-        function pickSnippet(cat = 'all', excludeId = null) {
-            let candidates = LITERATURE_SNIPPETS;
+        function pickFromPool(pool, excludeId = null) {
+            let candidates = pool;
             if (excludeId && candidates.length > 1) {
                 candidates = candidates.filter(s => s.id !== excludeId);
             }
@@ -3432,9 +3816,50 @@
             }
             const chosen = candidates[Math.floor(Math.random() * candidates.length)];
             recentSnippetIds.push(chosen.id);
-            const cap = Math.min(40, Math.max(1, LITERATURE_SNIPPETS.length - 1));
+            const cap = Math.min(40, Math.max(1, pool.length - 1));
             while (recentSnippetIds.length > cap) recentSnippetIds.shift();
             return chosen;
+        }
+
+        function pickSnippet(cat = 'all', excludeId = null) {
+            return pickFromPool(LITERATURE_SNIPPETS, excludeId);
+        }
+
+        // Race content pools: cinema dialogues (data/cinema.js) and the
+        // literature library (data/quotes.js), selectable in the lobby.
+        let cinemaCache = null;
+        function cinemaSnippets() {
+            if (cinemaCache) return cinemaCache;
+            const lib = Array.isArray(window.__HIKEYMASH_CINEMA__) ? window.__HIKEYMASH_CINEMA__ : [];
+            if (!lib.length) return [];
+            cinemaCache = lib.map(d => ({
+                id: d.id,
+                title: (d.source && d.source.title) || 'सिनेमा',
+                author: [(d.source && d.source.character), (d.source && d.source.year)].filter(Boolean).join(' • ') || 'फ़िल्म संवाद',
+                category: 'cinema',
+                genre: 'संवाद',
+                difficulty: 'easy',
+                text: d.text
+            }));
+            return cinemaCache;
+        }
+
+        function racePool() {
+            if (raceConfig.cat === 'cinema') return cinemaSnippets();
+            if (raceConfig.cat === 'literature') return LITERATURE_SNIPPETS;
+            return LITERATURE_SNIPPETS.concat(cinemaSnippets());
+        }
+
+        function wordCountOf(text) { return text.trim().split(/\s+/).length; }
+        function tierOf(wc) { return wc <= 38 ? 'short' : wc <= 65 ? 'medium' : 'long'; }
+
+        function pickRaceSnippet() {
+            const pool = racePool();
+            const tiered = pool.filter(sn => tierOf(wordCountOf(sn.text)) === raceConfig.len);
+            // A tier with almost no entries (e.g. long cinema dialogues) falls
+            // back to the whole category rather than repeating 1-2 paragraphs.
+            const effective = tiered.length >= 3 ? tiered : pool;
+            return pickFromPool(effective, currentSnippet ? currentSnippet.id : null);
         }
 
         function loadSnippet(snippet) {
@@ -3442,6 +3867,7 @@
                 snippet = LITERATURE_SNIPPETS.find(s => s.id === snippet) || LITERATURE_SNIPPETS[0];
             }
             currentSnippet = snippet;
+            document.body.classList.remove('showing-lobby');
             isFinished = false;
             sessionStartTime = null;
             if (timerInterval) clearInterval(timerInterval);
@@ -3572,6 +3998,7 @@
         // 9. KEYSTROKE ENGINE & MISTAKE TRACKING
         // ─────────────────────────────────────────────────────────────
         function handleKeystroke(keyString) {
+            if (inputLocked) return;
             if (isFinished || cursorIndex >= targetKrutiText.length) return;
 
             const expected = targetKrutiText.charAt(cursorIndex);
@@ -3580,7 +4007,7 @@
             if (!sessionStartTime) {
                 sessionStartTime = now;
                 timerInterval = setInterval(updateHUD, 200);
-                startBots();
+                if (appMode !== 'book') startBots();
             }
 
             totalTyped++;
@@ -3682,6 +4109,15 @@
             const netWpm = Math.min(250, ((correctKeystrokes / 5) / mins));
             const rawWpm = Math.min(250, ((totalTyped / 5) / mins));
             const acc = totalTyped > 0 ? Math.round((correctKeystrokes / totalTyped) * 100) : 100;
+
+            // Book Reader: no results screen - toast the speed and flow
+            // straight into the next paragraph (keybr-style continuity).
+            if (appMode === 'book') {
+                showParaToast(Math.round(netWpm) + ' WPM • ' + acc + '% सटीकता');
+                inputLocked = true;
+                setTimeout(() => { inputLocked = false; advanceBookPara(1); }, 850);
+                return;
+            }
 
             // Fill Image 1 Statistics Cards
             el.statWpm.textContent = netWpm.toFixed(2);
@@ -4069,11 +4505,11 @@
         });
 
         el.matchLeaveBtn.addEventListener('click', () => {
-            loadSnippet(currentSnippet);
+            showLobby();
         });
 
         el.modalNextBtn.addEventListener('click', () => {
-            loadSnippet(pickSnippet('all', currentSnippet ? currentSnippet.id : null));
+            loadSnippet(pickRaceSnippet());
         });
 
         el.modalRetryBtn.addEventListener('click', () => {
@@ -4113,6 +4549,251 @@
         });
 
         // ─────────────────────────────────────────────────────────────
+        // 15a. LOBBY, RACE MODES & BOOK READER
+        // ─────────────────────────────────────────────────────────────
+        let appMode = 'lobby'; // 'lobby' | 'race' | 'book'
+        const raceConfig = { cat: 'mixed', len: 'short' };
+        const bookState = { bookId: null, paraIndex: 0 };
+        let inputLocked = false;
+        let paraToastTimer = null;
+
+        function allBooks() { return Array.isArray(window.HIKEYBR_BOOKS) ? window.HIKEYBR_BOOKS : []; }
+        function currentBook() { return allBooks().find(b => b.id === bookState.bookId) || null; }
+        function bookProgress(id) {
+            const v = parseInt(localStorage.getItem('hikeybr_book_progress_' + id) || '0', 10);
+            return isNaN(v) ? 0 : v;
+        }
+        function kindLabel(kind) {
+            return kind === 'novel' ? 'उपन्यास' : kind === 'story' ? 'कहानी' : kind === 'poem' ? 'कविता' : (kind || '');
+        }
+
+        function showParaToast(text) {
+            el.paraToast.textContent = text;
+            el.paraToast.classList.add('show');
+            if (paraToastTimer) clearTimeout(paraToastTimer);
+            paraToastTimer = setTimeout(() => el.paraToast.classList.remove('show'), 1500);
+        }
+
+        function showMatch() {
+            document.body.classList.remove('showing-lobby');
+            const isBook = appMode === 'book';
+            el.bookBar.style.display = isBook ? 'flex' : 'none';
+            el.racersSection.style.display = isBook ? 'none' : '';
+            if (isBook) {
+                const book = currentBook();
+                el.matchTitle.textContent = 'BOOK READER';
+                el.matchSubtitle.textContent = book ? book.author : '';
+                el.matchPlayerCount.textContent = 'SOLO';
+            } else {
+                el.matchTitle.textContent = 'FREE FOR ALL';
+                el.matchSubtitle.textContent = 'PUBLIC';
+                el.matchPlayerCount.textContent = '3 PLAYERS';
+            }
+        }
+
+        function showLobby() {
+            appMode = 'lobby';
+            stopBots();
+            if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+            inputLocked = false;
+            el.countdownOverlay.classList.remove('show');
+            el.resultsModal.classList.remove('open');
+            document.body.classList.remove('showing-results');
+            renderBookCards();
+            document.body.classList.add('showing-lobby');
+        }
+
+        function runCountdown(done) {
+            inputLocked = true;
+            const seq = ['3', '2', '1', 'GO!'];
+            let i = 0;
+            el.countdownOverlay.classList.add('show');
+            el.countdownNum.textContent = seq[0];
+            el.countdownNum.classList.add('pop');
+            if (soundEnabled) sound.click();
+            const step = () => {
+                i++;
+                if (i < seq.length) {
+                    el.countdownNum.textContent = seq[i];
+                    el.countdownNum.classList.remove('pop');
+                    void el.countdownNum.offsetWidth;
+                    el.countdownNum.classList.add('pop');
+                    if (soundEnabled) sound.click();
+                    setTimeout(step, i === seq.length - 1 ? 550 : 750);
+                } else {
+                    el.countdownOverlay.classList.remove('show');
+                    inputLocked = false;
+                    done();
+                }
+            };
+            setTimeout(step, 750);
+        }
+
+        function startRace() {
+            appMode = 'race';
+            showMatch();
+            loadSnippet(pickRaceSnippet());
+            runCountdown(() => {
+                sessionStartTime = Date.now();
+                elapsedSeconds = 0;
+                if (timerInterval) clearInterval(timerInterval);
+                timerInterval = setInterval(updateHUD, 200);
+                startBots();
+                el.hiddenInput.focus();
+            });
+        }
+
+        function renderBookCards() {
+            if (!el.bookGrid) return;
+            el.bookGrid.innerHTML = '';
+            allBooks().forEach(b => {
+                const total = b.lines.length;
+                const saved = bookProgress(b.id);
+                const done = saved >= total;
+                const pct = Math.min(100, Math.round((saved / total) * 100));
+                const card = document.createElement('div');
+                card.className = 'book-card';
+                card.innerHTML =
+                    '<div class="book-cover"></div>' +
+                    '<div class="book-title"></div>' +
+                    '<div class="book-author"></div>' +
+                    '<div class="book-progress"><div class="book-progress-fill" style="width:' + pct + '%"></div></div>' +
+                    '<div class="book-progress-label"></div>' +
+                    '<button class="book-read-btn" type="button"></button>';
+                card.querySelector('.book-cover').textContent = b.title.trim().charAt(0);
+                card.querySelector('.book-title').textContent = b.title;
+                card.querySelector('.book-author').textContent = b.author + ' • ' + kindLabel(b.kind);
+                card.querySelector('.book-progress-label').textContent =
+                    done ? 'पूर्ण ✓ (' + total + ' पैरा)' :
+                    saved > 0 ? 'पैरा ' + (saved + 1) + '/' + total + ' (' + pct + '%)' :
+                    total + ' पैरा';
+                const btn = card.querySelector('.book-read-btn');
+                btn.textContent = done ? '↺ फिर से पढ़ें' : (saved > 0 ? '📖 जारी रखें' : '📖 READ & TYPE');
+                btn.addEventListener('click', () => openBook(b.id));
+                el.bookGrid.appendChild(card);
+            });
+        }
+
+        function openBook(bookId) {
+            const book = allBooks().find(b => b.id === bookId);
+            if (!book) return;
+            let idx = bookProgress(bookId);
+            if (idx >= book.lines.length) idx = 0; // finished before: start over
+            appMode = 'book';
+            bookState.bookId = bookId;
+            bookState.paraIndex = idx;
+            showMatch();
+            loadBookPara();
+            setTimeout(() => el.hiddenInput.focus(), 80);
+        }
+
+        function loadBookPara() {
+            const book = currentBook();
+            if (!book) return;
+            const idx = Math.max(0, Math.min(bookState.paraIndex, book.lines.length - 1));
+            bookState.paraIndex = idx;
+            try { localStorage.setItem('hikeybr_book_progress_' + book.id, String(idx)); } catch (e) {}
+            updateBookBar();
+            loadSnippet({
+                id: book.id + '_p' + idx,
+                title: book.title,
+                author: book.author,
+                category: 'book',
+                genre: kindLabel(book.kind),
+                difficulty: 'moderate',
+                text: book.lines[idx]
+            });
+        }
+
+        function updateBookBar() {
+            const book = currentBook();
+            if (!book) return;
+            el.bookBarTitle.textContent = book.title;
+            el.bookBarPos.textContent = 'पैरा ' + (bookState.paraIndex + 1) + ' / ' + book.lines.length;
+            el.bookPrevBtn.disabled = bookState.paraIndex <= 0;
+            el.bookNextBtn.disabled = bookState.paraIndex >= book.lines.length - 1;
+        }
+
+        function advanceBookPara(delta) {
+            const book = currentBook();
+            if (!book) return;
+            const next = bookState.paraIndex + (delta || 1);
+            if (next >= book.lines.length) {
+                try { localStorage.setItem('hikeybr_book_progress_' + book.id, String(book.lines.length)); } catch (e) {}
+                showParaToast('पुस्तक पूर्ण हुई! 🎉 ' + book.title);
+                setTimeout(showLobby, 1700);
+                return;
+            }
+            if (next < 0) return;
+            bookState.paraIndex = next;
+            loadBookPara();
+        }
+
+        // Lobby wiring
+        el.modeTabRace.addEventListener('click', () => {
+            el.modeTabRace.classList.add('active');
+            el.modeTabBook.classList.remove('active');
+            el.lobbyPanelRace.style.display = 'flex';
+            el.lobbyPanelBook.style.display = 'none';
+        });
+        el.modeTabBook.addEventListener('click', () => {
+            el.modeTabBook.classList.add('active');
+            el.modeTabRace.classList.remove('active');
+            el.lobbyPanelBook.style.display = 'block';
+            el.lobbyPanelRace.style.display = 'none';
+            renderBookCards();
+        });
+        document.querySelectorAll('#lobby-cat-pills .lobby-pill').forEach(p => {
+            p.addEventListener('click', () => {
+                raceConfig.cat = p.dataset.cat;
+                document.querySelectorAll('#lobby-cat-pills .lobby-pill').forEach(x => x.classList.toggle('active', x === p));
+                refreshLobbyCounts();
+            });
+        });
+        document.querySelectorAll('#lobby-len-pills .lobby-pill').forEach(p => {
+            p.addEventListener('click', () => {
+                if (p.disabled) return;
+                raceConfig.len = p.dataset.len;
+                document.querySelectorAll('#lobby-len-pills .lobby-pill').forEach(x => x.classList.toggle('active', x === p));
+            });
+        });
+        el.lobbyStartBtn.addEventListener('click', startRace);
+        el.bookPrevBtn.addEventListener('click', () => advanceBookPara(-1));
+        el.bookNextBtn.addEventListener('click', () => advanceBookPara(1));
+
+        // Live entry counts on the length pills; a tier with no entries in the
+        // chosen category is disabled instead of silently serving other tiers.
+        function refreshLobbyCounts() {
+            const pool = racePool();
+            const counts = { short: 0, medium: 0, long: 0 };
+            pool.forEach(sn => counts[tierOf(wordCountOf(sn.text))]++);
+            document.querySelectorAll('.lobby-pill-count').forEach(span => {
+                const n = counts[span.dataset.count] || 0;
+                span.textContent = ' (' + n + ')';
+                const pill = span.closest('.lobby-pill');
+                if (pill) pill.disabled = n === 0;
+            });
+            const activeLen = document.querySelector('#lobby-len-pills .lobby-pill.active');
+            if (activeLen && activeLen.disabled) {
+                raceConfig.len = 'short';
+                document.querySelectorAll('#lobby-len-pills .lobby-pill').forEach(x => {
+                    x.classList.toggle('active', x.dataset.len === 'short');
+                });
+            }
+        }
+        refreshLobbyCounts();
+        window.addEventListener('load', () => { refreshLobbyCounts(); renderBookCards(); });
+
+        // Enter in the lobby starts the match (race tab only).
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && document.body.classList.contains('showing-lobby') &&
+                el.lobbyPanelRace.style.display !== 'none') {
+                e.preventDefault();
+                startRace();
+            }
+        });
+
+        // ─────────────────────────────────────────────────────────────
         // 15b. REAL PING (measured round-trip to the site host)
         // ─────────────────────────────────────────────────────────────
         // HiKeymash is a static site with no game server yet, so this times a
@@ -4132,7 +4813,8 @@
         setInterval(measurePing, 10000);
 
         el.matchRefreshBtn.addEventListener('click', () => {
-            loadSnippet(pickSnippet('all', currentSnippet ? currentSnippet.id : null));
+            if (appMode === 'book') advanceBookPara(1);
+            else loadSnippet(pickRaceSnippet());
         });
 
         // ─────────────────────────────────────────────────────────────
@@ -4145,7 +4827,15 @@
             loadSnippet,
             handleKeystroke,
             pickSnippet,
+            pickRaceSnippet,
+            startRace,
+            showLobby,
+            openBook,
+            advanceBookPara,
+            raceConfig,
             finishTest,
+            get appMode() { return appMode; },
+            get bookState() { return bookState; },
             getState: () => ({
                 currentSnippet,
                 targetKruti: targetKrutiText,
@@ -4159,7 +4849,7 @@
         };
 
         renderVirtualKeyboard();
-        loadSnippet(pickSnippet('all'));
+        showLobby();
 
     })();
     </script>
