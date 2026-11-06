@@ -988,26 +988,6 @@
             display: inline;
         }
 
-        /* Stylized input line at bottom of typing card (Image 2) */
-        .typing-input-bar {
-            width: 100%;
-            height: 38px;
-            background: var(--km-card-inner);
-            border: 1.5px solid var(--km-border);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            padding: 0 14px;
-            position: relative;
-        }
-
-        .typing-input-caret {
-            width: 2px;
-            height: 20px;
-            background: var(--km-accent);
-            animation: blinkCaret 1s infinite;
-        }
-
         #hidden-input {
             position: absolute;
             width: 1px;
@@ -2104,14 +2084,9 @@
             border-top: 1px solid var(--km-border-subtle);
             border-bottom: 1px solid var(--km-border-subtle);
             padding: 14px 2px;
-            height: calc(5.25em + 30px);
-        }
-        .typing-input-bar {
-            background: transparent;
-            border: none;
-            border-bottom: 2px solid var(--km-border);
-            border-radius: 0 !important;
-            clip-path: none !important;
+            /* exactly 3 text lines + padding: any extra pixel lets the
+               next line's matras/bindus peek through as stray marks */
+            height: calc(5.25em + 28px);
         }
 
         /* ── Hint strip & alt pill: typewriter chips ── */
@@ -2326,11 +2301,6 @@
                 <p class="sr-only" id="sr-quote"></p>
                 <div class="kruti-stream" id="kruti-stream" aria-hidden="true">
                     <span id="text-correct" class="text-correct"></span><span id="text-error" class="text-error"></span><span id="text-current" class="text-current"></span><span id="text-remaining" class="text-remaining"></span>
-                </div>
-
-                <!-- Stylized input line at bottom of typing card (Image 2) -->
-                <div class="typing-input-bar">
-                    <div class="typing-input-caret"></div>
                 </div>
 
                 <input id="hidden-input" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" aria-label="दिया गया हिंदी पाठ यहाँ टाइप करें">
