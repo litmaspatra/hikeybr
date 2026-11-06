@@ -1169,18 +1169,17 @@
             color: var(--km-accent);
         }
 
-        /* Keyboard: identical keycaps, layout and highlights to HiKeybr's
-           tutor keyboard (index.html). Keycap colours come from each
-           HiKeymash theme's --key-* variables, exactly as HiKeybr's do. */
+        /* Keyboard: keybr.com-style keycaps — flat square keys with no
+           borders, even 3px gaps on a rounded flat frame. Keycap colours
+           come from each HiKeymash theme's --key-* variables. */
         .keyboard-frame {
             background: var(--km-card);
-            border: 1px solid var(--km-border);
-            border-radius: 0;
-            padding: 16px 20px;
+            border: none;
+            border-radius: 12px;
+            padding: 14px;
             display: flex;
             flex-direction: column;
-            gap: 7px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            gap: 3px;
             user-select: none;
         }
 
@@ -1191,15 +1190,13 @@
         .k-row {
             display: flex;
             justify-content: center;
-            gap: 6px;
+            gap: 3px;
         }
 
         .k-key {
             background: var(--key-bg);
-            border: 1px solid var(--key-border);
-            border-bottom: 3px solid var(--key-bottom);
-            border-radius: 0;
-            clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+            border: none;
+            border-radius: 3px;
             height: 48px;
             min-width: 44px;
             display: flex;
@@ -1209,40 +1206,36 @@
             position: relative;
             cursor: default;
             user-select: none;
-            transition: all 0.08s ease;
+            transition: filter 0.08s ease, transform 0.08s ease, background 0.08s ease;
             padding: 2px 4px;
         }
 
         .k-key.pressed {
-            transform: translateY(2px);
-            border-bottom-width: 1px;
-            background: var(--km-border-light);
+            transform: translateY(1px);
+            filter: brightness(0.8);
         }
 
-        .k-key.target {
-            background: var(--km-accent);
-            border-color: #ff8533;
-            border-bottom-color: #b34b00;
-            box-shadow: 0 0 16px var(--km-accent-glow);
-            transform: translateY(-2px);
-            animation: targetPulse 1.2s infinite alternate;
-        }
-
-        .k-key.target .hi-main,
-        .k-key.target .hi-shift,
-        .k-key.target .en-sub {
-            color: #ffffff !important;
-            font-weight: 800;
-        }
-
-        @keyframes targetPulse {
-            0% { box-shadow: 0 0 8px var(--km-accent-glow); }
-            100% { box-shadow: 0 0 20px var(--km-accent-glow); }
+        /* keybr shows the next key with a thin circle around its letter,
+           no glow and no raised/bordered key */
+        .k-key.target::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 27px;
+            height: 27px;
+            transform: translate(-50%, -50%);
+            border: 1.5px solid var(--km-accent);
+            border-radius: 50%;
+            pointer-events: none;
         }
 
         .k-key.shift-needed {
-            border-color: #38bdf8;
-            box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+            background: var(--key-active);
+        }
+
+        .k-key.shift-needed .hi-main {
+            color: #ffffff;
         }
 
         .k-key .hi-shift {
@@ -1361,7 +1354,6 @@
                 flex: 0 1 auto;
                 height: 42px;
                 padding: 1px;
-                clip-path: polygon(4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%, 0 4px);
             }
             .k-key.w-backspace, .k-key.w-tab, .k-key.w-caps, .k-key.w-enter,
             .k-key.w-shift-l, .k-key.w-shift-r, .k-key.w-ctrl, .k-key.w-alt { min-width: 0 !important; }
