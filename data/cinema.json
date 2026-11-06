@@ -1,0 +1,1427 @@
+[
+ {
+  "id": "cin_001",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 14,
+  "text": "ईमानदारी की थर्ड डिवीज़न बेईमानी की फर्स्ट डिवीज़न से कहीं ज़्यादा ख़ुशी देती है।",
+  "source": {
+   "title": "12th Fail",
+   "year": 2023,
+   "character": "मनोज कुमार शर्मा",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_002",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 10,
+  "text": "बाहर के अंधेरे से नहीं, अंदर के अंधेरे से डरो।",
+  "source": {
+   "title": "12th Fail",
+   "year": 2023,
+   "character": "मनोज कुमार शर्मा",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_003",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 24,
+  "text": "ये जो ज़ज़्बा होता है किसी महंगे स्कूल कालेज में पढ़ने से तो नहीं आता है, ये आता है करोड़ों हिंदुस्तानियों की उम्मीदों से।",
+  "source": {
+   "title": "12th Fail",
+   "year": 2023,
+   "character": "मनोज कुमार शर्मा",
+   "type": "dialogue"
+  },
+  "confidence": "verified",
+  "note": "ॉ को ा में सामान्यीकृत (Kruti Dev मैपिंग सीमा)"
+ },
+ {
+  "id": "cin_004",
+  "category": "cinema",
+  "length_tier": "short",
+  "word_count": 29,
+  "text": "हार जीत सब लगा रहता है, लेकिन जिस दिन हम में से किसी एक का जीत होता है ना, तो हिंदुस्तान के करोड़ों भेड़ बकरियों का जीत होता है।",
+  "source": {
+   "title": "12th Fail",
+   "year": 2023,
+   "character": "गौरी भैया",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_005",
+  "category": "cinema",
+  "length_tier": "short",
+  "word_count": 29,
+  "text": "आईएएस बनना बड़ी बात नहीं है, बड़ी बात ये है कि जिस कुर्सी पर आप बैठेंगे ना, उससे आपकी इज़्ज़त न हो, बल्कि आपसे उस कुर्सी की इज़्ज़त बढ़े।",
+  "source": {
+   "title": "12th Fail",
+   "year": 2023,
+   "character": "पंडित जी",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_006",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 10,
+  "text": "क़ामयाब होने के लिए नहीं, क़ाबिल होने के लिए पढ़ो।",
+  "source": {
+   "title": "3 Idiots",
+   "year": 2009,
+   "character": "रांचो",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_007",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 15,
+  "text": "सक्सेस के पीछे मत भागो, एक्सीलेंस का पीछा करो, सक्सेस झक मारके तुम्हारे पीछे आएगी।",
+  "source": {
+   "title": "3 Idiots",
+   "year": 2009,
+   "character": "रांचो",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_008",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 20,
+  "text": "दोस्त अगर फेल हो जाए तो दुख होता है, लेकिन अगर दोस्त फर्स्ट आ जाए तो ज़्यादा दुख होता है।",
+  "source": {
+   "title": "3 Idiots",
+   "year": 2009,
+   "character": "चतुर",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_009",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 7,
+  "text": "जहांपनाह तुस्सी ग्रेट हो, तोहफ़ा क़बूल करो।",
+  "source": {
+   "title": "3 Idiots",
+   "year": 2009,
+   "character": "राजू",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_010",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 11,
+  "text": "एग्ज़ाम तो बहुत होते हैं, बाप मोस्टली एक ही होता है।",
+  "source": {
+   "title": "3 Idiots",
+   "year": 2009,
+   "character": "रांचो",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_011",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 14,
+  "text": "अजीब देश है हमारा, पिज़्ज़ा तीस मिनट में पहुंचने की गारंटी है, लेकिन एम्बुलेंस?",
+  "source": {
+   "title": "3 Idiots",
+   "year": 2009,
+   "character": "रांचो",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_012",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 11,
+  "text": "दोनों टांगें तुड़वा के अपने पैरों पे खड़ा होना सीखा है।",
+  "source": {
+   "title": "3 Idiots",
+   "year": 2009,
+   "character": "मिलीमीटर",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_013",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 13,
+  "text": "बड़ी दुविधा थी, दोस्त को संभालते कि दोस्त की मां के आंसू पोंछते।",
+  "source": {
+   "title": "3 Idiots",
+   "year": 2009,
+   "character": "रांचो",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_014",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 15,
+  "text": "लाइफ़ एक रेस है, अगर तेज़ नहीं भागोगे तो लोग तुम्हें कुचलकर आगे निकल जाएंगे।",
+  "source": {
+   "title": "3 Idiots",
+   "year": 2009,
+   "character": "वायरस",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_015",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 15,
+  "text": "पनीर तो बेटा, कुछ दिनों में इत्ती इत्ती थैलियों में सोनार की दुकान पे बिकेगा।",
+  "source": {
+   "title": "3 Idiots",
+   "year": 2009,
+   "character": "रांचो",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_016",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 7,
+  "text": "बाबूमोशाय, ज़िंदगी बड़ी होनी चाहिए, लंबी नहीं।",
+  "source": {
+   "title": "Anand",
+   "year": 1971,
+   "character": "आनंद",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_017",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 15,
+  "text": "जब तक ज़िंदा हूं तब तक मरा नहीं, जब मर गया साला मैं ही नहीं।",
+  "source": {
+   "title": "Anand",
+   "year": 1971,
+   "character": "आनंद",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_018",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 6,
+  "text": "आनंद मरा नहीं, आनंद मरते नहीं।",
+  "source": {
+   "title": "Anand",
+   "year": 1971,
+   "character": "आनंद",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_019",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 12,
+  "text": "मौत एक कविता है, मुझसे एक कविता का वादा है मिलेगी मुझको।",
+  "source": {
+   "title": "Anand",
+   "year": 1971,
+   "character": "आनंद",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_020",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 23,
+  "text": "हम आने वाले गम को खींच तान कर आज की ख़ुशी पे ले आते हैं, और उस ख़ुशी में ज़हर घोल देते हैं।",
+  "source": {
+   "title": "Anand",
+   "year": 1971,
+   "character": "आनंद",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_021",
+  "category": "cinema",
+  "length_tier": "short",
+  "word_count": 34,
+  "text": "बाबूमोशाय, ज़िंदगी और मौत ऊपर वाले के हाथ है, उससे ना तो आप बदल सकता है ना मैं। हम सब तो रंगमंच की कठपुतलियां हैं जिनकी डोर ऊपर वाले की उंगलियों में बंधी है।",
+  "source": {
+   "title": "Anand",
+   "year": 1971,
+   "character": "आनंद",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_022",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 14,
+  "text": "आज मेरे पास गाड़ी है, बंगला है, बैंक बैलेंस है, तुम्हारे पास क्या है?",
+  "source": {
+   "title": "Deewaar",
+   "year": 1975,
+   "character": "विजय",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_023",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 4,
+  "text": "मेरे पास मां है।",
+  "source": {
+   "title": "Deewaar",
+   "year": 1975,
+   "character": "रवि",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_024",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 8,
+  "text": "मैं आज भी फेंके हुए पैसे नहीं उठाता।",
+  "source": {
+   "title": "Deewaar",
+   "year": 1975,
+   "character": "विजय",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_025",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 15,
+  "text": "तुम लोग मुझे वहां ढूंढ रहे थे, और मैं तुम्हारा यहां इंतज़ार कर रहा हूं।",
+  "source": {
+   "title": "Deewaar",
+   "year": 1975,
+   "character": "विजय",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_026",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 20,
+  "text": "पूरा नाम विजय दीनानाथ चौहान। बाप का नाम दीनानाथ चौहान। मां का नाम सुहासिनी चौहान। गांव मांडवा। उम्र छत्तीस साल।",
+  "source": {
+   "title": "Agneepath",
+   "year": 1990,
+   "character": "विजय दीनानाथ चौहान",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_027",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 3,
+  "text": "कितने आदमी थे?",
+  "source": {
+   "title": "Sholay",
+   "year": 1975,
+   "character": "गब्बर सिंह",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_028",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 7,
+  "text": "बसंती इन कुत्तों के सामने मत नाचना।",
+  "source": {
+   "title": "Sholay",
+   "year": 1975,
+   "character": "वीरू",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_029",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 24,
+  "text": "यहां से पचास पचास कोस दूर जब बच्चा रात को रोता है तो मां कहती है, सो जा बेटे नहीं तो गब्बर आ जाएगा।",
+  "source": {
+   "title": "Sholay",
+   "year": 1975,
+   "character": "गब्बर सिंह",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_030",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 6,
+  "text": "सरदार मैंने आपका नमक ख़ाया है।",
+  "source": {
+   "title": "Sholay",
+   "year": 1975,
+   "character": "कालिया",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_031",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 4,
+  "text": "तो अब गोली ख़ा।",
+  "source": {
+   "title": "Sholay",
+   "year": 1975,
+   "character": "गब्बर सिंह",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_032",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 9,
+  "text": "हमें ज़्यादा बात करने की आदत तो है नहीं।",
+  "source": {
+   "title": "Sholay",
+   "year": 1975,
+   "character": "बसंती",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_033",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 5,
+  "text": "तुम्हारा नाम क्या है बसंती?",
+  "source": {
+   "title": "Sholay",
+   "year": 1975,
+   "character": "जय",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_034",
+  "category": "cinema",
+  "length_tier": "short",
+  "word_count": 29,
+  "text": "सत्तर मिनट, सत्तर मिनट है तुम्हारे पास। शायद तुम्हारी ज़िंदगी के सबसे ख़ास सत्तर मिनट। आज तुम अच्छा खेलो या बुरा, ये सत्तर मिनट तुम्हें ज़िंदगी भर याद रहेंगे।",
+  "source": {
+   "title": "Chak De! India",
+   "year": 2007,
+   "character": "कबीर ख़ान",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_035",
+  "category": "cinema",
+  "length_tier": "medium",
+  "word_count": 50,
+  "text": "इस मैच में कैसे खेलना है आज मैं तुम्हें नहीं बताऊंगा, बल्कि तुम मुझे बताओगे खेल कर। क्योंकि मैं जानता हूं कि अगर ये सत्तर मिनट इस टीम का हर खिलाड़ी अपनी ज़िंदगी की सबसे बड़ी हाकी खेल गया, तो ये सत्तर मिनट ख़ुदा भी तुमसे वापस नहीं ले सकता।",
+  "source": {
+   "title": "Chak De! India",
+   "year": 2007,
+   "character": "कबीर ख़ान",
+   "type": "dialogue"
+  },
+  "confidence": "verified",
+  "note": "ॉ को ा में सामान्यीकृत (Kruti Dev मैपिंग सीमा)"
+ },
+ {
+  "id": "cin_036",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 10,
+  "text": "गोल्ड तो गोल्ड ही होता है, छोरा लावे या छोरी।",
+  "source": {
+   "title": "Dangal",
+   "year": 2016,
+   "character": "महावीर सिंह फोगट",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_037",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 7,
+  "text": "म्हारी छोरियां छोरों से कम हैं के?",
+  "source": {
+   "title": "Dangal",
+   "year": 2016,
+   "character": "महावीर सिंह फोगट",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_038",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 11,
+  "text": "जीतने के लिए सबसे पहले आपने आप से जितना पड़ता है।",
+  "source": {
+   "title": "Dangal",
+   "year": 2016,
+   "character": "महावीर सिंह फोगट",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_039",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 13,
+  "text": "इंसान को डिब्बे में सिर्फ़ तब होना चाहिए, जब वो मर चुका हो।",
+  "source": {
+   "title": "Zindagi Na Milegi Dobara",
+   "year": 2011,
+   "character": "इमरान",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_040",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 14,
+  "text": "इंसान का कर्तव्य होता है कोशिश करना, कामयाबी नाकामयाबी सब उसके हाथ में है।",
+  "source": {
+   "title": "Zindagi Na Milegi Dobara",
+   "year": 2011,
+   "character": "इमरान",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_041",
+  "category": "cinema",
+  "length_tier": "short",
+  "word_count": 25,
+  "text": "ज़िंदगी जीने के दो ही तरीके होते हैं, एक जो हो रहा है होने दो, बर्दाश्त करते जाओ, या फिर ज़िम्मेदारी उठाओ उसे बदलने की।",
+  "source": {
+   "title": "Rang De Basanti",
+   "year": 2006,
+   "character": "डीजे",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_042",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 21,
+  "text": "अब भी जिसका ख़ून ना खौला, ख़ून नहीं वो पानी है, जो देश के काम ना आए वो बेकार जवानी है।",
+  "source": {
+   "title": "Rang De Basanti",
+   "year": 2006,
+   "character": "डीजे",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_043",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 11,
+  "text": "कोई भी देश परफेक्ट नहीं होता, उसे बेहतर बनाना पड़ता है।",
+  "source": {
+   "title": "Rang De Basanti",
+   "year": 2006,
+   "character": "एस रथौड़",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_044",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 18,
+  "text": "कालेज दी गेट दे इस तरफ़ हम लाइफ़ को नाचते है, ते दूजी तरफ़ लाइफ़ हमको नचाती है।",
+  "source": {
+   "title": "Rang De Basanti",
+   "year": 2006,
+   "character": "डीजे",
+   "type": "dialogue"
+  },
+  "confidence": "verified",
+  "note": "ॉ को ा में सामान्यीकृत (Kruti Dev मैपिंग सीमा)"
+ },
+ {
+  "id": "cin_045",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 11,
+  "text": "सिखनी हूं मैं भटिंडा की, कोई डाउट मत रखना दिल में।",
+  "source": {
+   "title": "Jab We Met",
+   "year": 2007,
+   "character": "गीत",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_046",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 7,
+  "text": "क्योंकि ये मेरा फ़ेवरेट गेम है, ज़िंदगी।",
+  "source": {
+   "title": "Jab We Met",
+   "year": 2007,
+   "character": "गीत",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_047",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 13,
+  "text": "जो कुछ इंसान रियल में चाहता है, एक्चुअल में, उसे वही मिलता है।",
+  "source": {
+   "title": "Jab We Met",
+   "year": 2007,
+   "character": "गीत",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_048",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 11,
+  "text": "जब कोई प्यार में होता है, तो सही ग़लत नहीं होता।",
+  "source": {
+   "title": "Jab We Met",
+   "year": 2007,
+   "character": "गीत",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_049",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 11,
+  "text": "भाई साहब, आप कन्विंस हो गए हैं या मैं और बोलूं?",
+  "source": {
+   "title": "Jab We Met",
+   "year": 2007,
+   "character": "गीत",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_050",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 12,
+  "text": "अब तो मेरा हाथ छोड़ दो, इतनी भी सुंदर नहीं हूं मैं।",
+  "source": {
+   "title": "Jab We Met",
+   "year": 2007,
+   "character": "गीत",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_051",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 13,
+  "text": "बचपन से ही ना, मुझे शादी करने का बहुत क्रेज़ है बाय गाड।",
+  "source": {
+   "title": "Jab We Met",
+   "year": 2007,
+   "character": "गीत",
+   "type": "dialogue"
+  },
+  "confidence": "verified",
+  "note": "ॉ को ा में सामान्यीकृत (Kruti Dev मैपिंग सीमा)"
+ },
+ {
+  "id": "cin_052",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 13,
+  "text": "मोहल्ले के लड़कों का प्यार अक्सर डाक्टर और इंजीनियर उठाकर ले जाते हैं।",
+  "source": {
+   "title": "Raanjhanaa",
+   "year": 2013,
+   "character": "कुंदन",
+   "type": "dialogue"
+  },
+  "confidence": "verified",
+  "note": "ॉ को ा में सामान्यीकृत (Kruti Dev मैपिंग सीमा)"
+ },
+ {
+  "id": "cin_053",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 18,
+  "text": "अबे प्यार नहीं हुआ, यूपीएससी की एग्ज़ाम हो गया, दस साल से क्लीयर ही नहीं हो रहा है।",
+  "source": {
+   "title": "Raanjhanaa",
+   "year": 2013,
+   "character": "कुंदन",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_054",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 12,
+  "text": "तुमसे प्यार करना मेरा टैलेंट है, इसमें तुम्हारा कोई हाथ नहीं है।",
+  "source": {
+   "title": "Raanjhanaa",
+   "year": 2013,
+   "character": "कुंदन",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_055",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 11,
+  "text": "लड़की और राकेट इंसान को कहीं भी ले जा सकते हैं।",
+  "source": {
+   "title": "Raanjhanaa",
+   "year": 2013,
+   "character": "मुरारी",
+   "type": "dialogue"
+  },
+  "confidence": "verified",
+  "note": "ॉ को ा में सामान्यीकृत (Kruti Dev मैपिंग सीमा)"
+ },
+ {
+  "id": "cin_056",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 24,
+  "text": "दो टाइप के लीडर होते हैं, एक वो जो सरकार गिराकर ख़ुश होते हैं और दूसरे वो जो सरकार बना के ख़ुश होते हैं।",
+  "source": {
+   "title": "Raanjhanaa",
+   "year": 2013,
+   "character": "कुंदन",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_057",
+  "category": "cinema",
+  "length_tier": "short",
+  "word_count": 26,
+  "text": "सारी तो मैंने अपने बाप तक को नहीं बोला, जब मेरी गलती थी, और अब तो न मेरी गलती है और न आप मेरे बाप हैं।",
+  "source": {
+   "title": "Raanjhanaa",
+   "year": 2013,
+   "character": "बिंदिया",
+   "type": "dialogue"
+  },
+  "confidence": "verified",
+  "note": "ॉ को ा में सामान्यीकृत (Kruti Dev मैपिंग सीमा)"
+ },
+ {
+  "id": "cin_058",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 24,
+  "text": "मेरी मौत का इंतक़ाम लेना मेरे बच्चे, उसकी उन दो आंखों में गोलियां दागना जिन आंखों से उसने तुम्हारी मां पर फ़रेब डाले थे।",
+  "source": {
+   "title": "Haider",
+   "year": 2014,
+   "character": "रूहदार",
+   "type": "dialogue"
+  },
+  "confidence": "converted",
+  "note": "एकल स्रोत (ब्लॉग) से; वर्तनी की त्रुटियां सुधारी गईं, wording की पुष्टि दूसरे स्रोत से बाकी"
+ },
+ {
+  "id": "cin_059",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 16,
+  "text": "हम तब तक आज़ाद नहीं होते जब तक हम अपने इंतक़ाम से आज़ाद नहीं हो जाते।",
+  "source": {
+   "title": "Haider",
+   "year": 2014,
+   "character": "रूहदार",
+   "type": "dialogue"
+  },
+  "confidence": "converted",
+  "note": "एकल स्रोत से, सत्यापन बाकी"
+ },
+ {
+  "id": "cin_060",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 9,
+  "text": "बाजीराव ने मस्तानी से मोहब्बत की है, ऐय्याशी नहीं।",
+  "source": {
+   "title": "Bajirao Mastani",
+   "year": 2015,
+   "character": "बाजीराव",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_061",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 14,
+  "text": "चीते की चाल, बाज़ की नज़र और बाजीराव की तलवार पर संदेह नहीं करते।",
+  "source": {
+   "title": "Bajirao Mastani",
+   "year": 2015,
+   "character": "बाजीराव",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_062",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 8,
+  "text": "बाजीराव की रफ़्तार ही बाजीराव की पहचान है।",
+  "source": {
+   "title": "Bajirao Mastani",
+   "year": 2015,
+   "character": "बाजीराव",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_063",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 20,
+  "text": "इश्क़, जो तूफ़ानी दरिया से बग़ावत कर जाए, वो इश्क़। भरे दरबार में जो दुनिया से लड़ जाए, वो इश्क़।",
+  "source": {
+   "title": "Bajirao Mastani",
+   "year": 2015,
+   "character": "मस्तानी",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_064",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 20,
+  "text": "आप हमसे हमारी ज़िंदगी मांग लेते, हम आपको ख़ुशी ख़ुशी दे देते, पर आपने तो हमसे हमारा गुरूर छीन लिया।",
+  "source": {
+   "title": "Bajirao Mastani",
+   "year": 2015,
+   "character": "मस्तानी",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_065",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 11,
+  "text": "अधूरी मुलाक़ात ही तो फिर से मिलने का वादा होता है।",
+  "source": {
+   "title": "Bajirao Mastani",
+   "year": 2015,
+   "character": "मस्तानी",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_066",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 6,
+  "text": "न का मतलब न होता है।",
+  "source": {
+   "title": "Pink",
+   "year": 2016,
+   "character": "दीपक सहगल",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_067",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 10,
+  "text": "बीहड़ में बागी होते हैं, डकैत होते हैं पार्लियामेंट में।",
+  "source": {
+   "title": "Paan Singh Tomar",
+   "year": 2012,
+   "character": "पान सिंह तोमर",
+   "type": "dialogue"
+  },
+  "confidence": "verified",
+  "note": "बुंदेलखंडी बोली"
+ },
+ {
+  "id": "cin_068",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 4,
+  "text": "डाकू ना साब, बागी।",
+  "source": {
+   "title": "Paan Singh Tomar",
+   "year": 2012,
+   "character": "पान सिंह तोमर",
+   "type": "dialogue"
+  },
+  "confidence": "verified",
+  "note": "बुंदेलखंडी बोली"
+ },
+ {
+  "id": "cin_069",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 6,
+  "text": "ना साब सरकार तो चोर है।",
+  "source": {
+   "title": "Paan Singh Tomar",
+   "year": 2012,
+   "character": "पान सिंह तोमर",
+   "type": "dialogue"
+  },
+  "confidence": "verified",
+  "note": "बुंदेलखंडी बोली"
+ },
+ {
+  "id": "cin_070",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 9,
+  "text": "बाप ने न मारी मेंढक की और बेटा तीरंदाज।",
+  "source": {
+   "title": "Paan Singh Tomar",
+   "year": 2012,
+   "character": "पान सिंह तोमर",
+   "type": "dialogue"
+  },
+  "confidence": "verified",
+  "note": "बुंदेलखंडी बोली"
+ },
+ {
+  "id": "cin_071",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 6,
+  "text": "मुंबई का किंग कौन? भीखू म्हात्रे।",
+  "source": {
+   "title": "Satya",
+   "year": 1998,
+   "character": "भीखू म्हात्रे",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_072",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 21,
+  "text": "डैडी बात करता है, मेरा बच्चा, कैसी है तू, अंग्रेजी पढ़ रही है तू? डैडी शाम को घर आ रहा है।",
+  "source": {
+   "title": "Satya",
+   "year": 1998,
+   "character": "भीखू म्हात्रे",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_073",
+  "category": "cinema",
+  "length_tier": "short",
+  "word_count": 30,
+  "text": "मैं नहीं मानता कि हमारा देश दुनिया का सबसे महान देश है। लेकिन ये ज़रूर मानता हूं कि हम में काबिलियत है, ताक़त है, इस देश को महान बनाने की।",
+  "source": {
+   "title": "Swades",
+   "year": 2004,
+   "character": "मोहन भार्गव",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_074",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 7,
+  "text": "बाबा, सो जा, वरना हस्तार आ जाएगा।",
+  "source": {
+   "title": "Tumbbad",
+   "year": 2018,
+   "character": "दादी",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_075",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 10,
+  "text": "विरासत में मिली हर चीज़ पर दावा नहीं करना चाहिए।",
+  "source": {
+   "title": "Tumbbad",
+   "year": 2018,
+   "character": "विनायक",
+   "type": "dialogue"
+  },
+  "confidence": "converted",
+  "note": "रोमन स्रोत से देवनागरी रूपांतरण"
+ },
+ {
+  "id": "cin_076",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 10,
+  "text": "लालची है तू। यही तो एक गुण है मुझ में।",
+  "source": {
+   "title": "Tumbbad",
+   "year": 2018,
+   "character": "विनायक",
+   "type": "dialogue"
+  },
+  "confidence": "converted",
+  "note": "रोमन स्रोत से देवनागरी रूपांतरण, दो संवाद मिलाकर"
+ },
+ {
+  "id": "cin_077",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 18,
+  "text": "शहंशाह की बेहिसाब बख़्शिशों के बदले में एक कनीज़ जलालुद्दीन मोहम्मद अकबर को अपना ख़ून मुआफ़ करती है।",
+  "source": {
+   "title": "Mughal-E-Azam",
+   "year": 1960,
+   "character": "अनारकली",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_078",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 14,
+  "text": "अनारकली, जब तक ये दुनिया क़ायम रहेगी, तुम लफ़्ज़-ए-मोहब्बत की आबरू बनकर ज़िंदा रहोगी।",
+  "source": {
+   "title": "Mughal-E-Azam",
+   "year": 1960,
+   "character": "अकबर",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_079",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 10,
+  "text": "मेरे दूध का क़र्ज़ चुकाने का वक़्त आ गया है।",
+  "source": {
+   "title": "Mother India",
+   "year": 1957,
+   "character": "राधा",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_080",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 13,
+  "text": "तारीख़ पे तारीख़, तारीख़ पे तारीख़ मिलती गई मिलार्ड, लेकिन इंसाफ़ नहीं मिला।",
+  "source": {
+   "title": "Damini",
+   "year": 1993,
+   "character": "गोविंद",
+   "type": "dialogue"
+  },
+  "confidence": "verified",
+  "note": "ॉ को ा में सामान्यीकृत (Kruti Dev मैपिंग सीमा)"
+ },
+ {
+  "id": "cin_081",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 20,
+  "text": "चिल्लाओ मत, नहीं तो ये केस यहीं रफ़ा दफ़ा कर दूंगा। न तारीख़ न सुनवाई, सीधा इंसाफ़, वो भी ताबड़तोड़।",
+  "source": {
+   "title": "Damini",
+   "year": 1993,
+   "character": "गोविंद",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_082",
+  "category": "cinema",
+  "length_tier": "short",
+  "word_count": 32,
+  "text": "चिंता को तलवार की नोक पे रखे, वो राजपूत। रेत की नाव लेकर समुंदर से शर्त लगाए, वो राजपूत। और जिसका सिर कटे फिर भी धड़ दुश्मन से लड़ता रहे, वो राजपूत।",
+  "source": {
+   "title": "Padmaavat",
+   "year": 2018,
+   "character": "राजा रतन सिंह",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_083",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 12,
+  "text": "अल्लाह की बनाई हर नायाब चीज़ पर पहला हक़ ख़िलजी का है।",
+  "source": {
+   "title": "Padmaavat",
+   "year": 2018,
+   "character": "ख़िलजी",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_084",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 11,
+  "text": "राजपूती कंगन में उतनी ही ताक़त है जितनी राजपूती तलवार में।",
+  "source": {
+   "title": "Padmaavat",
+   "year": 2018,
+   "character": "पद्मावती",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_085",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 18,
+  "text": "कह दीजिए अपने सुल्तान से कि उनकी तलवार से ज़्यादा लोहा हम सूर्यवंशी मेवाड़ियों के सीने में है।",
+  "source": {
+   "title": "Padmaavat",
+   "year": 2018,
+   "character": "राजा रतन सिंह",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_086",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 11,
+  "text": "ख़ून का बदला ख़ून से लेने का वक़्त आ गया है।",
+  "source": {
+   "title": "Uri: The Surgical Strike",
+   "year": 2019,
+   "character": "मेजर विहान",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_087",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 9,
+  "text": "फ़र्ज़ और फ़र्ज़ी में एक मात्रा का फ़र्क़ है।",
+  "source": {
+   "title": "Uri: The Surgical Strike",
+   "year": 2019,
+   "character": "मेजर विहान",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_088",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 6,
+  "text": "हाउ इज़ द जोश? हाई सर!",
+  "source": {
+   "title": "Uri: The Surgical Strike",
+   "year": 2019,
+   "character": "विभिन्न",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_089",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 13,
+  "text": "उठा ले रे बाबा, उठा ले, मेरेको नहीं, इन दोनों को उठा ले।",
+  "source": {
+   "title": "Hera Pheri",
+   "year": 2000,
+   "character": "बाबू भैया",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_090",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 10,
+  "text": "देवी का प्रसाद मंदिर में मिलता है, गैराज में नहीं।",
+  "source": {
+   "title": "Hera Pheri",
+   "year": 2000,
+   "character": "बाबू भैया",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_091",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 5,
+  "text": "ये बाबूराव का स्टाइल है।",
+  "source": {
+   "title": "Hera Pheri",
+   "year": 2000,
+   "character": "बाबू भैया",
+   "type": "dialogue"
+  },
+  "confidence": "verified"
+ },
+ {
+  "id": "cin_092",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 8,
+  "text": "कौन कमबख्त कहता है कि हिटलर मर गया?",
+  "source": {
+   "title": "Gol Maal",
+   "year": 1979,
+   "character": "भवानी शंकर",
+   "type": "dialogue"
+  },
+  "confidence": "converted",
+  "note": "रोमन स्रोत से देवनागरी रूपांतरण; स्रोत में अभिनेता असाइनमेंट अमोल पालेकर, किरदार-नाम अनिश्चित"
+ },
+ {
+  "id": "cin_093",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 17,
+  "text": "ये क्रिकेटरों वाले नाम सेफ़ नहीं होते जी, कल को वो रन बनाने बंद कर देंगे तो?",
+  "source": {
+   "title": "Khosla Ka Ghosla!",
+   "year": 2006,
+   "character": "के के खोसला",
+   "type": "dialogue"
+  },
+  "confidence": "converted",
+  "note": "रोमन स्रोत से देवनागरी रूपांतरण, किरदार-नाम अनिश्चित"
+ },
+ {
+  "id": "cin_094",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 4,
+  "text": "ठोड़ा ख़ा, ठोड़ा फेंको।",
+  "source": {
+   "title": "Jaane Bhi Do Yaaro",
+   "year": 1983,
+   "character": "विभिन्न",
+   "type": "dialogue"
+  },
+  "confidence": "converted",
+  "note": "रोमन स्रोत से देवनागरी रूपांतरण"
+ },
+ {
+  "id": "cin_095",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 7,
+  "text": "नालायक, अधर्म, दुराचार, ममाचार, भ्रष्टाचार, बोल सारी।",
+  "source": {
+   "title": "Jaane Bhi Do Yaaro",
+   "year": 1983,
+   "character": "विभिन्न",
+   "type": "dialogue"
+  },
+  "confidence": "converted",
+  "note": "रोमन स्रोत से देवनागरी रूपांतरण; ॉ को ा में सामान्यीकृत (Kruti Dev मैपिंग सीमा)"
+ },
+ {
+  "id": "cin_096",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 10,
+  "text": "द्रौपदी तेरी अकेले की नहीं है, हम सब शेयरहोल्डर हैं।",
+  "source": {
+   "title": "Jaane Bhi Do Yaaro",
+   "year": 1983,
+   "character": "विभिन्न",
+   "type": "dialogue"
+  },
+  "confidence": "converted",
+  "note": "रोमन स्रोत से देवनागरी रूपांतरण"
+ },
+ {
+  "id": "cin_097",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 9,
+  "text": "मैंने छीर हरण का आइडिया ड्राप कर दिया है।",
+  "source": {
+   "title": "Jaane Bhi Do Yaaro",
+   "year": 1983,
+   "character": "विभिन्न",
+   "type": "dialogue"
+  },
+  "confidence": "converted",
+  "note": "रोमन स्रोत से देवनागरी रूपांतरण; ॉ को ा में सामान्यीकृत (Kruti Dev मैपिंग सीमा)"
+ },
+ {
+  "id": "cin_098",
+  "category": "cinema",
+  "length_tier": "short",
+  "word_count": 25,
+  "text": "न ही अपनी आने वाली ज़िंदगी में कोई अहम काम करूंगी। मेरी ज़िंदगी भी आपकी तरह एक अच्छी बीवी और अच्छी मां बनकर गुज़र जाएगी।",
+  "source": {
+   "title": "Veer-Zaara",
+   "year": 2004,
+   "character": "ज़ारा",
+   "type": "dialogue"
+  },
+  "confidence": "converted",
+  "note": "रोमन स्रोत से देवनागरी रूपांतरण"
+ },
+ {
+  "id": "cin_099",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 5,
+  "text": "बेटा, तुमसे ना हो पाएगा।",
+  "source": {
+   "title": "Gangs of Wasseypur",
+   "year": 2012,
+   "character": "रमादिर सिंह",
+   "type": "dialogue"
+  },
+  "confidence": "converted",
+  "note": "रोमन स्रोत से देवनागरी रूपांतरण"
+ },
+ {
+  "id": "cin_100",
+  "category": "cinema",
+  "length_tier": "very_short",
+  "word_count": 12,
+  "text": "बाप का, दादा का, भाई का, सबका बदला लेगा रे तेरा फ़ैज़ल।",
+  "source": {
+   "title": "Gangs of Wasseypur",
+   "year": 2012,
+   "character": "फ़ैज़ल ख़ान",
+   "type": "dialogue"
+  },
+  "confidence": "converted",
+  "note": "रोमन स्रोत से देवनागरी रूपांतरण"
+ }
+]
