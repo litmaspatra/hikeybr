@@ -266,6 +266,19 @@
         $id('opt-stop').onchange=e=>{opts.stopOnError=e.target.checked;applyOpts(false);};
         $id('opt-skip').onchange=e=>{opts.spaceSkips=e.target.checked;applyOpts(false);};
         $id('opt-cursor').onchange=e=>{opts.cursorHighlight=e.target.checked;applyOpts(false);};
+
+        // Focus mode: only the typing text stays visible; Esc or the button exits.
+        let focusMode=false;
+        const setFocusMode=on=>{
+            focusMode=on;
+            document.documentElement.classList.toggle('focus-mode',on);
+            const b=$id('focus-toggle');
+            b.textContent=on?'\u2715':'\u26F6';
+            b.title=on?'Exit focus mode (Esc)':'Focus mode: show only the typing text';
+            el.hiddenInput.focus({preventScroll:true});
+        };
+        $id('focus-toggle').addEventListener('click',()=>setFocusMode(!focusMode));
+        document.addEventListener('keydown',e=>{if(e.key==='Escape'&&focusMode){e.preventDefault();setFocusMode(false);}});
         document.querySelectorAll('input[name=snd]').forEach(r=>r.onchange=()=>{opts.soundMode=r.value;applyOpts(false);sound.click();});
         $id('opt-volume').oninput=e=>{opts.volume=parseInt(e.target.value,10);$id('opt-volume-val').textContent=opts.volume+'%';};
         $id('opt-volume').onchange=()=>{saveStorage();sound.click();};
