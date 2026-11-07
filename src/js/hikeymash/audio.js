@@ -32,6 +32,47 @@
                 osc.start();
                 osc.stop(this.ctx.currentTime + 0.16);
             },
+            // F1-style race start: a rising beep for each count of 3-2-1.
+            countdown(step) {
+                if (!soundEnabled) return;
+                this.init();
+                if (!this.ctx) return;
+                const ctx = this.ctx;
+                if (ctx.state === 'suspended') ctx.resume();
+                const freqs = [440, 554, 659];
+                const f = freqs[Math.min(Math.max(step, 0), freqs.length - 1)];
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'square';
+                osc.frequency.setValueAtTime(f, ctx.currentTime);
+                gain.gain.setValueAtTime(0.1, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.14);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.14);
+            },
+            // Lights out: bright, longer GO tone (an octave-and-a-bit chord).
+            go() {
+                if (!soundEnabled) return;
+                this.init();
+                if (!this.ctx) return;
+                const ctx = this.ctx;
+                if (ctx.state === 'suspended') ctx.resume();
+                const now = ctx.currentTime;
+                [880, 1108].forEach((f, idx) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = idx === 0 ? 'square' : 'sine';
+                    osc.frequency.setValueAtTime(f, now);
+                    gain.gain.setValueAtTime(idx === 0 ? 0.11 : 0.07, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.42);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.42);
+                });
+            },
             win() {
                 if (!soundEnabled) return;
                 this.init();

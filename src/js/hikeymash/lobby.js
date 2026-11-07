@@ -58,21 +58,35 @@
             inputLocked = true;
             const seq = ['3', '2', '1', 'GO!'];
             let i = 0;
+            const lights = el.countdownLights ? Array.from(el.countdownLights.querySelectorAll('i')) : [];
             el.countdownOverlay.classList.add('show');
+            el.countdownNum.classList.remove('go');
+            lights.forEach(li => li.classList.remove('lit'));
             el.countdownNum.textContent = seq[0];
             el.countdownNum.classList.add('pop');
-            if (soundEnabled) sound.click();
+            if (lights[0]) lights[0].classList.add('lit');
+            if (soundEnabled) sound.countdown(0);
             const step = () => {
                 i++;
                 if (i < seq.length) {
+                    const isGo = i === seq.length - 1;
                     el.countdownNum.textContent = seq[i];
                     el.countdownNum.classList.remove('pop');
                     void el.countdownNum.offsetWidth;
                     el.countdownNum.classList.add('pop');
-                    if (soundEnabled) sound.click();
-                    setTimeout(step, i === seq.length - 1 ? 550 : 750);
+                    if (isGo) {
+                        // Lights out, away we go: the start lights extinguish and GO turns green.
+                        lights.forEach(li => li.classList.remove('lit'));
+                        el.countdownNum.classList.add('go');
+                        if (soundEnabled) sound.go();
+                    } else {
+                        if (lights[i]) lights[i].classList.add('lit');
+                        if (soundEnabled) sound.countdown(i);
+                    }
+                    setTimeout(step, isGo ? 550 : 750);
                 } else {
                     el.countdownOverlay.classList.remove('show');
+                    el.countdownNum.classList.remove('go');
                     inputLocked = false;
                     done();
                 }

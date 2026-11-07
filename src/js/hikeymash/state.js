@@ -67,6 +67,7 @@
             bookNextBtn: document.getElementById('book-next-btn'),
             countdownOverlay: document.getElementById('countdown-overlay'),
             countdownNum: document.getElementById('countdown-num'),
+            countdownLights: document.getElementById('countdown-lights'),
             paraToast: document.getElementById('para-toast'),
             matchTitle: document.getElementById('match-title'),
             matchSubtitle: document.getElementById('match-subtitle'),
