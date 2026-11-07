@@ -3,7 +3,7 @@
         // 15a. LOBBY, RACE MODES & BOOK READER
         // ─────────────────────────────────────────────────────────────
         let appMode = 'lobby'; // 'lobby' | 'race' | 'book'
-        const raceConfig = { cat: 'mixed', len: 'short' };
+        const raceConfig = { cat: 'mixed', len: 'long' };
         const bookState = { bookId: null, paraIndex: 0 };
         let inputLocked = false;
         let paraToastTimer = null;
@@ -219,9 +219,9 @@
             });
             const activeLen = document.querySelector('#lobby-len-pills .lobby-pill.active');
             if (activeLen && activeLen.disabled) {
-                raceConfig.len = 'short';
+                raceConfig.len = 'long';
                 document.querySelectorAll('#lobby-len-pills .lobby-pill').forEach(x => {
-                    x.classList.toggle('active', x.dataset.len === 'short');
+                    x.classList.toggle('active', x.dataset.len === 'long');
                 });
             }
         }
