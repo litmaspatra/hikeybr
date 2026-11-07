@@ -194,6 +194,7 @@
 
         function applyPracticeTextPrefs() {
             document.documentElement.style.setProperty('--practice-fs', (opts.textSize || 32) + 'px');
+            document.documentElement.classList.toggle('cur-off', opts.cursorHighlight === false);
         }
         function applyDisplayPreferences() {
             document.getElementById('display-font-select').value = displayFont;

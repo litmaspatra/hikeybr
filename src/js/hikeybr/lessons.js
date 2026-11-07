@@ -77,6 +77,7 @@
             $('opt-punct').value=opts.punct;$('opt-punct-val').textContent=opts.punct+'%';
             $('opt-removepunct').checked=$('opt-removepunct2').checked=!!opts.removePunct;
             $('opt-stop').checked=!!opts.stopOnError;$('opt-skip').checked=!!opts.spaceSkips;
+            $('opt-cursor').checked=opts.cursorHighlight!==false;
             document.querySelectorAll('input[name=snd]').forEach(r=>r.checked=r.value===opts.soundMode);
             $('opt-volume').value=opts.volume;$('opt-volume-val').textContent=opts.volume+'%';
             $('opt-theme').value=opts.soundTheme;

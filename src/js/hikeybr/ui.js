@@ -265,6 +265,7 @@
         ['opt-removepunct','opt-removepunct2'].forEach(id=>$id(id).onchange=e=>{opts.removePunct=e.target.checked;applyOpts(true);});
         $id('opt-stop').onchange=e=>{opts.stopOnError=e.target.checked;applyOpts(false);};
         $id('opt-skip').onchange=e=>{opts.spaceSkips=e.target.checked;applyOpts(false);};
+        $id('opt-cursor').onchange=e=>{opts.cursorHighlight=e.target.checked;applyOpts(false);};
         document.querySelectorAll('input[name=snd]').forEach(r=>r.onchange=()=>{opts.soundMode=r.value;applyOpts(false);sound.click();});
         $id('opt-volume').oninput=e=>{opts.volume=parseInt(e.target.value,10);$id('opt-volume-val').textContent=opts.volume+'%';};
         $id('opt-volume').onchange=()=>{saveStorage();sound.click();};

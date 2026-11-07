@@ -1427,6 +1427,7 @@
 html.cur-box .text-current{background:transparent!important;box-shadow:none!important;outline:2px solid var(--accent);outline-offset:-1px}
 html.cur-line .text-current{background:transparent!important;box-shadow:inset 3px 0 0 var(--accent)!important}
 html.cur-underline .text-current{background:transparent!important;box-shadow:0 3px 0 var(--accent)!important}
+html.cur-off .text-current{background:transparent!important;box-shadow:none!important;outline:none!important}
 @media(max-width:600px){.ls-row>label{flex:1 1 100%}.ls-tab{padding:8px 9px;font-size:.85rem}}
 
         /* keybr-style practice metrics + profile charts */
