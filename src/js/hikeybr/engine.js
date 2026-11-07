@@ -5,6 +5,13 @@
         function unicodeToKrutiDev(text) {
             let s = text;
 
+            // Nukta + halant conjuncts (ज़् etc.) have no KrutiDev
+            // half-form; the converter used to drop a visible halant glyph that
+            // hid the nukta (ज़्यादा rendered as "t+~;knk"). Strip the nukta in
+            // that conjunct only, so ज़्यादा renders as ज्यादा. Standalone
+            // nukta letters keep their own Alt-code glyphs (Alt-Codes Lab).
+            s = s.replace(/([कखगजफ])़्/g, '$1्');
+
             // 0. Punctuation -> authentic KrutiDev bytes. On the Remington GAIL
             // layout the English punctuation keys type Hindi letters (',' key = ए,
             // '?' key = घ्, '.' key = ण्), so the real punctuation glyphs live on
