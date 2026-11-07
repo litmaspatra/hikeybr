@@ -17,6 +17,36 @@
             font-display: swap;
         }
 
+        /* Remington design variants (same KrutiDev 010 byte encoding), as in hikeybr */
+        @font-face {
+            font-family: 'DevLys040';
+            src: url('../../fonts/DevLys-040.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'DevLys040Bold';
+            src: url('../../fonts/DevLys-040-Bold.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'KrutiDev021';
+            src: url('../../fonts/KrutiDev-021-Italic.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'KrutiDev070';
+            src: url('../../fonts/KrutiDev-070-Bold.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
         /* ═══════════════════════════════════════════════════════════
            THEMES & CSS VARIABLES (Keymash Palette)
            ═══════════════════════════════════════════════════════════ */
@@ -2283,3 +2313,19 @@
             white-space: nowrap;
             border: 0;
         }
+
+        /* Lobby dropdowns (font / sound pickers) */
+        .lobby-select {
+            width: 100%;
+            padding: 9px 12px;
+            border-radius: 10px;
+            border: 1.5px solid var(--km-border);
+            background: var(--km-card);
+            color: var(--km-text);
+            font-family: 'Space Grotesk', 'Noto Sans Devanagari', sans-serif;
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            outline: none;
+        }
+        .lobby-select:focus { border-color: var(--km-accent); }

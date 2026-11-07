@@ -3,7 +3,7 @@
         // 15a. LOBBY, RACE MODES & BOOK READER
         // ─────────────────────────────────────────────────────────────
         let appMode = 'lobby'; // 'lobby' | 'race' | 'book'
-        const raceConfig = { cat: 'mixed', len: 'short' };
+        const raceConfig = { cat: 'mixed' };
         const bookState = { bookId: null, paraIndex: 0 };
         let inputLocked = false;
         let paraToastTimer = null;
@@ -194,39 +194,50 @@
             el.lobbyPanelRace.style.display = 'none';
             renderBookCards();
         });
-        document.querySelectorAll('#lobby-len-pills .lobby-pill').forEach(p => {
-            p.addEventListener('click', () => {
-                if (p.disabled) return;
-                raceConfig.len = p.dataset.len;
-                document.querySelectorAll('#lobby-len-pills .lobby-pill').forEach(x => x.classList.toggle('active', x === p));
-            });
-        });
         el.lobbyStartBtn.addEventListener('click', startRace);
         el.bookPrevBtn.addEventListener('click', () => advanceBookPara(-1));
         el.bookNextBtn.addEventListener('click', () => advanceBookPara(1));
 
-        // Live entry counts on the length pills; a tier with no entries in the
-        // chosen category is disabled instead of silently serving other tiers.
-        function refreshLobbyCounts() {
-            const pool = racePool();
-            const counts = { short: 0, medium: 0, long: 0 };
-            pool.forEach(sn => counts[tierOf(wordCountOf(sn.text))]++);
-            document.querySelectorAll('.lobby-pill-count').forEach(span => {
-                const n = counts[span.dataset.count] || 0;
-                span.textContent = ' (' + n + ')';
-                const pill = span.closest('.lobby-pill');
-                if (pill) pill.disabled = n === 0;
-            });
-            const activeLen = document.querySelector('#lobby-len-pills .lobby-pill.active');
-            if (activeLen && activeLen.disabled) {
-                raceConfig.len = 'short';
-                document.querySelectorAll('#lobby-len-pills .lobby-pill').forEach(x => {
-                    x.classList.toggle('active', x.dataset.len === 'short');
-                });
-            }
+        // Race display font + sound theme pickers (persisted).
+        const MASH_FONTS = {
+            devlys010: 'DevLys010Web',
+            krutidev: 'KrutiDev010',
+            devlys040: 'DevLys040',
+            devlys040bold: 'DevLys040Bold',
+            krutidev021: 'KrutiDev021',
+            krutidev070: 'KrutiDev070'
+        };
+        function applyRaceFont(key) {
+            const fam = MASH_FONTS[key] || MASH_FONTS.devlys010;
+            const stack = "'" + fam + "', 'DevLys010Web', 'KrutiDev010', sans-serif";
+            if (el.krutiStream) el.krutiStream.style.fontFamily = stack;
+            if (el.replayTextStream) el.replayTextStream.style.fontFamily = stack;
+            try { localStorage.setItem('hikeymash_font', key); } catch (e) {}
         }
-        refreshLobbyCounts();
-        window.addEventListener('load', () => { refreshLobbyCounts(); renderBookCards(); });
+        if (el.lobbyFontSelect) {
+            let savedFont = 'devlys010';
+            try { savedFont = localStorage.getItem('hikeymash_font') || 'devlys010'; } catch (e) {}
+            if (!MASH_FONTS[savedFont]) savedFont = 'devlys010';
+            el.lobbyFontSelect.value = savedFont;
+            applyRaceFont(savedFont);
+            el.lobbyFontSelect.addEventListener('change', () => {
+                applyRaceFont(el.lobbyFontSelect.value);
+                if (soundEnabled) sound.click();
+            });
+        }
+        if (el.lobbySoundSelect) {
+            let savedTheme = 'mechanical';
+            try { savedTheme = localStorage.getItem('hikeymash_sound_theme') || 'mechanical'; } catch (e) {}
+            if (!SOUND_THEMES[savedTheme]) savedTheme = 'mechanical';
+            soundTheme = savedTheme;
+            el.lobbySoundSelect.value = savedTheme;
+            el.lobbySoundSelect.addEventListener('change', () => {
+                soundTheme = el.lobbySoundSelect.value;
+                try { localStorage.setItem('hikeymash_sound_theme', soundTheme); } catch (e) {}
+                if (soundEnabled) sound.click();
+            });
+        }
+        window.addEventListener('load', () => { renderBookCards(); });
 
         // Enter in the lobby starts the match (race tab only).
         document.addEventListener('keydown', (e) => {

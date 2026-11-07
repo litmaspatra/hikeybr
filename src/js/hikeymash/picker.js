@@ -49,16 +49,9 @@
             return LITERATURE_SNIPPETS.concat(cinemaSnippets());
         }
 
-        function wordCountOf(text) { return text.trim().split(/\s+/).length; }
-        function tierOf(wc) { return wc <= 38 ? 'short' : wc <= 65 ? 'medium' : 'long'; }
-
         function pickRaceSnippet() {
-            const pool = racePool();
-            const tiered = pool.filter(sn => tierOf(wordCountOf(sn.text)) === raceConfig.len);
-            // A tier with almost no entries (e.g. long cinema dialogues) falls
-            // back to the whole category rather than repeating 1-2 paragraphs.
-            const effective = tiered.length >= 3 ? tiered : pool;
-            return pickFromPool(effective, currentSnippet ? currentSnippet.id : null);
+            // No length tiers: the mixed pool (literature + cinema) serves everything.
+            return pickFromPool(racePool(), currentSnippet ? currentSnippet.id : null);
         }
 
         function loadSnippet(snippet) {
