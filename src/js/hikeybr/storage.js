@@ -27,7 +27,7 @@
                     const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
                     const a = document.createElement('a');
                     a.href = URL.createObjectURL(blob);
-                    a.download = 'hikeybr-progress-backup.json';
+                    a.download = 'tankan-progress-backup.json';
                     a.click();
                     setTimeout(() => URL.revokeObjectURL(a.href), 5000);
                 } catch (_) {}

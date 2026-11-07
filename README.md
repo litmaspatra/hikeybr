@@ -1,8 +1,8 @@
-# HiKeybr ⌨️
+# Tankan (टंकण) ⌨️
 
-**HiKeybr** is an adaptive Hindi typing tutor specifically designed for the **Remington (GAIL)** layout, built in the aesthetic and pedagogical spirit of [keybr.com](https://www.keybr.com).
+**Tankan** is an adaptive Hindi typing tutor specifically designed for the **Remington (GAIL)** layout, built in the aesthetic and pedagogical spirit of [keybr.com](https://www.keybr.com).
 
-![HiKeybr Screenshot](https://raw.githubusercontent.com/litmaspatra/hikeybr/main/preview.png)
+![Tankan Screenshot](https://raw.githubusercontent.com/litmaspatra/tankan/main/preview.png)
 
 ---
 
@@ -22,7 +22,7 @@
 
 ## 🚀 Running Locally or Deploying
 
-HiKeybr is a static site with zero build tools or server dependencies required.
+Tankan is a static site with zero build tools or server dependencies required.
 
 1. **Local Run**: Double click `index.html` or open with any modern web browser.
 2. **GitHub Pages**:
@@ -81,13 +81,13 @@ Lesson settings (top of the Practice tab) include a text source: adaptive Hindi 
 Both pages are thin HTML shells; all styles and logic live under `src/` as plain CSS and classic (non-module) scripts, so everything still works from `file://` and GitHub Pages with no build step.
 
 ```
-index.html                  HiKeybr tutor shell
-hikeymash.html              HiKeymash arcade shell
+index.html                  Tankan tutor shell
+hikeymash.html              Arena arcade shell
 src/
   css/
-    hikeybr.css             HiKeybr page styles
-    hikeymash.css           HiKeymash page styles
-    hikeymash-overrides.css HiKeymash overrides loaded after the shared sheets
+    hikeybr.css             Tankan page styles
+    hikeymash.css           Arena page styles
+    hikeymash-overrides.css Arena overrides loaded after the shared sheets
     theme.css               Shared retro typewriter theme
     keyboard.css            Shared keyboard styles
   js/
@@ -99,7 +99,7 @@ src/
                             insights, ui, lobby, init
 books.js                    Book Reader stories (loaded by both pages)
 data/books/                 Full novels (Nirmala, Godan) for the Book Reader
-data/                       Quote and cinema libraries (HiKeymash)
+data/                       Quote and cinema libraries (Arena)
 ```
 
 Each script is loaded in a fixed order with plain `<script src>` tags; shared top-level `let`/`const` bindings are visible to later scripts, exactly as when the code lived in one inline block.

@@ -165,7 +165,7 @@
             let data={};
             try{data=JSON.parse(localStorage.getItem('hikeybr_store_v3')||'{}');}catch(_){}
             const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
-            const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='hikeybr-progress.json';a.click();
+            const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='tankan-progress.json';a.click();
             setTimeout(()=>URL.revokeObjectURL(a.href),5000);
         };
         const importFile=document.getElementById('import-progress-file');
@@ -177,7 +177,7 @@
                 if(!data||typeof data!=='object'||Array.isArray(data))throw 0;
                 localStorage.setItem('hikeybr_store_v3',JSON.stringify(data));
                 location.reload();
-            }catch(_){alert('That file is not a valid HiKeybr progress export.');}};
+            }catch(_){alert('That file is not a valid Tankan progress export.');}};
             r.readAsText(f);
         });
         // Navigation Tabs switching

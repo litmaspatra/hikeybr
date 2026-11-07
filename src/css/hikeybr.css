@@ -345,6 +345,26 @@
             background: var(--accent-soft);
         }
 
+        .nav-tab.disabled {
+            opacity: .5;
+            cursor: default;
+        }
+
+        .nav-tab.disabled:hover {
+            color: var(--text-dim);
+            background: transparent;
+        }
+
+        .nav-soon {
+            font-size: .62rem;
+            font-weight: 600;
+            padding: 1px 7px;
+            border-radius: 999px;
+            background: var(--accent-soft);
+            color: var(--accent);
+            vertical-align: middle;
+        }
+
         .header-actions {
             display: flex;
             align-items: center;
