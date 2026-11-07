@@ -198,48 +198,95 @@
             const starterCounts=Object.fromEntries(unlockedItems.map(item=>[item.k,0]));
             let reviewWords = 0;
             let previous = '';
-            const used=new Set(), recent=new Set(recentLessonWords);
-            const pick = pool => {
-                let choices=pool.filter(word=>!used.has(word)&&!recent.has(word));
-
-                if(!choices.length)choices=pool.filter(word=>!used.has(word));
-
-                if(!choices.length)choices=pool.filter(word=>word!==previous);
-                if(!choices.length)choices=pool;
-                const chosen=choices[Math.floor(Math.random()*choices.length)];used.add(chosen);return chosen;
+            // Variety guard (early levels have tiny pools). Each pool is drawn
+            // from a shuffled "deck" that cycles through all of its words, so
+            // usage stays balanced across the pool; a card equal to the previous
+            // word is swapped away while any other card remains, so identical
+            // words never sit back-to-back when the pool has 2+ words.
+            const recent=new Set(recentLessonWords);
+            const decks=new Map();
+            const shuffle=arr=>{for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}return arr;};
+            const draw=pool=>{
+                if(!pool||!pool.length)return null;
+                let deck=decks.get(pool);
+                if(!deck){
+                    // First deck prefers words not seen in recent lessons.
+                    let cards=pool.filter(word=>!recent.has(word));
+                    if(!cards.length)cards=pool.slice();
+                    deck={cards:shuffle(cards),i:0};decks.set(pool,deck);
+                }
+                if(deck.i>=deck.cards.length){deck.cards=shuffle(pool.slice());deck.i=0;}
+                if(deck.cards[deck.i]===previous){
+                    if(deck.i+1<deck.cards.length){const t=deck.cards[deck.i];deck.cards[deck.i]=deck.cards[deck.i+1];deck.cards[deck.i+1]=t;}
+                    else return null; // only the repeated word left; caller may widen
+                }
+                return deck.cards[deck.i++];
             };
+            // Arrange words so identical words are never adjacent whenever the
+            // mix allows it (greedy most-frequent-first). Used for the final
+            // mix and for each repeat cycle of the "repeat each word" option.
+            const arrangeNoAdjacent=(arr,prev)=>{
+                const counts={};arr.forEach(word=>counts[word]=(counts[word]||0)+1);
+                const out=[];let p=prev||'';
+                while(out.length<arr.length){
+                    const remaining=Object.keys(counts).filter(word=>counts[word]>0);
+                    const cand=remaining.filter(word=>word!==p);
+                    const list=cand.length?cand:remaining;
+                    list.sort((a,b)=>counts[b]-counts[a]||Math.random()-.5);
+                    const word=list[0];out.push(word);counts[word]--;p=word;
+                }
+                return out;
+            };
+            const starterPools={};
             for (let w = 0; w < wordCount; w++) {
                 let chosen;
                 if (mixedStarters) {
                     // Cover every starter, including pre-base ि. A target-only
-                    // pool can starve ि and leave the first unlock stuck.
-                    const least=unlockedItems.reduce((a,b)=>starterCounts[a.k]<=starterCounts[b.k]?a:b);
-                    const pool=realPool.filter(word=>unicodeToKrutiDev(word).includes(least.k));
-                    chosen=pool.length?pick(pool):least.h+KEY_PROGRESSION[0].h;
+                    // pool can starve ि and leave the first unlock stuck. Force
+                    // each starter only until it has a few hits this lesson -
+                    // with a one-word key pool (ि), forcing it all lesson long
+                    // floods the text with that single word.
+                    const needy=unlockedItems.filter(item=>starterCounts[item.k]<3);
+                    if(needy.length){
+                        const least=needy.reduce((a,b)=>starterCounts[a.k]<=starterCounts[b.k]?a:b);
+                        if(!starterPools[least.k])starterPools[least.k]=realPool.filter(word=>unicodeToKrutiDev(word).includes(least.k));
+                        chosen=draw(starterPools[least.k])||draw(realPool)||least.h+KEY_PROGRESSION[0].h;
+                    }else{
+                        chosen=draw(realPool)||previous;
+                    }
                     const seq=unicodeToKrutiDev(chosen);
                     unlockedItems.forEach(item=>{starterCounts[item.k]+=seq.split(item.k).length-1;});
                 } else if (reviewWords < reviewQuota) {
-                    chosen = pick(reviewPool);
-                    reviewWords++;
+                    chosen = draw(reviewPool)||draw(focusedPool)||draw(realPool);
+                    if(chosen&&unicodeToKrutiDev(chosen).includes(reviewSequence))reviewWords++;
                 } else if (focusedPool.length) {
-                    chosen = pick(focusedPool);
+                    // Target-key training: never widen past the focused pool -
+                    // every lesson word keeps containing the current key. The
+                    // deck balances the small pool's repeats instead.
+                    chosen = draw(focusedPool)||previous;
                 } else {
                     // No real word can teach this glyph yet (digits, rare Alt codes,
                     // or very early levels). Use only the minimum short glyph drill.
                     const count = 2;
-                    const context=realPool.length?pick(realPool):KEY_PROGRESSION[0].h;
+                    const context=draw(realPool)||KEY_PROGRESSION[0].h;
                     chosen = activeItem.h.repeat(count)+' '+context;
                 }
                 words.push(chosen);
                 previous = chosen;
             }
-            // Mix drills and review words without changing their quotas.
-            for (let i = words.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [words[i], words[j]] = [words[j], words[i]];
-            }
+            // Mix drills and review words without changing their quotas, and
+            // without landing identical words next to each other.
+            const mixedOrder=arrangeNoAdjacent(words);words.length=0;words.push(...mixedOrder);
             recentLessonWords=recentLessonWords.concat(words).slice(-150);
-            if(opts.repeat>1){const r=[];words.forEach(w=>{for(let i=0;i<opts.repeat;i++)r.push(w);});words.length=0;words.push(...r);}
+            if(opts.repeat>1){
+                // Spread each word's repeats across the lesson (shuffled cycles)
+                // instead of identical words back-to-back: same repetition count
+                // for muscle memory, without the repeated-word wall.
+                const base=words.slice();words.length=0;
+                for(let cycle=0;cycle<opts.repeat;cycle++){
+                    words.push(...arrangeNoAdjacent(base,words.length?words[words.length-1]:''));
+                }
+            }
             if(opts.punct>0&&unlockedKeySet.has('a')){for(let i=0;i<words.length;i++)if(Math.random()*100<opts.punct&&!words[i].includes('।'))words[i]+='।';}
             document.getElementById('word-pool-status').textContent=`${focusedPool.length.toLocaleString()} target words / ${eligibleRealWords.length.toLocaleString()} usable at this level / ${encodedWordBank.length.toLocaleString()} total`+(mixedStarters?' · Mixed starter practice: क, ा, ि, र.':focusedPool.length===0?' · New glyph plus unlocked-word practice.':focusedPool.length<wordCount?' · Small target pool: some repetition needed.':'');
             return words.join(' ');
