@@ -78,13 +78,6 @@
     color: #ffffff;
 }
 
-/* Cursor/key highlight turned off in lesson settings: no blue ring on the
-   current key and no blue Shift fill. Heat/unlocked colouring stays. */
-html.cur-off #keyboard-frame .k-key.target::after { display: none; }
-html.cur-off #keyboard-frame .k-key.shift-needed { background: var(--key-bg); }
-html.cur-off #keyboard-frame .k-key.shift-needed .hi-main { color: var(--text); }
-html.cur-off #keyboard-frame .k-key.shift-needed.label-key .hi-main { color: var(--text-dim); }
-
 /* Home-key guide bumps (F/J row): small dash under the letter. */
 #keyboard-frame .k-key.bump::after {
     content: '';
