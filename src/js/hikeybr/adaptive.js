@@ -54,14 +54,20 @@
             if(!item)return {pct:0,ready:false,samples:0,minimum:10};
             const ks=keyStats[item.k]||{},targetMs=12000/targetSpeedGoal;
             const samples=ks.modelSamples||0,bank=ks.accurateBest?targetMs/ks.accurateBest:0;
+            // The bar shows the best speed actually measured, banked or not.
+            // accurateBest only fills after a 95%-accuracy lesson with enough
+            // clean timings, so gating the display on it pinned the bar at 0%
+            // (and "best 0.0 WPM") even after many measured lessons.
+            const measuredBest=[ks.accurateBest,ks.modelBest,ks.modelTtt].filter(v=>v&&isFinite(v)).reduce((a,b)=>Math.min(a,b),Infinity);
+            const displayBank=isFinite(measuredBest)?targetMs/measuredBest:0;
             const recentAccuracy=(ks.recentLessonAccuracy||ks.lastAccuracy||0)>=95;
             const starterReady=unlockedIndex>=INITIAL_UNLOCKED_COUNT||KEY_PROGRESSION.slice(0,INITIAL_UNLOCKED_COUNT).every(x=>{
                 const stats=keyStats[x.k];return (stats.modelSamples||0)>=10&&(stats.lastAccuracy||0)>=95&&stats.accurateBest&&stats.accurateBest<=targetMs;
             });
             const strictOk=!opts.strict||previousKeysAboveTarget();
             const ready=bank>=1&&samples>=10&&recentAccuracy&&starterReady&&strictOk;
-            const pct=ready?100:Math.min(99,Math.round(Math.min(samples/10,bank)*100));
-            return {pct,ready,samples,minimum:10,starterReady,bank,recentAccuracy,strictOk};
+            const pct=ready?100:Math.min(99,Math.round(Math.min(samples/10,displayBank)*100));
+            return {pct,ready,samples,minimum:10,starterReady,bank,recentAccuracy,strictOk,measuredBest:isFinite(measuredBest)?measuredBest:null};
         }
 
         function updateMasteryCard() {
@@ -99,7 +105,7 @@
             if(!unlockState.ready){
                 const current=keyStats[currentItem.k];
                 if((current.recentLessonAccuracy||current.lastAccuracy||0)<95)el.leadSamplesStatus.textContent+=' · need 95% lesson accuracy';
-                else if((current.accurateBest||Infinity)>12000/targetSpeedGoal)el.leadSamplesStatus.textContent+=' · best '+(current.accurateBest?12000/current.accurateBest:0).toFixed(1)+' / '+targetSpeedGoal+' WPM goal';
+                else if((current.accurateBest||Infinity)>12000/targetSpeedGoal)el.leadSamplesStatus.textContent+=' · best '+(unlockState.measuredBest?(12000/unlockState.measuredBest).toFixed(1):'0.0')+' / '+targetSpeedGoal+' WPM goal';
                 else if(!unlockState.starterReady)el.leadSamplesStatus.textContent+=' · calibrating starter keys';
                 else if(!unlockState.strictOk)el.leadSamplesStatus.textContent+=' · earlier keys must also reach the target speed';
             }
